@@ -22,13 +22,12 @@ function ColorField({ label, description, value, onChange }: ColorFieldProps) {
           type="color"
           value={value}
           onChange={e => onChange(e.target.value)}
-          className="w-12 h-12 rounded-lg cursor-pointer border-2 border-zinc-600 bg-transparent p-0.5"
-          style={{ colorScheme: 'dark' }}
+          className="w-12 h-12 rounded-lg cursor-pointer border-2 border-gray-200 bg-transparent p-0.5"
         />
       </div>
       <div className="flex-1">
-        <div className="text-sm font-medium text-white">{label}</div>
-        <div className="text-xs text-zinc-400">{description}</div>
+        <div className="text-sm font-medium text-gray-800">{label}</div>
+        <div className="text-xs text-gray-400">{description}</div>
       </div>
       <input
         type="text"
@@ -37,7 +36,7 @@ function ColorField({ label, description, value, onChange }: ColorFieldProps) {
           const v = e.target.value
           if (/^#[0-9a-fA-F]{0,6}$/.test(v)) onChange(v)
         }}
-        className="w-28 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white font-mono focus:outline-none focus:ring-2 focus:ring-purple-500"
+        className="w-28 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-900 font-mono focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 transition-colors"
         maxLength={7}
       />
     </div>
@@ -71,8 +70,8 @@ export function ColorsSection({ settings, onChange }: Props) {
       />
 
       {/* Preview */}
-      <div className="mt-6 rounded-xl overflow-hidden border border-zinc-700">
-        <div className="text-xs text-zinc-500 px-3 py-1.5 bg-zinc-900">Preview das cores</div>
+      <div className="mt-6 rounded-xl overflow-hidden border border-gray-200">
+        <div className="text-xs text-gray-400 px-3 py-1.5 bg-gray-50 border-b border-gray-200">Preview das cores</div>
         <div
           className="h-20 flex items-center justify-center gap-4 px-6"
           style={{ background: `linear-gradient(135deg, ${settings.colors.primary} 0%, ${settings.colors.secondary} 100%)` }}

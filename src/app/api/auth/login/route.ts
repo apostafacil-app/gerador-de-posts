@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { SignJWT } from 'jose'
-import bcrypt from 'bcryptjs'
+import { readCredentials, verifyPassword } from '@/lib/credentials'
 
 // Rate limiting simples para login (5 tentativas/min por IP)
 const loginAttempts = new Map<string, { count: number; resetAt: number }>()
@@ -49,19 +49,18 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Credenciais inválidas.' }, { status: 401 })
   }
 
-  const adminUser = process.env.ADMIN_USER
-  const adminPassHash = process.env.ADMIN_PASS_HASH
   const jwtSecret = process.env.JWT_SECRET
-
-  if (!adminUser || !adminPassHash || !jwtSecret) {
-    console.error('[auth/login] Variáveis de ambiente não configuradas.')
+  if (!jwtSecret) {
+    console.error('[auth/login] JWT_SECRET não configurado.')
     return NextResponse.json({ error: 'Servidor não configurado.' }, { status: 500 })
   }
 
+  const credentials = readCredentials()
+
   // Comparação em tempo constante para evitar timing attacks
   // bcrypt.compare já é timing-safe por design
-  const passwordMatch = await bcrypt.compare(password, adminPassHash)
-  const usernameMatch = username === adminUser
+  const passwordMatch = await verifyPassword(password, credentials.passHash)
+  const usernameMatch = username === credentials.username
 
   // Validar AMBOS antes de responder — evita enumerar usuários por tempo de resposta
   if (!usernameMatch || !passwordMatch) {
@@ -69,7 +68,7 @@ export async function POST(req: NextRequest) {
   }
 
   const secret = new TextEncoder().encode(jwtSecret)
-  const token = await new SignJWT({ sub: adminUser })
+  const token = await new SignJWT({ sub: credentials.username })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime('24h')

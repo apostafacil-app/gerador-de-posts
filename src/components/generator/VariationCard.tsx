@@ -24,7 +24,6 @@ export function VariationCard({ html, index, format }: Props) {
     setExporting(true)
 
     try {
-      // Dynamically import dom-to-image-more to avoid SSR issues
       const domtoimage = (await import('dom-to-image-more')).default
 
       const blob = await domtoimage.toBlob(iframe.contentDocument.body, {
@@ -56,15 +55,15 @@ export function VariationCard({ html, index, format }: Props) {
     <div className="flex flex-col gap-3">
       {/* Label */}
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+        <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
           Variação {index + 1}
         </span>
-        <span className="text-xs text-zinc-600">{nativeW}×{nativeH}px</span>
+        <span className="text-xs text-gray-400">{nativeW}×{nativeH}px</span>
       </div>
 
       {/* Preview */}
       <div
-        className="rounded-xl overflow-hidden border border-zinc-700 shadow-xl bg-zinc-900"
+        className="rounded-xl overflow-hidden border border-gray-200 shadow-md bg-gray-100"
         style={{ width: displayW, height: displayH, flexShrink: 0 }}
       >
         <iframe
@@ -88,18 +87,16 @@ export function VariationCard({ html, index, format }: Props) {
       <button
         onClick={handleExport}
         disabled={exporting}
-        className="w-full py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium transition-colors border border-zinc-700 flex items-center justify-center gap-2"
+        className="w-full py-2 rounded-lg bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-gray-700 text-sm font-medium transition-colors border border-gray-200 shadow-sm flex items-center justify-center gap-2"
         style={{ width: displayW }}
       >
         {exporting ? (
           <>
-            <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            <span className="w-3.5 h-3.5 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
             Exportando...
           </>
         ) : (
-          <>
-            ↓ Exportar PNG
-          </>
+          <>↓ Exportar PNG</>
         )}
       </button>
     </div>

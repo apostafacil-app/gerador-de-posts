@@ -51,7 +51,7 @@ export function VariationGrid({ variations, format }: Props) {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-bold text-white">
+        <h2 className="text-lg font-bold text-gray-900">
           {variations.length} variação{variations.length !== 1 ? 'ões' : ''} gerada{variations.length !== 1 ? 's' : ''}
         </h2>
         {variations.length > 1 && (
