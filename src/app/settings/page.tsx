@@ -6,16 +6,18 @@ import { ColorsSection } from '@/components/settings/ColorsSection'
 import { LogoSection } from '@/components/settings/LogoSection'
 import { AIRulesSection } from '@/components/settings/AIRulesSection'
 import { CredentialsSection } from '@/components/settings/CredentialsSection'
+import { AIConfigSection } from '@/components/settings/AIConfigSection'
 import { loadSettings, saveSettings, getDefaultSettings } from '@/lib/storage'
 import type { AppSettings } from '@/types'
 
-type Tab = 'empresa' | 'marca' | 'logos' | 'regras' | 'credenciais'
+type Tab = 'empresa' | 'marca' | 'logos' | 'regras' | 'ia' | 'credenciais'
 
 const tabs: { id: Tab; label: string }[] = [
   { id: 'empresa', label: 'Empresa' },
   { id: 'marca', label: 'Marca' },
   { id: 'logos', label: 'Logos' },
   { id: 'regras', label: 'Regras de IA' },
+  { id: 'ia', label: '🤖 IA' },
   { id: 'credenciais', label: '🔑 Credenciais' },
 ]
 
@@ -39,7 +41,7 @@ export default function SettingsPage() {
     setTimeout(() => setSaved(false), 2000)
   }
 
-  const showSaveButton = activeTab !== 'credenciais'
+  const showSaveButton = activeTab !== 'credenciais' && activeTab !== 'ia'
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-8">
@@ -60,17 +62,6 @@ export default function SettingsPage() {
             {saved ? '✓ Salvo!' : 'Salvar'}
           </button>
         )}
-      </div>
-
-      {/* Aviso sobre API key */}
-      <div className="mb-5 p-3.5 rounded-xl bg-white border border-gray-200 shadow-sm flex items-start gap-3">
-        <span className="text-green-500 text-lg mt-0.5">🔒</span>
-        <div>
-          <p className="text-sm font-medium text-gray-800">Chave de API configurada no servidor</p>
-          <p className="text-xs text-gray-400 mt-0.5">
-            O provider e a chave de IA são definidos via variáveis de ambiente no Railway — nunca expostos ao navegador.
-          </p>
-        </div>
       </div>
 
       {/* Tabs */}
@@ -103,6 +94,9 @@ export default function SettingsPage() {
         )}
         {activeTab === 'regras' && (
           <AIRulesSection settings={settings} onChange={handleChange} />
+        )}
+        {activeTab === 'ia' && (
+          <AIConfigSection />
         )}
         {activeTab === 'credenciais' && (
           <CredentialsSection />

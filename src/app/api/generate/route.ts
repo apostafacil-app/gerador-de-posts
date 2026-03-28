@@ -5,7 +5,8 @@ import { buildPrompt } from '@/lib/prompt-builder'
 import { generateWithAI } from '@/lib/ai'
 import { extractVariations } from '@/lib/html-parser'
 import { validateGenerateRequest } from '@/lib/validation'
-import type { AIProvider, GenerateRequest, GenerateResponse } from '@/types'
+import { readAIConfig } from '@/lib/ai-config'
+import type { GenerateRequest, GenerateResponse } from '@/types'
 
 // Rate limiting: 10 req/min por IP
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>()
@@ -43,25 +44,17 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  // Chave de API e provider vêm do servidor — nunca do cliente
-  const provider = process.env.AI_PROVIDER as AIProvider | undefined
-  const apiKey = process.env.AI_API_KEY
+  // Chave de API e provider lidos do servidor (arquivo ou env vars)
+  const aiConfig = readAIConfig()
 
-  if (!provider || !apiKey) {
-    console.error('[/api/generate] AI_PROVIDER ou AI_API_KEY não configurados.')
+  if (!aiConfig) {
     return NextResponse.json<GenerateResponse>(
-      { variations: [], error: 'IA não configurada no servidor. Configure AI_PROVIDER e AI_API_KEY.' },
+      { variations: [], error: 'IA não configurada. Acesse Configurações → IA para configurar.' },
       { status: 500 }
     )
   }
 
-  const validProviders: AIProvider[] = ['claude', 'openai', 'gemini']
-  if (!validProviders.includes(provider)) {
-    return NextResponse.json<GenerateResponse>(
-      { variations: [], error: 'AI_PROVIDER inválido. Use: claude, openai ou gemini.' },
-      { status: 500 }
-    )
-  }
+  const { provider, apiKey } = aiConfig
 
   let body: unknown
   try {

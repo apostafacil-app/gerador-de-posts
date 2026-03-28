@@ -64,20 +64,6 @@ export function CredentialsSection() {
         Troque o usuário e senha de acesso ao sistema. A alteração persiste entre sessões.
       </p>
 
-      {/* Info sobre credenciais padrão */}
-      <div className="mb-5 p-3.5 rounded-xl bg-amber-50 border border-amber-200 flex items-start gap-3">
-        <span className="text-amber-500 mt-0.5">⚠</span>
-        <div>
-          <p className="text-sm font-medium text-amber-800">Credenciais padrão de primeiro acesso</p>
-          <p className="text-xs text-amber-600 mt-0.5">
-            Usuário: <code className="bg-amber-100 px-1 rounded">admin</code> &nbsp;/&nbsp;
-            Senha: <code className="bg-amber-100 px-1 rounded">Gerador@2024</code>
-            <br />
-            Troque imediatamente após o primeiro acesso.
-          </p>
-        </div>
-      </div>
-
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1.5">
