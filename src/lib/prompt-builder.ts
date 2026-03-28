@@ -51,9 +51,9 @@ ${logoInstruction}
 Dimensão exata: ${dimensions} (body: width:${width}px; height:${height}px; overflow:hidden)
 Tema: ${form.theme === 'dark' ? 'Escuro — usar gradiente com as cores da empresa' : 'Claro — fundo branco, texto escuro, destaques coloridos'}
 Assunto do post: ${form.subject}
-Estilo de escrita: ${writingStyleLabel[form.writingStyle] ?? form.writingStyle}
-Tom emocional: ${emotionalToneLabel[form.emotionalTone] ?? form.emotionalTone}
-Técnica de persuasão: ${persuasionLabel[form.persuasionTechnique] ?? form.persuasionTechnique}
+Estilo de escrita: ${writingStyleLabel[form.writingStyle] ?? 'direto'}
+Tom emocional: ${emotionalToneLabel[form.emotionalTone] ?? 'empolgante'}
+Técnica de persuasão: ${persuasionLabel[form.persuasionTechnique] ?? 'beneficio_direto'}
 Usar imagem/arte visual: ${form.useImage ? `Sim — estilo desejado: ${form.imageStyle || 'premium, abstrato geométrico'}` : 'Não — usar apenas tipografia e gradientes'}
 
 ---
