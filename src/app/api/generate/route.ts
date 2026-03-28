@@ -1,7 +1,7 @@
 export const maxDuration = 60
 
 import { NextRequest, NextResponse } from 'next/server'
-import { buildPrompt } from '@/lib/prompt-builder'
+import { buildPrompt, getLogoForTheme, injectLogo } from '@/lib/prompt-builder'
 import { generateWithAI } from '@/lib/ai'
 import { extractVariations } from '@/lib/html-parser'
 import { validateGenerateRequest } from '@/lib/validation'
@@ -79,14 +79,20 @@ export async function POST(req: NextRequest) {
   try {
     const prompt = buildPrompt(settings, formData)
     const rawResponse = await generateWithAI(provider, apiKey, prompt)
-    const variations = extractVariations(rawResponse)
+    const rawVariations = extractVariations(rawResponse)
 
-    if (variations.length === 0) {
+    if (rawVariations.length === 0) {
       return NextResponse.json<GenerateResponse>(
         { variations: [], error: 'A IA não retornou HTML válido. Tente reformular o assunto.' },
         { status: 422 }
       )
     }
+
+    // Injeta o base64 da logo no HTML (era um placeholder no prompt para evitar tokens excessivos)
+    const logoBase64 = getLogoForTheme(settings, formData.theme)
+    const variations = logoBase64
+      ? rawVariations.map(html => injectLogo(html, logoBase64))
+      : rawVariations
 
     return NextResponse.json<GenerateResponse>({ variations })
   } catch (err: unknown) {

@@ -1,5 +1,22 @@
 import type { AppSettings, GeneratorFormData } from '@/types'
 
+/**
+ * Placeholder usado no prompt para a logo.
+ * O base64 real é injetado APÓS a IA retornar o HTML,
+ * evitando enviar centenas de milhares de tokens desnecessários.
+ */
+export const LOGO_PLACEHOLDER = '__LOGO_BASE64_PLACEHOLDER__'
+
+/** Retorna o base64 correto da logo conforme o tema */
+export function getLogoForTheme(settings: AppSettings, theme: 'dark' | 'white'): string {
+  return theme === 'dark' ? settings.logos.darkBackground : settings.logos.whiteBackground
+}
+
+/** Injeta o base64 real no HTML retornado pela IA */
+export function injectLogo(html: string, logoBase64: string): string {
+  return html.replaceAll(LOGO_PLACEHOLDER, logoBase64)
+}
+
 const writingStyleLabel: Record<string, string> = {
   direto: 'Direto (headline objetiva, bullet points, zero rodeios)',
   educativo: 'Educativo (problema→solução, dados em destaque, autoridade)',
@@ -24,13 +41,11 @@ const persuasionLabel: Record<string, string> = {
 export function buildPrompt(settings: AppSettings, form: GeneratorFormData): string {
   const dimensions = form.format === 'post' ? '1080x1350px' : '1080x1920px'
   const [width, height] = form.format === 'post' ? [1080, 1350] : [1080, 1920]
-  const logoBase64 = form.theme === 'dark'
-    ? settings.logos.darkBackground
-    : settings.logos.whiteBackground
+  const hasLogo = Boolean(getLogoForTheme(settings, form.theme))
 
-  const logoInstruction = logoBase64
-    ? `Logo fornecida — usar exatamente esta src base64 na tag <img>:\n${logoBase64}`
-    : `Logo NÃO fornecida — exibir o nome da empresa "${settings.company.name}" em tipografia estilizada como substituto`
+  const logoInstruction = hasLogo
+    ? `Logo fornecida — usar exatamente src="${LOGO_PLACEHOLDER}" na tag <img alt="${settings.company.name || 'Logo'}"> (❌ NUNCA gere URL ou base64 diferente — use literalmente: ${LOGO_PLACEHOLDER})`
+    : `Logo NÃO fornecida — exibir o nome "${settings.company.name || 'Empresa'}" em tipografia estilizada`
 
   return `${settings.aiRules}
 
