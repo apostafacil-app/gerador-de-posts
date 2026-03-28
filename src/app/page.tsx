@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { GeneratorForm } from '@/components/generator/GeneratorForm'
 import { VariationGrid } from '@/components/generator/VariationGrid'
-import { loadSettings, getDefaultSettings } from '@/lib/storage'
+import { getDefaultSettings } from '@/lib/storage'
 import type { AppSettings, GeneratorFormData, GenerateRequest, GenerateResponse, PostFormat } from '@/types'
 
 export default function HomePage() {
@@ -14,7 +14,10 @@ export default function HomePage() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    setSettings(loadSettings())
+    fetch('/api/settings/app')
+      .then(r => r.json())
+      .then(data => setSettings(data))
+      .catch(() => {})
   }, [])
 
   async function handleSubmit(formData: GeneratorFormData) {
