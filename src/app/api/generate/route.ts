@@ -1,3 +1,5 @@
+export const maxDuration = 60 // segundos — necessário para IA gerar múltiplas variações
+
 import { NextRequest, NextResponse } from 'next/server'
 import { buildPrompt } from '@/lib/prompt-builder'
 import { generateWithAI } from '@/lib/ai'
