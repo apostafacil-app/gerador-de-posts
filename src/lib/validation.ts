@@ -1,4 +1,4 @@
-import type { GenerateRequest, AIProvider, PostFormat, PostTheme, WritingStyle, EmotionalTone, PersuasionTechnique } from '@/types'
+import type { GenerateRequest, PostFormat, PostTheme, WritingStyle, EmotionalTone, PersuasionTechnique } from '@/types'
 
 // ─── Limits ────────────────────────────────────────────────────────────────
 const LIMITS = {
@@ -8,13 +8,11 @@ const LIMITS = {
   SUBJECT: 1000,
   IMAGE_STYLE: 300,
   AI_RULES: 25000,
-  API_KEY: 250,
   LOGO_BASE64: 1_200_000, // ~900KB de imagem
   COLOR_HEX: 7,
 }
 
 // ─── Valid enum values ──────────────────────────────────────────────────────
-const VALID_PROVIDERS: AIProvider[] = ['claude', 'openai', 'gemini']
 const VALID_FORMATS: PostFormat[] = ['post', 'story']
 const VALID_THEMES: PostTheme[] = ['dark', 'white']
 const VALID_WRITING_STYLES: WritingStyle[] = ['direto', 'educativo', 'provocativo', 'empatico']
@@ -67,23 +65,6 @@ export function validateGenerateRequest(body: unknown): ValidationResult {
   }
   if (!formData || typeof formData !== 'object') {
     return { valid: false, error: 'Dados do formulário ausentes.' }
-  }
-
-  // ── Settings: AI ──
-  const ai = settings.ai as Record<string, unknown> | undefined
-  if (!ai || typeof ai !== 'object') {
-    return { valid: false, error: 'Configuração de IA ausente.' }
-  }
-
-  if (!isString(ai.provider) || !(VALID_PROVIDERS as string[]).includes(ai.provider)) {
-    return { valid: false, error: 'Provider de IA inválido.' }
-  }
-
-  if (!isString(ai.apiKey) || ai.apiKey.trim() === '') {
-    return { valid: false, error: 'Chave de API não configurada.' }
-  }
-  if (!maxLen(ai.apiKey, LIMITS.API_KEY)) {
-    return { valid: false, error: 'Chave de API inválida.' }
   }
 
   // ── Settings: Company ──

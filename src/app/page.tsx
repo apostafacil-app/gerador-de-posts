@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
 import { GeneratorForm } from '@/components/generator/GeneratorForm'
 import { VariationGrid } from '@/components/generator/VariationGrid'
 import { loadSettings } from '@/lib/storage'
@@ -17,8 +16,6 @@ export default function HomePage() {
   useEffect(() => {
     setSettings(loadSettings())
   }, [])
-
-  const hasApiKey = settings?.ai?.apiKey?.trim()
 
   async function handleSubmit(formData: GeneratorFormData) {
     if (!settings) return
@@ -50,23 +47,6 @@ export default function HomePage() {
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-8">
-      {/* Settings warning */}
-      {settings && !hasApiKey && (
-        <div className="mb-6 p-4 rounded-xl bg-amber-950/40 border border-amber-800/50 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="text-amber-400">⚠</span>
-            <span className="text-sm text-amber-300">
-              Configure sua chave de API antes de gerar posts.
-            </span>
-          </div>
-          <Link
-            href="/settings"
-            className="text-xs px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition-colors font-semibold"
-          >
-            Configurar agora
-          </Link>
-        </div>
-      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-8">
         {/* Left: Form */}

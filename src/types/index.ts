@@ -20,10 +20,7 @@ export interface AppSettings {
     darkBackground: string
     whiteBackground: string
   }
-  ai: {
-    provider: AIProvider
-    apiKey: string
-  }
+  // ai.provider e ai.apiKey são gerenciados via variáveis de ambiente no servidor
   aiRules: string
 }
 

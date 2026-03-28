@@ -19,10 +19,6 @@ export function getDefaultSettings(): AppSettings {
       darkBackground: '',
       whiteBackground: '',
     },
-    ai: {
-      provider: 'claude',
-      apiKey: '',
-    },
     aiRules: DEFAULT_AI_RULES,
   }
 }
@@ -33,13 +29,11 @@ export function loadSettings(): AppSettings {
   if (!raw) return getDefaultSettings()
   try {
     const parsed = JSON.parse(raw) as AppSettings
-    // Merge with defaults to handle missing fields from older versions
     const defaults = getDefaultSettings()
     return {
       company: { ...defaults.company, ...parsed.company },
       colors: { ...defaults.colors, ...parsed.colors },
       logos: { ...defaults.logos, ...parsed.logos },
-      ai: { ...defaults.ai, ...parsed.ai },
       aiRules: parsed.aiRules ?? defaults.aiRules,
     }
   } catch {

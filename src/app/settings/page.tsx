@@ -4,18 +4,16 @@ import { useEffect, useState, useCallback } from 'react'
 import { CompanySection } from '@/components/settings/CompanySection'
 import { ColorsSection } from '@/components/settings/ColorsSection'
 import { LogoSection } from '@/components/settings/LogoSection'
-import { AIProviderSection } from '@/components/settings/AIProviderSection'
 import { AIRulesSection } from '@/components/settings/AIRulesSection'
 import { loadSettings, saveSettings } from '@/lib/storage'
 import type { AppSettings } from '@/types'
 
-type Tab = 'empresa' | 'marca' | 'logos' | 'ia' | 'regras'
+type Tab = 'empresa' | 'marca' | 'logos' | 'regras'
 
 const tabs: { id: Tab; label: string }[] = [
   { id: 'empresa', label: 'Empresa' },
   { id: 'marca', label: 'Marca' },
   { id: 'logos', label: 'Logos' },
-  { id: 'ia', label: 'Inteligência Artificial' },
   { id: 'regras', label: 'Regras de IA' },
 ]
 
@@ -67,6 +65,17 @@ export default function SettingsPage() {
         </button>
       </div>
 
+      {/* Aviso sobre API key */}
+      <div className="mb-5 p-3.5 rounded-xl bg-zinc-900 border border-zinc-700 flex items-start gap-3">
+        <span className="text-green-400 text-lg mt-0.5">🔒</span>
+        <div>
+          <p className="text-sm font-medium text-zinc-200">Chave de API configurada no servidor</p>
+          <p className="text-xs text-zinc-500 mt-0.5">
+            O provider e a chave de IA são definidos via variáveis de ambiente no Railway — nunca expostos ao navegador.
+          </p>
+        </div>
+      </div>
+
       {/* Tabs */}
       <div className="flex gap-1 bg-zinc-900 rounded-xl p-1 mb-6 overflow-x-auto">
         {tabs.map(tab => (
@@ -95,16 +104,13 @@ export default function SettingsPage() {
         {activeTab === 'logos' && (
           <LogoSection settings={settings} onChange={handleChange} />
         )}
-        {activeTab === 'ia' && (
-          <AIProviderSection settings={settings} onChange={handleChange} />
-        )}
         {activeTab === 'regras' && (
           <AIRulesSection settings={settings} onChange={handleChange} />
         )}
       </div>
 
       <p className="text-xs text-zinc-600 mt-4 text-center">
-        Todas as configurações são salvas localmente no seu navegador — nenhum dado é enviado para servidores.
+        Empresa, cores, logos e regras são salvas no navegador. A chave de API fica no servidor.
       </p>
     </div>
   )
