@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, use } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft, Building2, Sparkles, Clock } from 'lucide-react'
 import { GeneratorForm } from '@/components/generator/GeneratorForm'
@@ -19,8 +19,8 @@ interface CompanyCard {
 
 type Tab = 'criar' | 'historico'
 
-export default function EmpresaPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id: companyId } = use(params)
+export default function EmpresaPage({ params }: { params: { id: string } }) {
+  const { id: companyId } = params
   const router = useRouter()
 
   const [company, setCompany] = useState<CompanyCard | null>(null)

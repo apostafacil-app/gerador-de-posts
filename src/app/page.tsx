@@ -91,7 +91,7 @@ export default function HomePage() {
 
       {/* Company grid */}
       {companies.length > 0 && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {companies.map(company => {
             const logo = company.logoDark || company.logoWhite
 
@@ -99,38 +99,49 @@ export default function HomePage() {
               <button
                 key={company.id}
                 onClick={() => router.push(`/empresa/${company.id}`)}
-                className="group relative flex flex-col items-center gap-3 p-5 rounded-2xl border border-gray-200 bg-white hover:border-purple-300 hover:shadow-xl hover:-translate-y-1 transition-all duration-200 text-left"
+                className="group relative flex flex-col bg-white border border-gray-200 rounded-3xl overflow-hidden hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 text-left"
               >
-                {/* Hover arrow */}
-                <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <ChevronRight size={14} className="text-purple-400" />
-                </div>
-
-                {/* Logo / avatar */}
+                {/* Top banner with brand gradient */}
                 <div
-                  className="w-16 h-16 rounded-2xl flex items-center justify-center overflow-hidden shadow-md flex-shrink-0"
+                  className="relative h-28 w-full flex items-center justify-center"
                   style={{
                     background: `linear-gradient(135deg, ${company.colors.primary} 0%, ${company.colors.secondary} 100%)`,
                   }}
                 >
-                  {logo ? (
-                    <img src={logo} alt={company.name} className="w-full h-full object-contain p-2" />
-                  ) : (
-                    <Building2 size={26} className="text-white/90" />
-                  )}
+                  {/* Decorative circles */}
+                  <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full opacity-20"
+                    style={{ background: company.colors.accent }} />
+                  <div className="absolute -bottom-4 -left-4 w-16 h-16 rounded-full opacity-10"
+                    style={{ background: company.colors.accent }} />
+
+                  {/* Logo */}
+                  <div className="relative w-20 h-20 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center overflow-hidden shadow-lg border border-white/20">
+                    {logo ? (
+                      <img src={logo} alt={company.name} className="w-full h-full object-contain p-2" />
+                    ) : (
+                      <Building2 size={32} className="text-white/90" />
+                    )}
+                  </div>
+
+                  {/* Arrow on hover */}
+                  <div className="absolute top-3 right-3 w-7 h-7 rounded-full bg-white/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 group-hover:translate-x-0.5">
+                    <ChevronRight size={14} className="text-white" />
+                  </div>
                 </div>
 
-                {/* Color palette */}
-                <div className="flex gap-1.5">
-                  <div className="w-3 h-3 rounded-full border-2 border-white shadow-sm" style={{ background: company.colors.primary }} />
-                  <div className="w-3 h-3 rounded-full border-2 border-white shadow-sm" style={{ background: company.colors.secondary }} />
-                  <div className="w-3 h-3 rounded-full border-2 border-white shadow-sm" style={{ background: company.colors.accent }} />
+                {/* Bottom info */}
+                <div className="p-4 flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="font-bold text-gray-900 text-sm leading-snug truncate">{company.name}</p>
+                    <p className="text-xs text-gray-400 mt-0.5">Clique para criar posts</p>
+                  </div>
+                  {/* Color palette */}
+                  <div className="flex gap-1 flex-shrink-0">
+                    <div className="w-3.5 h-3.5 rounded-full shadow-sm ring-1 ring-white" style={{ background: company.colors.primary }} />
+                    <div className="w-3.5 h-3.5 rounded-full shadow-sm ring-1 ring-white" style={{ background: company.colors.secondary }} />
+                    <div className="w-3.5 h-3.5 rounded-full shadow-sm ring-1 ring-white" style={{ background: company.colors.accent }} />
+                  </div>
                 </div>
-
-                {/* Name */}
-                <span className="text-xs font-semibold text-gray-700 text-center line-clamp-2 leading-snug w-full">
-                  {company.name}
-                </span>
               </button>
             )
           })}
@@ -138,12 +149,15 @@ export default function HomePage() {
           {/* Add company card */}
           <Link
             href="/settings"
-            className="flex flex-col items-center justify-center gap-2 p-5 rounded-2xl border-2 border-dashed border-gray-200 text-gray-400 hover:border-purple-300 hover:text-purple-500 hover:-translate-y-1 transition-all duration-200 min-h-[152px]"
+            className="flex flex-col items-center justify-center gap-3 rounded-3xl border-2 border-dashed border-gray-200 text-gray-400 hover:border-purple-300 hover:text-purple-500 hover:-translate-y-1.5 hover:bg-purple-50/50 transition-all duration-300 min-h-[180px]"
           >
-            <div className="w-10 h-10 rounded-xl border-2 border-dashed border-current flex items-center justify-center">
-              <Plus size={18} />
+            <div className="w-12 h-12 rounded-2xl border-2 border-dashed border-current flex items-center justify-center">
+              <Plus size={22} />
             </div>
-            <span className="text-xs font-medium text-center">Nova empresa</span>
+            <div className="text-center">
+              <p className="text-sm font-semibold">Nova empresa</p>
+              <p className="text-xs opacity-60 mt-0.5">Adicionar cliente</p>
+            </div>
           </Link>
         </div>
       )}
