@@ -25,6 +25,7 @@ O container .safe DEVE ter insets de 60px nos 4 lados:
   right: 60px;    /* ← OBRIGATÓRIO */
   display: flex;
   flex-direction: column;
+  overflow: hidden; /* ← SEGURANÇA: garante que nada vaze para fora */
 }
 
 ❌ NUNCA use top:0 ou bottom:0 no .safe
@@ -33,7 +34,9 @@ O container .safe DEVE ter insets de 60px nos 4 lados:
 ✅ O .safe com insets 60px já garante as margens — o primeiro filho tem margin-top:0
 
 Altura útil de conteúdo: [H] - 120px (60 topo + 60 fundo)
-Largura útil de texto: [W] - 120px (60 esq + 60 dir)
+  → Post:  1350 - 120 = 1230px úteis
+  → Story: 1920 - 120 = 1800px úteis
+Largura útil de texto: [W] - 120px = 960px
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 3. SPACER ANTES DO CTA — REGRA CRÍTICA
@@ -169,19 +172,21 @@ ESPAÇAMENTOS ENTRE BLOCOS (margin-top de cada filho):
   Ponto interno: 9×9px; border-radius:50%; background:[cor destaque]
   Texto: max 22 caracteres; relacionado ao tema do post; gerado pela IA conforme contexto
 
-[BLOCO 3] HEADLINE — EXATAMENTE 3 LINHAS
-  Linha 1: <span style="color:[texto principal]">Frase impactante</span><br>
-  Linha 2: <em style="color:[destaque vibrante]; font-style:normal">Palavra chave</em><br>
-  Linha 3: <span style="color:[texto principal]">conclusão</span>
-  font-size:88px; font-weight:900; line-height:1.0; letter-spacing:-2px;
-  Mixed Case. ❌ NUNCA all-caps. ❌ NUNCA colorir palavras aleatórias na mesma linha.
-  Cada linha: 2-5 palavras curtas e impactantes.
+[BLOCO 3] HEADLINE — EXATAMENTE 3 LINHAS (NEM MAIS, NEM MENOS)
+  ❌ NUNCA 4 ou 5 linhas — estoura o canvas, especialmente no Story
+  ❌ NUNCA all-caps. ❌ NUNCA colorir palavras aleatórias na mesma linha.
+  Linha 1: <span style="color:[texto principal]">Frase curta</span><br>
+  Linha 2: <em style="color:[destaque vibrante]; font-style:normal">Destaque</em><br>
+  Linha 3: <span style="color:[texto principal]">Conclusão</span>
+  font-size: Post=88px / Story=114px; font-weight:900; line-height:1.0; letter-spacing:-2px;
+  Cada linha: 2-4 palavras curtas. Se a frase for longa → CORTAR, não adicionar linha.
   V2 centralizado: text-align:center.
 
-[BLOCO 4] SUBTEXTO
+[BLOCO 4] SUBTEXTO — MÁXIMO 2 LINHAS
   1-2 frases corridas, sem bullets ou listas.
+  ❌ NUNCA 3+ linhas — ocupa muito espaço e prejudica o ritmo visual.
   Complementa a headline com benefício concreto ou prova social.
-  font-size:30px; font-weight:500; line-height:1.45; color:[texto suporte].
+  font-size: Post=30px / Story=38px; font-weight:500; line-height:1.45; color:[texto suporte].
   V2 centralizado: text-align:center; max-width:820px; margin:0 auto.
 
 [BLOCO 5] DIVISOR
@@ -269,24 +274,41 @@ html2canvas(document.getElementById('post'), {
 ❌ NUNCA usar URL externa para imagens — html2canvas não consegue capturar (CORS bloqueia).
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-11. DISTRIBUIÇÃO DO ESPAÇO VERTICAL (Post 1080×1350)
+11. ORÇAMENTO VERTICAL — RESPEITAR OBRIGATORIAMENTE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Altura útil: 1230px (1350 - 60 - 60)
 
-Orçamento típico V1 (vertical):
-  Logo           160px
-  Eyebrow         76px (32 gap + 44 altura)
-  Headline       320px (32 gap + 288 altura — 3 linhas × 88px × 1.0)
-  Subtexto       110px (20 gap + 90 altura — 3 linhas × 30px)
-  Divisor         38px (36 gap + 2px)
-  3 Benefícios   320px (36 gap + 284 altura — 3 × (72 + 28 gap))
-  Spacer mín.     48px
-  CTA botão      116px (padding 40+40 + fonte 36)
-  Slogan          42px (20 gap + 22px)
-  ─────────────────
-  TOTAL         1230px ✓
+POST 1080×1350 — útil: 1230px
+  Logo            160px
+  Eyebrow          76px  (32 gap + 44)
+  Headline         320px (32 gap + 3 linhas × 88px × 1.0 lh) ← MÁXIMO 3 LINHAS
+  Subtexto         110px (20 gap + 2 linhas × 45px)           ← MÁXIMO 2 LINHAS
+  Divisor           38px (36 gap + 2px)
+  3 Benefícios     320px (36 gap + 3 × (72 + 28 gap))
+  Spacer mín.       48px
+  CTA              116px (padding 40+40 + fonte 36)
+  Slogan            42px (20 gap + 22px)
+  ──────────────────────
+  TOTAL           1230px ✓
 
-Se o total ultrapassar 1230px → reduzir gaps entre blocos, não os tamanhos de fonte.
+STORY 1080×1920 — útil: 1800px
+  Logo            160px
+  Eyebrow          90px  (32 gap + 58)
+  Headline         422px (32 gap + 3 linhas × 114px × 1.0 lh) ← MÁXIMO 3 LINHAS
+  Subtexto         136px (20 gap + 2 linhas × 58px)            ← MÁXIMO 2 LINHAS
+  Divisor           38px (36 gap + 2px)
+  3 Benefícios     398px (36 gap + 3 × (90 + 42 gap))
+  Spacer mín.       48px
+  CTA              156px (padding 54+54 + fonte 46 + sombra)
+  Slogan            52px (20 gap + 32px)
+  ──────────────────────
+  TOTAL           1500px ✓ (300px de margem para variações)
+
+⚠️ REGRA CRÍTICA DE OVERFLOW:
+  ❌ NUNCA headline com mais de 3 linhas — cada linha extra no story = +114px
+  ❌ NUNCA subtexto com mais de 2 linhas
+  ❌ NUNCA deixar copy longo demais para caber no canvas
+  ✅ Se o conteúdo for longo → ENCURTAR o copy, não reduzir font-size
+  ✅ Prefira frases curtas e impactantes — melhores visualmente E evitam overflow
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 12. QUALIDADE VISUAL EXIGIDA
