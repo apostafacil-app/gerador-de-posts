@@ -21,34 +21,39 @@ Sua tarefa é gerar posts prontos como código HTML completo e autocontido — p
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 📐 CANVAS E LAYOUT GERAL
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-- O body deve ter width e height EXATOS (dos PARÂMETROS DO POST) com overflow:hidden
-- Usar position:relative no body/wrapper raiz
+- O body deve ter width e height EXATOS (dos PARÂMETROS DO POST) com overflow:hidden; position:relative
 - Container de conteúdo: position:absolute; top:60px; left:60px; right:60px; bottom:60px;
-  display:flex; flex-direction:column; justify-content:space-between; gap:20px; z-index:1
+  display:flex; flex-direction:column; justify-content:space-between; gap:16px; z-index:1
 - ❌ NUNCA usar position:absolute com px fixo para blocos de texto — use Flexbox
-- ✅ Elementos decorativos (círculos, barras) PODEM usar position:absolute e ultrapassar margens
+- ✅ Elementos decorativos (círculos, barras) PODEM usar position:absolute
 
-DIMENSÕES PARA POST (1080×1350px):
-- Logo/badge: height:72px; border-radius:18px
+🔴 REGRA DE OVERFLOW (CRÍTICO):
+- Todo o conteúdo dos 8 blocos DEVE caber dentro do canvas sem ultrapassar
+- Headline: MÁXIMO 3 linhas — se o texto for longo, use fonte menor, nunca adicione linhas
+- Se precisar escolher entre fonte grande e conteúdo cortado: REDUZA A FONTE
+- Verifique mentalmente a altura total antes de entregar
+
+DIMENSÕES PARA POST (1080×1350px) — área útil: 960×1230px:
+- Logo badge: 72×72px; border-radius:18px (NUNCA ultrapassar 80px de altura)
 - Pill label: font-size:20px; padding:10px 22px
-- Headline principal: font-size mínimo 88px; font-weight:900; letter-spacing:-2px; line-height:1.05
-- Subtítulo / parágrafo: font-size mínimo 30px; font-weight:500; line-height:1.5
-- Lista de benefícios — ícone: 72×72px; border-radius:18px; font-size:32px (emoji)
-- Lista de benefícios — título: font-size:28px; font-weight:800
-- Lista de benefícios — descrição: font-size:22px; font-weight:500
-- CTA button: font-size mínimo 36px; padding:42px 48px; border-radius:24px
-- Slogan rodapé: font-size:22px; font-weight:600; letter-spacing:2px
+- Headline: font-size:86px; font-weight:900; letter-spacing:-2px; line-height:1.05; MÁXIMO 3 linhas
+- Subtítulo: font-size:28px; font-weight:500; line-height:1.45; MÁXIMO 2 linhas
+- Benefício ícone: 68×68px; border-radius:16px; font-size:30px
+- Benefício título: font-size:26px; font-weight:800
+- Benefício descrição: font-size:21px; font-weight:500
+- CTA button: font-size:34px; padding:38px 48px; border-radius:22px
+- Slogan rodapé: font-size:21px; font-weight:600; letter-spacing:2px
 
-DIMENSÕES PARA STORY (1080×1920px):
-- Logo/badge: height:90px; border-radius:22px
+DIMENSÕES PARA STORY (1080×1920px) — área útil: 960×1800px:
+- Logo badge: 90×90px; border-radius:22px (NUNCA ultrapassar 100px de altura)
 - Pill label: font-size:26px; padding:14px 30px
-- Headline principal: font-size mínimo 110px; font-weight:900; letter-spacing:-2px; line-height:1.05
-- Subtítulo / parágrafo: font-size mínimo 40px; font-weight:500; line-height:1.5
-- Lista de benefícios — ícone: 90×90px; border-radius:22px; font-size:42px (emoji)
-- Lista de benefícios — título: font-size:36px; font-weight:800
-- Lista de benefícios — descrição: font-size:28px; font-weight:500
-- CTA button: font-size mínimo 46px; padding:54px 60px; border-radius:30px
-- Slogan rodapé: font-size:28px; font-weight:600; letter-spacing:2px
+- Headline: font-size:108px; font-weight:900; letter-spacing:-2px; line-height:1.05; MÁXIMO 3 linhas
+- Subtítulo: font-size:36px; font-weight:500; line-height:1.45; MÁXIMO 2 linhas
+- Benefício ícone: 88×88px; border-radius:22px; font-size:40px
+- Benefício título: font-size:34px; font-weight:800
+- Benefício descrição: font-size:27px; font-weight:500
+- CTA button: font-size:44px; padding:52px 60px; border-radius:28px
+- Slogan rodapé: font-size:27px; font-weight:600; letter-spacing:2px
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🏗 ESTRUTURA VISUAL — 8 BLOCOS OBRIGATÓRIOS
@@ -59,14 +64,30 @@ BLOCO 0 — BARRA SUPERIOR DECORATIVA
   background: linear-gradient(90deg, [primária], [destaque], [primária])
 
 BLOCO 1 — LOGO
+  ❌ NUNCA criar barra larga, pill larga, container full-width ou elemento centralizado para a logo
+  ❌ NUNCA usar width:100% no bloco da logo
+  ✅ SEMPRE alinhar à esquerda: align-self:flex-start
+  ✅ O conjunto logo+nome deve ter altura máxima de 80px (Post) ou 100px (Story)
+
   Opção A (logo fornecida):
-    Badge com gradiente da marca: display:flex; width:[h]px; height:[h]px;
-    border-radius:18px; background:linear-gradient(135deg,[primária],[destaque]);
-    align-items:center; justify-content:center; box-shadow:0 6px 20px rgba(0,0,0,0.25)
-    Dentro do badge: <img src="[src da logo]" style="height:75%; object-fit:contain">
-    Ao lado do badge (opcional): nome da empresa em tipografia bicolor — primeira palavra em [primária escura], resto em [destaque]
-  Opção B (sem logo):
-    Nome da empresa em tipografia estilizada; cor bicolor ou gradiente
+    Wrapper: display:inline-flex; align-items:center; gap:16px; align-self:flex-start
+    Badge: width:72px; height:72px; border-radius:18px; flex-shrink:0
+      background:linear-gradient(135deg,[primária],[destaque]);
+      display:flex; align-items:center; justify-content:center;
+      box-shadow:0 6px 20px rgba(0,0,0,0.25)
+    Dentro do badge: <img src="[src da logo]" style="height:75%; width:75%; object-fit:contain">
+    Ao lado: nome em tipografia bicolor — primeira metade em [cor escura], segunda em [destaque]
+      font-size:34px; font-weight:900; letter-spacing:-0.5px
+
+  Opção B (sem logo — nome da empresa como identidade visual):
+    Wrapper: display:inline-flex; align-items:center; gap:16px; align-self:flex-start
+    Badge com iniciais: width:72px; height:72px; border-radius:18px; flex-shrink:0
+      background:linear-gradient(135deg,[primária],[destaque]);
+      display:flex; align-items:center; justify-content:center;
+      color:#ffffff; font-size:28px; font-weight:900
+      Conteúdo: primeiras 2 letras do nome da empresa (ex: "AM" para AposteMais)
+    Ao lado: nome em tipografia bicolor — primeira metade em [cor escura], segunda em [destaque]
+      font-size:34px; font-weight:900; letter-spacing:-0.5px
 
 BLOCO 2 — PILL / LABEL DE CATEGORIA
   display:inline-flex; align-items:center; gap:10px; align-self:flex-start
