@@ -15,6 +15,9 @@ export function Navbar() {
     router.refresh()
   }
 
+  const isHome = pathname === '/'
+  const isSettings = pathname.startsWith('/settings')
+
   return (
     <nav className="border-b border-gray-200 bg-white sticky top-0 z-50 shadow-sm">
       <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
@@ -29,17 +32,17 @@ export function Navbar() {
           <Link
             href="/"
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-              pathname === '/'
+              isHome
                 ? 'bg-gray-100 text-gray-900'
                 : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'
             }`}
           >
-            Gerador
+            Empresas
           </Link>
           <Link
             href="/settings"
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-              pathname === '/settings'
+              isSettings
                 ? 'bg-gray-100 text-gray-900'
                 : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'
             }`}

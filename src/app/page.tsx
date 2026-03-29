@@ -1,106 +1,136 @@
 'use client'
 
-import { useState } from 'react'
-import { GeneratorForm } from '@/components/generator/GeneratorForm'
-import { VariationGrid } from '@/components/generator/VariationGrid'
-import { CompanySelector } from '@/components/generator/CompanySelector'
-import type { GeneratorFormData, GenerateRequest, GenerateResponse, PostFormat } from '@/types'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { Building2, Plus, Settings, ChevronRight } from 'lucide-react'
+
+interface CompanyCard {
+  id: string
+  name: string
+  colors: { primary: string; secondary: string; accent: string }
+  logoDark: string
+  logoWhite: string
+}
 
 export default function HomePage() {
-  const [variations, setVariations] = useState<string[]>([])
-  const [captions, setCaptions] = useState<string[] | undefined>(undefined)
-  const [lastFormat, setLastFormat] = useState<PostFormat>('post')
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [selectedCompanyId, setSelectedCompanyId] = useState<string | undefined>(undefined)
+  const [companies, setCompanies] = useState<CompanyCard[]>([])
+  const [loading, setLoading] = useState(true)
+  const router = useRouter()
 
-  async function handleSubmit(formData: GeneratorFormData) {
-    setIsLoading(true)
-    setError(null)
-    setVariations([])
-    setCaptions(undefined)
-    setLastFormat(formData.format)
-
-    try {
-      const res = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ formData, companyId: selectedCompanyId } satisfies GenerateRequest),
+  useEffect(() => {
+    fetch('/api/companies/public', { cache: 'no-store' })
+      .then(r => r.json())
+      .then(data => {
+        setCompanies(data.companies ?? [])
+        setLoading(false)
       })
+      .catch(() => setLoading(false))
+  }, [])
 
-      const data: GenerateResponse = await res.json()
-
-      if (data.error) {
-        setError(data.error)
-      } else {
-        setVariations(data.variations)
-        setCaptions(data.captions)
-      }
-    } catch {
-      setError('Erro de conexão. Verifique sua internet e tente novamente.')
-    } finally {
-      setIsLoading(false)
-    }
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="w-8 h-8 border-4 border-purple-200 border-t-purple-500 rounded-full animate-spin" />
+      </div>
+    )
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-8">
-      {/* Company selector — only shown when 2+ companies exist */}
-      <CompanySelector
-        onSelect={(id) => {
-          setSelectedCompanyId(id)
-          setVariations([])
-          setCaptions(undefined)
-          setError(null)
-        }}
-      />
-
-      <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-6">
-        {/* Left: Form */}
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
-          <h1 className="text-lg font-bold text-gray-900 mb-6">Criar post</h1>
-          <GeneratorForm onSubmit={handleSubmit} isLoading={isLoading} />
+    <div className="max-w-5xl mx-auto px-6 py-10">
+      {/* Header */}
+      <div className="flex items-start justify-between mb-10">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Minhas empresas</h1>
+          <p className="text-sm text-gray-500 mt-1">Selecione uma empresa para criar posts</p>
         </div>
-
-        {/* Right: Results */}
-        <div className="min-h-[400px]">
-          {isLoading && (
-            <div className="flex flex-col items-center justify-center h-80 gap-4">
-              <div className="w-10 h-10 border-4 border-purple-200 border-t-purple-500 rounded-full animate-spin" />
-              <p className="text-gray-500 text-sm">Gerando com IA...</p>
-              <p className="text-gray-400 text-xs">Pode levar alguns segundos</p>
-            </div>
-          )}
-
-          {error && !isLoading && (
-            <div className="p-5 rounded-xl bg-red-50 border border-red-200">
-              <div className="flex items-start gap-3">
-                <span className="text-red-500 text-lg">✕</span>
-                <div>
-                  <p className="text-sm font-semibold text-red-700 mb-1">Erro ao gerar</p>
-                  <p className="text-sm text-red-600">{error}</p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {!isLoading && variations.length > 0 && (
-            <VariationGrid variations={variations} format={lastFormat} captions={captions} />
-          )}
-
-          {!isLoading && variations.length === 0 && !error && (
-            <div className="flex flex-col items-center justify-center h-80 gap-3 text-center">
-              <div className="w-16 h-16 rounded-2xl bg-white border border-gray-200 shadow-sm flex items-center justify-center text-2xl text-purple-500">
-                ✦
-              </div>
-              <p className="text-gray-500 text-sm">Preencha o formulário e clique em Gerar Posts</p>
-              <p className="text-gray-400 text-xs max-w-xs">
-                As variações aparecerão aqui para você visualizar e exportar como PNG
-              </p>
-            </div>
-          )}
-        </div>
+        <Link
+          href="/settings"
+          className="flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 bg-white text-sm font-medium text-gray-600 hover:border-purple-300 hover:text-purple-600 hover:shadow-sm transition-all"
+        >
+          <Settings size={14} />
+          Configurações
+        </Link>
       </div>
+
+      {/* Empty state */}
+      {companies.length === 0 && (
+        <div className="flex flex-col items-center justify-center py-24 gap-5 text-center">
+          <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-purple-100 to-violet-200 flex items-center justify-center">
+            <Building2 size={32} className="text-purple-500" />
+          </div>
+          <div>
+            <p className="text-lg font-semibold text-gray-800">Nenhuma empresa cadastrada</p>
+            <p className="text-sm text-gray-500 mt-1">Cadastre a primeira empresa para começar a gerar posts</p>
+          </div>
+          <Link
+            href="/settings"
+            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-violet-600 text-white font-semibold text-sm shadow-md shadow-purple-200 hover:from-purple-500 hover:to-violet-500 transition-all"
+          >
+            <Plus size={16} />
+            Cadastrar empresa
+          </Link>
+        </div>
+      )}
+
+      {/* Company grid */}
+      {companies.length > 0 && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          {companies.map(company => {
+            const logo = company.logoDark || company.logoWhite
+
+            return (
+              <button
+                key={company.id}
+                onClick={() => router.push(`/empresa/${company.id}`)}
+                className="group relative flex flex-col items-center gap-3 p-5 rounded-2xl border border-gray-200 bg-white hover:border-purple-300 hover:shadow-xl hover:-translate-y-1 transition-all duration-200 text-left"
+              >
+                {/* Hover arrow */}
+                <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <ChevronRight size={14} className="text-purple-400" />
+                </div>
+
+                {/* Logo / avatar */}
+                <div
+                  className="w-16 h-16 rounded-2xl flex items-center justify-center overflow-hidden shadow-md flex-shrink-0"
+                  style={{
+                    background: `linear-gradient(135deg, ${company.colors.primary} 0%, ${company.colors.secondary} 100%)`,
+                  }}
+                >
+                  {logo ? (
+                    <img src={logo} alt={company.name} className="w-full h-full object-contain p-2" />
+                  ) : (
+                    <Building2 size={26} className="text-white/90" />
+                  )}
+                </div>
+
+                {/* Color palette */}
+                <div className="flex gap-1.5">
+                  <div className="w-3 h-3 rounded-full border-2 border-white shadow-sm" style={{ background: company.colors.primary }} />
+                  <div className="w-3 h-3 rounded-full border-2 border-white shadow-sm" style={{ background: company.colors.secondary }} />
+                  <div className="w-3 h-3 rounded-full border-2 border-white shadow-sm" style={{ background: company.colors.accent }} />
+                </div>
+
+                {/* Name */}
+                <span className="text-xs font-semibold text-gray-700 text-center line-clamp-2 leading-snug w-full">
+                  {company.name}
+                </span>
+              </button>
+            )
+          })}
+
+          {/* Add company card */}
+          <Link
+            href="/settings"
+            className="flex flex-col items-center justify-center gap-2 p-5 rounded-2xl border-2 border-dashed border-gray-200 text-gray-400 hover:border-purple-300 hover:text-purple-500 hover:-translate-y-1 transition-all duration-200 min-h-[152px]"
+          >
+            <div className="w-10 h-10 rounded-xl border-2 border-dashed border-current flex items-center justify-center">
+              <Plus size={18} />
+            </div>
+            <span className="text-xs font-medium text-center">Nova empresa</span>
+          </Link>
+        </div>
+      )}
     </div>
   )
 }
