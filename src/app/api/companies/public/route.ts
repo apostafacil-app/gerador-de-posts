@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server'
 import { readCompaniesData } from '@/lib/companies'
 
+// Força sempre buscar dados frescos do Firestore (sem cache Next.js)
+export const dynamic = 'force-dynamic'
+
 // Rota pública (sem autenticação) — usada pela tela de seleção de empresa.
 export async function GET() {
   try {
