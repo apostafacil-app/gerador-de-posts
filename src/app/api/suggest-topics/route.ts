@@ -19,10 +19,10 @@ async function verifyAuth(req: NextRequest) {
 export async function POST(req: NextRequest) {
   if (!(await verifyAuth(req))) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
 
-  const aiConfig = readAIConfig()
+  const aiConfig = await readAIConfig()
   if (!aiConfig) return NextResponse.json({ error: 'IA não configurada.' }, { status: 500 })
 
-  const company = getActiveCompany()
+  const company = await getActiveCompany()
   if (!company) return NextResponse.json({ error: 'Nenhuma empresa cadastrada.' }, { status: 400 })
 
   // Fetch website content
