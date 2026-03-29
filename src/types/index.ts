@@ -51,6 +51,8 @@ export interface GeneratorFormData {
 
 export interface GenerateRequest {
   formData: GeneratorFormData
+  /** ID da empresa a ser usada. Se omitido, usa a empresa ativa globalmente. */
+  companyId?: string
 }
 
 export interface GenerateResponse {

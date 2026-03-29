@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { GeneratorForm } from '@/components/generator/GeneratorForm'
 import { VariationGrid } from '@/components/generator/VariationGrid'
+import { CompanySelector } from '@/components/generator/CompanySelector'
 import type { GeneratorFormData, GenerateRequest, GenerateResponse, PostFormat } from '@/types'
 
 export default function HomePage() {
@@ -11,6 +12,7 @@ export default function HomePage() {
   const [lastFormat, setLastFormat] = useState<PostFormat>('post')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [selectedCompanyId, setSelectedCompanyId] = useState<string | undefined>(undefined)
 
   async function handleSubmit(formData: GeneratorFormData) {
     setIsLoading(true)
@@ -23,7 +25,7 @@ export default function HomePage() {
       const res = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ formData } satisfies GenerateRequest),
+        body: JSON.stringify({ formData, companyId: selectedCompanyId } satisfies GenerateRequest),
       })
 
       const data: GenerateResponse = await res.json()
@@ -43,6 +45,16 @@ export default function HomePage() {
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-8">
+      {/* Company selector — only shown when 2+ companies exist */}
+      <CompanySelector
+        onSelect={(id) => {
+          setSelectedCompanyId(id)
+          setVariations([])
+          setCaptions(undefined)
+          setError(null)
+        }}
+      />
+
       <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-6">
         {/* Left: Form */}
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">

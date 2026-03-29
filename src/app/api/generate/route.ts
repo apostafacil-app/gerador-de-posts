@@ -6,7 +6,7 @@ import { generateWithAI } from '@/lib/ai'
 import { extractVariations, extractCaptions } from '@/lib/html-parser'
 import { validateGenerateRequest } from '@/lib/validation'
 import { readAIConfig } from '@/lib/ai-config'
-import { getActiveCompany } from '@/lib/companies'
+import { getActiveCompany, readCompaniesData } from '@/lib/companies'
 import { readSystemRules } from '@/lib/system-settings'
 import type { GenerateRequest, GenerateResponse } from '@/types'
 
@@ -76,10 +76,16 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  const { formData } = body as GenerateRequest
+  const { formData, companyId } = body as GenerateRequest
 
-  // Company always read from server — never trust client
-  const company = getActiveCompany()
+  // Resolve company: use requested companyId if valid, otherwise fall back to active company
+  let company = null
+  if (companyId) {
+    const data = readCompaniesData()
+    company = data.companies.find(c => c.id === companyId) ?? null
+  }
+  if (!company) company = getActiveCompany()
+
   if (!company) {
     return NextResponse.json<GenerateResponse>(
       { variations: [], error: 'Nenhuma empresa configurada. Acesse Configurações para adicionar uma empresa.' },
