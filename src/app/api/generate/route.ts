@@ -80,8 +80,36 @@ export async function POST(req: NextRequest) {
   // Settings sempre lidas do servidor — nunca confiamos no cliente
   const settings = readAppSettings()
 
+  // Busca conteúdo do site da empresa para enriquecer o contexto do prompt
+  let websiteContext: string | undefined
+  if (settings.company.websiteUrl) {
+    try {
+      const controller = new AbortController()
+      const timeout = setTimeout(() => controller.abort(), 6000)
+      const siteRes = await fetch(settings.company.websiteUrl, {
+        signal: controller.signal,
+        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; GeradorPosts/1.0)' },
+      })
+      clearTimeout(timeout)
+      if (siteRes.ok) {
+        const html = await siteRes.text()
+        // Extrai apenas texto, remove tags HTML e whitespace excessivo
+        const text = html
+          .replace(/<script[\s\S]*?<\/script>/gi, '')
+          .replace(/<style[\s\S]*?<\/style>/gi, '')
+          .replace(/<[^>]+>/g, ' ')
+          .replace(/\s{2,}/g, ' ')
+          .trim()
+          .slice(0, 2500)
+        if (text.length > 100) websiteContext = text
+      }
+    } catch {
+      // Falha silenciosa — gera sem contexto do site
+    }
+  }
+
   try {
-    const prompt = buildPrompt(settings, formData)
+    const prompt = buildPrompt(settings, formData, websiteContext)
     const rawResponse = await generateWithAI(provider, apiKey, prompt)
     const rawVariations = extractVariations(rawResponse)
 

@@ -25,10 +25,10 @@ const writingStyleLabel: Record<string, string> = {
 }
 
 const emotionalToneLabel: Record<string, string> = {
-  urgente: 'Urgente ("Apenas hoje", cor vermelha/laranja, temporalidade)',
+  urgente: 'Urgente (temporalidade explícita, "Apenas hoje" / "Últimas vagas")',
   empolgante: 'Empolgante (exclamações, energia visual, dinamismo)',
-  exclusivo: 'Exclusivo ("Acesso restrito", premium/luxo)',
-  confiavel: 'Confiável (estatísticas, experiência, selos de garantia)',
+  exclusivo: 'Exclusivo (seleção criteriosa, premium, diferenciado — sem "acesso restrito")',
+  confiavel: 'Confiável (estatísticas, experiência, tom sóbrio e profissional)',
 }
 
 const persuasionLabel: Record<string, string> = {
@@ -38,7 +38,7 @@ const persuasionLabel: Record<string, string> = {
   prova_social: 'Prova social (número de clientes, resultados, depoimento curto)',
 }
 
-export function buildPrompt(settings: AppSettings, form: GeneratorFormData): string {
+export function buildPrompt(settings: AppSettings, form: GeneratorFormData, websiteContext?: string): string {
   const dimensions = form.format === 'post' ? '1080x1350px' : '1080x1920px'
   const [width, height] = form.format === 'post' ? [1080, 1350] : [1080, 1920]
   const hasLogo = Boolean(getLogoForTheme(settings, form.theme))
@@ -46,6 +46,10 @@ export function buildPrompt(settings: AppSettings, form: GeneratorFormData): str
   const logoInstruction = hasLogo
     ? `Logo fornecida — usar exatamente src="${LOGO_PLACEHOLDER}" na tag <img alt="${settings.company.name || 'Logo'}"> (❌ NUNCA gere URL ou base64 diferente — use literalmente: ${LOGO_PLACEHOLDER})`
     : `Logo NÃO fornecida — exibir o nome "${settings.company.name || 'Empresa'}" em tipografia estilizada`
+
+  const websiteSection = websiteContext
+    ? `\n---\n## CONTEÚDO DO SITE DA EMPRESA (use para entender melhor a marca e criar copy autêntico)\n\n${websiteContext}\n`
+    : ''
 
   return `${settings.aiRules}
 
@@ -59,7 +63,7 @@ Cor primária: ${settings.colors.primary}
 Cor secundária: ${settings.colors.secondary}
 Cor de destaque: ${settings.colors.accent}
 ${logoInstruction}
-
+${websiteSection}
 ---
 ## PARÂMETROS DO POST
 

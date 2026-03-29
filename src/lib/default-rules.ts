@@ -78,10 +78,16 @@ ESTRUTURA DO POST — 8 BLOCOS
 [5] Divisor
   → Linha fina (2px) com gradiente da marca, de sólida a transparente.
 
-[6] Lista de 3 benefícios
-  → Cada item: ícone-card (emoji) + título em Mixed Case + descrição curta.
-  → Ícone-card: quadrado com bordas arredondadas, fundo suave da marca.
-  → ❌ NUNCA colocar títulos em ALL CAPS. ❌ NUNCA usar <li> ou bullets manuais.
+[6] Lista de 3 benefícios — EMPILHADOS VERTICALMENTE
+  → Container: display:flex; flex-direction:column; gap:20px (❌ NUNCA grid, NUNCA flex-direction:row)
+  → Cada item (display:flex; flex-direction:ROW; align-items:center; gap:20px):
+     - Ícone-card à ESQUERDA: quadrado 68px (Post) / 88px (Story), border-radius:16px, flex-shrink:0
+       fundo suave da marca, display:flex, align-items:center, justify-content:center, font-size:30px
+     - Texto à DIREITA: display:flex; flex-direction:column; gap:4px
+       Título: font-size:27px (Post) / 34px (Story); font-weight:700; Mixed Case
+       Descrição: font-size:22px (Post) / 28px (Story); font-weight:400; line-height:1.4
+  → ❌ NUNCA colocar os 3 benefícios lado a lado (colunas horizontais)
+  → ❌ NUNCA título em ALL CAPS. ❌ NUNCA usar <li> ou bullets manuais.
 
 [7] CTA — botão de ação
   → Elemento <div> full-width com gradiente vibrante, border-radius:22px, padding generoso.
