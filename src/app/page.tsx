@@ -1,24 +1,15 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { GeneratorForm } from '@/components/generator/GeneratorForm'
 import { VariationGrid } from '@/components/generator/VariationGrid'
-import { getDefaultSettings } from '@/lib/storage'
-import type { AppSettings, GeneratorFormData, GenerateRequest, GenerateResponse, PostFormat } from '@/types'
+import type { GeneratorFormData, GenerateRequest, GenerateResponse, PostFormat } from '@/types'
 
 export default function HomePage() {
-  const [settings, setSettings] = useState<AppSettings>(getDefaultSettings)
   const [variations, setVariations] = useState<string[]>([])
   const [lastFormat, setLastFormat] = useState<PostFormat>('post')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    fetch('/api/settings/app')
-      .then(r => r.json())
-      .then(data => setSettings(data))
-      .catch(() => {})
-  }, [])
 
   async function handleSubmit(formData: GeneratorFormData) {
     setIsLoading(true)
@@ -30,7 +21,7 @@ export default function HomePage() {
       const res = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ settings, formData } satisfies GenerateRequest),
+        body: JSON.stringify({ formData } satisfies GenerateRequest),
       })
 
       const data: GenerateResponse = await res.json()

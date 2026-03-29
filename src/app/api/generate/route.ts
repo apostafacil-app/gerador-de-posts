@@ -6,6 +6,7 @@ import { generateWithAI } from '@/lib/ai'
 import { extractVariations } from '@/lib/html-parser'
 import { validateGenerateRequest } from '@/lib/validation'
 import { readAIConfig } from '@/lib/ai-config'
+import { readAppSettings } from '@/lib/app-settings'
 import type { GenerateRequest, GenerateResponse } from '@/types'
 
 // Rate limiting: 10 req/min por IP
@@ -74,7 +75,10 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  const { settings, formData } = body as GenerateRequest
+  const { formData } = body as GenerateRequest
+
+  // Settings sempre lidas do servidor — nunca confiamos no cliente
+  const settings = readAppSettings()
 
   try {
     const prompt = buildPrompt(settings, formData)

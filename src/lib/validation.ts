@@ -98,69 +98,10 @@ export function validateGenerateRequest(body: unknown): ValidationResult {
   }
 
   const req = body as Record<string, unknown>
-  const settings = req.settings as Record<string, unknown> | undefined
   const formData = req.formData as Record<string, unknown> | undefined
 
-  if (!settings || typeof settings !== 'object') {
-    return { valid: false, error: 'Configurações ausentes.' }
-  }
   if (!formData || typeof formData !== 'object') {
     return { valid: false, error: 'Dados do formulário ausentes.' }
-  }
-
-  // ── Settings: Company ──
-  const company = settings.company as Record<string, unknown> | undefined
-  if (!company || typeof company !== 'object') {
-    return { valid: false, error: 'Dados da empresa ausentes.' }
-  }
-
-  if (!isString(company.name) || !maxLen(company.name, LIMITS.COMPANY_NAME)) {
-    return { valid: false, error: `Nome da empresa: máximo ${LIMITS.COMPANY_NAME} caracteres.` }
-  }
-  if (!isString(company.description) || !maxLen(company.description, LIMITS.COMPANY_DESC)) {
-    return { valid: false, error: `Descrição: máximo ${LIMITS.COMPANY_DESC} caracteres.` }
-  }
-  if (
-    !isString(company.websiteUrl) ||
-    !maxLen(company.websiteUrl, LIMITS.WEBSITE_URL) ||
-    (company.websiteUrl !== '' && !isValidUrl(company.websiteUrl))
-  ) {
-    return { valid: false, error: 'URL do site inválida. Use https://.' }
-  }
-
-  // ── Settings: Colors ──
-  const colors = settings.colors as Record<string, unknown> | undefined
-  if (!colors || typeof colors !== 'object') {
-    return { valid: false, error: 'Cores ausentes.' }
-  }
-  for (const key of ['primary', 'secondary', 'accent']) {
-    const val = colors[key]
-    if (!isString(val) || !isHex(val)) {
-      return { valid: false, error: `Cor "${key}" inválida.` }
-    }
-  }
-
-  // ── Settings: Logos ──
-  const logos = settings.logos as Record<string, unknown> | undefined
-  if (!logos || typeof logos !== 'object') {
-    return { valid: false, error: 'Logos ausentes.' }
-  }
-  for (const key of ['darkBackground', 'whiteBackground']) {
-    const val = logos[key]
-    if (!isString(val)) {
-      return { valid: false, error: `Logo "${key}" inválida.` }
-    }
-    if (val !== '' && !isValidBase64Image(val)) {
-      return { valid: false, error: `Logo "${key}" deve ser uma imagem base64 válida.` }
-    }
-    if (!maxLen(val, LIMITS.LOGO_BASE64)) {
-      return { valid: false, error: `Logo "${key}" excede o tamanho permitido.` }
-    }
-  }
-
-  // ── Settings: AI Rules ──
-  if (!isString(settings.aiRules) || !maxLen(settings.aiRules as string, LIMITS.AI_RULES)) {
-    return { valid: false, error: `Regras de IA: máximo ${LIMITS.AI_RULES} caracteres.` }
   }
 
   // ── FormData ──

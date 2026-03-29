@@ -37,7 +37,6 @@ export interface GeneratorFormData {
 }
 
 export interface GenerateRequest {
-  settings: AppSettings
   formData: GeneratorFormData
 }
 
