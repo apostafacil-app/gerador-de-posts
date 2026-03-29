@@ -138,25 +138,45 @@ BLOCO 8 — SLOGAN RODAPÉ
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🎨 TEMA ESCURO
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-- Background: linear-gradient com 3+ stops usando primária, secundária e variação ainda mais escura
-  Ex: linear-gradient(135deg, [primária] 0%, [secundária] 50%, #000010 100%)
+- Background: position:absolute; inset:0; z-index:0
+  linear-gradient(135deg, [secundária] 0%, [primária] 50%, #0a0015 100%)
 - Círculo decorativo: position:absolute; top:-80px; right:-80px; width:420px; height:420px;
   border-radius:50%; background:[destaque]; opacity:0.08; pointer-events:none; z-index:0
-- Texto principal: #ffffff; text-shadow:0 2px 16px rgba(0,0,0,0.4)
-- Texto de suporte: rgba(255,255,255,0.65)
-- Pill label: background rgba([destaque],0.12); border: rgba([destaque],0.35)
-- Ícone-card: background rgba([destaque],0.15); border: rgba([destaque],0.3)
+- Headline linhas escuras: color:#ffffff; text-shadow:0 2px 16px rgba(0,0,0,0.4)
+- Headline linhas destaque: color:[destaque] ou cor mais clara da paleta
+- Subtexto / parágrafo: color:rgba(255,255,255,0.75) — nunca abaixo de 0.65
+- Benefício título: color:#ffffff
+- Benefício descrição: color:rgba(255,255,255,0.70)
+- Pill label: background:rgba(255,255,255,0.10); border:1.5px solid rgba(255,255,255,0.25); color:#ffffff
+- Pill ponto: background:#ffffff
+- Ícone-card: background:rgba(255,255,255,0.10); border:1.5px solid rgba(255,255,255,0.20)
+- Slogan rodapé: color:rgba(255,255,255,0.55) para primeira parte; [destaque claro] para segunda parte
+- ❌ NUNCA usar rgba com opacity < 0.65 para textos no tema escuro
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🎨 TEMA CLARO
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-- Background: #ffffff ou #f8f9ff
+- Background: #ffffff
 - Círculo decorativo: position:absolute; top:-80px; right:-80px; width:420px; height:420px;
-  border-radius:50%; background:#f0f0f0; opacity:0.7; pointer-events:none; z-index:0
-- Texto principal: [cor muito escura, ex: #0f0f1a ou [primária escuríssima]]
-- Texto de suporte: tom médio-escuro, ex: #4a4060 ou similar
-- Pill label: background [destaque com 8% opacidade]; border [destaque com 35%]
-- Ícone-card: background gradient claro de [destaque]; border [destaque 40%]
+  border-radius:50%; background:#ede8f5; opacity:0.8; pointer-events:none; z-index:0
+
+CORES DE TEXTO — USE EXATAMENTE (não rgba, não opacity reduzida):
+- Headline linhas escuras: color:#0f0f1a (quase preto — NUNCA lavanda ou roxo claro)
+- Headline linhas destaque: color:[primária] — ex: #7b00d4 (cor sólida, sem opacity)
+- Subtexto / parágrafo: color:#4a4060 (cinza médio-escuro, legível)
+- Benefício título: color:#0f0f1a
+- Benefício descrição: color:#6a5f8a
+- Slogan rodapé primeira parte: color:#9490aa
+- Slogan rodapé segunda parte: color:[primária] font-weight:800
+
+- Pill label: background:[primária com 8% opacity, ex: rgba(123,0,212,0.08)];
+  border:1.5px solid rgba(123,0,212,0.30); color:[primária escurecida, ex: #5800a0]
+- Pill ponto: background:[primária]
+- Ícone-card: background:linear-gradient(135deg, rgba(123,0,212,0.08), rgba(123,0,212,0.16));
+  border:1.5px solid rgba(123,0,212,0.25)
+
+- ❌ NUNCA usar rgba com opacity < 0.8 para textos no tema claro
+- ❌ NUNCA usar cores de texto em tons de lavanda/lilás/roxo claro — texto DEVE ser escuro #0f0f1a ou [primária] sólida
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🏷 TIPOGRAFIA (OBRIGATÓRIO)
