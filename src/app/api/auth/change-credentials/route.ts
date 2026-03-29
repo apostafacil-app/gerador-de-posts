@@ -3,7 +3,6 @@ import { jwtVerify } from 'jose'
 import { readCredentials, writeCredentials, hashPassword, verifyPassword } from '@/lib/credentials'
 
 export async function POST(req: NextRequest) {
-  // Verifica autenticação
   const token = req.cookies.get('session')?.value
   if (!token) {
     return NextResponse.json({ error: 'Não autorizado.' }, { status: 401 })
@@ -44,7 +43,6 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  // Valida username (apenas letras, números, _, -)
   if (!/^[a-zA-Z0-9_-]+$/.test(newUsername)) {
     return NextResponse.json(
       { error: 'Usuário deve conter apenas letras, números, _ ou -.' },
@@ -52,8 +50,7 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  // Verifica senha atual
-  const current = readCredentials()
+  const current = await readCredentials()
   const valid = await verifyPassword(currentPassword, current.passHash)
   if (!valid) {
     return NextResponse.json({ error: 'Senha atual incorreta.' }, { status: 401 })

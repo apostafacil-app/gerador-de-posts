@@ -55,14 +55,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Servidor não configurado.' }, { status: 500 })
   }
 
-  const credentials = readCredentials()
-
-  // Comparação em tempo constante para evitar timing attacks
-  // bcrypt.compare já é timing-safe por design
+  const credentials = await readCredentials()
   const passwordMatch = await verifyPassword(password, credentials.passHash)
   const usernameMatch = username === credentials.username
 
-  // Validar AMBOS antes de responder — evita enumerar usuários por tempo de resposta
   if (!usernameMatch || !passwordMatch) {
     return NextResponse.json({ error: 'Credenciais inválidas.' }, { status: 401 })
   }
@@ -79,7 +75,7 @@ export async function POST(req: NextRequest) {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    maxAge: 60 * 60 * 24, // 24 horas
+    maxAge: 60 * 60 * 24,
     path: '/',
   })
   return res

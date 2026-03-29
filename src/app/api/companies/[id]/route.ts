@@ -14,7 +14,7 @@ async function verifyAuth(req: NextRequest) {
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   if (!(await verifyAuth(req))) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
-  const data = readCompaniesData()
+  const data = await readCompaniesData()
   const company = data.companies.find(c => c.id === params.id)
   if (!company) return NextResponse.json({ error: 'Não encontrada' }, { status: 404 })
   return NextResponse.json(company)
@@ -23,16 +23,16 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
   if (!(await verifyAuth(req))) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
   const body = await req.json()
-  const updated = updateCompany(params.id, body)
+  const updated = await updateCompany(params.id, body)
   if (!updated) return NextResponse.json({ error: 'Não encontrada' }, { status: 404 })
   return NextResponse.json(updated)
 }
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   if (!(await verifyAuth(req))) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
-  const data = readCompaniesData()
+  const data = await readCompaniesData()
   if (data.companies.length <= 1) return NextResponse.json({ error: 'Não é possível deletar a única empresa.' }, { status: 400 })
-  const ok = deleteCompany(params.id)
+  const ok = await deleteCompany(params.id)
   if (!ok) return NextResponse.json({ error: 'Não encontrada' }, { status: 404 })
   return NextResponse.json({ ok: true })
 }
@@ -41,7 +41,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   if (!(await verifyAuth(req))) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
   const body = await req.json()
   if (body.activate) {
-    const ok = setActiveCompany(params.id)
+    const ok = await setActiveCompany(params.id)
     if (!ok) return NextResponse.json({ error: 'Não encontrada' }, { status: 404 })
     return NextResponse.json({ ok: true })
   }

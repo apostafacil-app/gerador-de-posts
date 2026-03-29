@@ -18,13 +18,12 @@ async function requireAuth(req: NextRequest): Promise<boolean> {
   }
 }
 
-// GET — retorna provider + chave mascarada
 export async function GET(req: NextRequest) {
   if (!(await requireAuth(req))) {
     return NextResponse.json({ error: 'Não autorizado.' }, { status: 401 })
   }
 
-  const config = readAIConfig()
+  const config = await readAIConfig()
   if (!config) {
     return NextResponse.json({ configured: false })
   }
@@ -36,7 +35,6 @@ export async function GET(req: NextRequest) {
   })
 }
 
-// POST — salva nova configuração
 export async function POST(req: NextRequest) {
   if (!(await requireAuth(req))) {
     return NextResponse.json({ error: 'Não autorizado.' }, { status: 401 })
@@ -63,6 +61,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Chave de API inválida (mínimo 10 caracteres).' }, { status: 400 })
   }
 
-  writeAIConfig(provider as AIProvider, apiKey.trim())
+  await writeAIConfig(provider as AIProvider, apiKey.trim())
   return NextResponse.json({ ok: true })
 }

@@ -6,7 +6,7 @@ import { generateWithAI } from '@/lib/ai'
 import { extractVariations, extractCaptions } from '@/lib/html-parser'
 import { validateGenerateRequest } from '@/lib/validation'
 import { readAIConfig } from '@/lib/ai-config'
-import { getActiveCompany, readCompaniesData } from '@/lib/companies'
+import { getActiveCompany, getCompanyById } from '@/lib/companies'
 import { readSystemRules } from '@/lib/system-settings'
 import type { GenerateRequest, GenerateResponse } from '@/types'
 
@@ -37,7 +37,6 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  // Body size: 3MB máximo
   const contentLength = req.headers.get('content-length')
   if (contentLength && parseInt(contentLength, 10) > 3 * 1024 * 1024) {
     return NextResponse.json<GenerateResponse>(
@@ -46,9 +45,7 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  // Chave de API e provider lidos do servidor (arquivo ou env vars)
-  const aiConfig = readAIConfig()
-
+  const aiConfig = await readAIConfig()
   if (!aiConfig) {
     return NextResponse.json<GenerateResponse>(
       { variations: [], error: 'IA não configurada. Acesse Configurações → IA para configurar.' },
@@ -78,13 +75,10 @@ export async function POST(req: NextRequest) {
 
   const { formData, companyId } = body as GenerateRequest
 
-  // Resolve company: use requested companyId if valid, otherwise fall back to active company
-  let company = null
-  if (companyId) {
-    const data = readCompaniesData()
-    company = data.companies.find(c => c.id === companyId) ?? null
-  }
-  if (!company) company = getActiveCompany()
+  // Resolve empresa: usa companyId se fornecido, senão a empresa ativa
+  const company = companyId
+    ? (await getCompanyById(companyId) ?? await getActiveCompany())
+    : await getActiveCompany()
 
   if (!company) {
     return NextResponse.json<GenerateResponse>(
@@ -106,7 +100,6 @@ export async function POST(req: NextRequest) {
       clearTimeout(timeout)
       if (siteRes.ok) {
         const html = await siteRes.text()
-        // Extrai apenas texto, remove tags HTML e whitespace excessivo
         const text = html
           .replace(/<script[\s\S]*?<\/script>/gi, '')
           .replace(/<style[\s\S]*?<\/style>/gi, '')
@@ -122,7 +115,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const systemRules = readSystemRules()
+    const systemRules = await readSystemRules()
     const prompt = buildPrompt(company, formData, websiteContext, systemRules)
     const rawResponse = await generateWithAI(provider, apiKey, prompt)
     const rawVariations = extractVariations(rawResponse)
@@ -134,7 +127,6 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Injeta o base64 da logo no HTML (era um placeholder no prompt para evitar tokens excessivos)
     const logoBase64 = getLogoForTheme(company, formData.theme)
     const variations = logoBase64
       ? rawVariations.map(html => injectLogo(html, logoBase64))
@@ -149,7 +141,7 @@ export async function POST(req: NextRequest) {
 
     let clientMessage = 'Erro ao gerar posts. Tente novamente.'
     if (msg.includes('401') || msg.toLowerCase().includes('api key') || msg.toLowerCase().includes('authentication')) {
-      clientMessage = 'Chave de API inválida. Verifique AI_API_KEY nas variáveis de ambiente.'
+      clientMessage = 'Chave de API inválida. Verifique as configurações de IA.'
     } else if (msg.includes('429') || msg.toLowerCase().includes('rate limit') || msg.toLowerCase().includes('quota')) {
       clientMessage = 'Limite de requisições da IA atingido. Aguarde e tente novamente.'
     } else if (msg.includes('timeout') || msg.includes('ETIMEDOUT')) {

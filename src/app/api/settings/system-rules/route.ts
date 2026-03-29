@@ -14,7 +14,7 @@ async function verifyAuth(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   if (!(await verifyAuth(req))) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
-  return NextResponse.json({ aiRules: readSystemRules() })
+  return NextResponse.json({ aiRules: await readSystemRules() })
 }
 
 export async function POST(req: NextRequest) {
@@ -23,6 +23,6 @@ export async function POST(req: NextRequest) {
   if (typeof body.aiRules !== 'string' || body.aiRules.length < 50) {
     return NextResponse.json({ error: 'Regras inválidas.' }, { status: 400 })
   }
-  writeSystemRules(body.aiRules)
+  await writeSystemRules(body.aiRules)
   return NextResponse.json({ ok: true })
 }
