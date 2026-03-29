@@ -47,8 +47,20 @@ export function CompanySelector({ onSelect }: Props) {
     onSelect?.(id)
   }
 
-  // Hide if only 1 company — nothing to choose
-  if (!data || data.companies.length <= 1) return null
+  // Ainda carregando
+  if (!data) return null
+
+  // Nenhuma empresa cadastrada — mostra CTA para criar
+  if (data.companies.length === 0) {
+    return (
+      <div className="mb-6 p-4 rounded-2xl border-2 border-dashed border-gray-200 flex items-center justify-between">
+        <p className="text-sm text-gray-400">Nenhuma empresa cadastrada.</p>
+        <Link href="/settings" className="text-sm font-semibold text-purple-600 hover:underline">
+          Cadastrar agora →
+        </Link>
+      </div>
+    )
+  }
 
   return (
     <div className="mb-6">
@@ -61,7 +73,7 @@ export function CompanySelector({ onSelect }: Props) {
           className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-purple-600 transition-colors"
         >
           <Settings size={12} />
-          Gerenciar empresas
+          {data.companies.length === 1 ? '+ Adicionar empresa' : 'Gerenciar empresas'}
         </Link>
       </div>
 
