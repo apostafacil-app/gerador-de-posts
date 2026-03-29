@@ -144,5 +144,10 @@ export function validateGenerateRequest(body: unknown): ValidationResult {
     return { valid: false, error: `Estilo de imagem: máximo ${LIMITS.IMAGE_STYLE} caracteres.` }
   }
 
+  // generateCaption is optional — if present, must be boolean
+  if (fd.generateCaption !== undefined && typeof fd.generateCaption !== 'boolean') {
+    return { valid: false, error: 'Campo "generateCaption" inválido.' }
+  }
+
   return { valid: true }
 }

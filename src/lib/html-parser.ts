@@ -40,3 +40,14 @@ export function extractVariations(rawResponse: string): string[] {
 
   return []
 }
+
+export function extractCaptions(rawResponse: string): string[] {
+  const pattern = /<!--\s*CAPTION_START\s*-->([\s\S]*?)<!--\s*CAPTION_END\s*-->/g
+  const matches: string[] = []
+  let match: RegExpExecArray | null
+  while ((match = pattern.exec(rawResponse)) !== null) {
+    const caption = match[1].trim()
+    if (caption) matches.push(caption)
+  }
+  return matches
+}

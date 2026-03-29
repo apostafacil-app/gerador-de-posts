@@ -18,10 +18,13 @@ const defaultForm: GeneratorFormData = {
   variations: 2,
   useImage: false,
   imageStyle: '',
+  generateCaption: false,
 }
 
 export function GeneratorForm({ onSubmit, isLoading }: Props) {
   const [form, setForm] = useState<GeneratorFormData>(defaultForm)
+  const [suggestingTopics, setSuggestingTopics] = useState(false)
+  const [suggestedTopics, setSuggestedTopics] = useState<string[]>([])
 
   function set<K extends keyof GeneratorFormData>(key: K, value: GeneratorFormData[K]) {
     setForm(prev => ({ ...prev, [key]: value }))
@@ -31,6 +34,18 @@ export function GeneratorForm({ onSubmit, isLoading }: Props) {
     e.preventDefault()
     if (!form.subject.trim() || form.subject.trim().length < 5) return
     onSubmit(form)
+  }
+
+  async function handleSuggestTopics() {
+    setSuggestingTopics(true)
+    try {
+      const res = await fetch('/api/suggest-topics', { method: 'POST' })
+      if (res.ok) {
+        const data = await res.json()
+        setSuggestedTopics(data.topics || [])
+      }
+    } catch {}
+    finally { setSuggestingTopics(false) }
   }
 
   return (
@@ -106,6 +121,41 @@ export function GeneratorForm({ onSubmit, isLoading }: Props) {
           className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 resize-none transition-colors"
         />
         <p className="text-xs text-gray-400 mt-1">{form.subject.length} caracteres</p>
+
+        {/* Suggest topics button */}
+        <div className="flex justify-end -mt-2">
+          <button
+            type="button"
+            onClick={handleSuggestTopics}
+            disabled={suggestingTopics}
+            className="text-xs text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1 disabled:opacity-50"
+          >
+            {suggestingTopics ? (
+              <><span className="w-3 h-3 border border-purple-400 border-t-transparent rounded-full animate-spin inline-block" /> Buscando...</>
+            ) : (
+              <>✨ Sugerir temas</>
+            )}
+          </button>
+        </div>
+
+        {/* Topics suggestions */}
+        {suggestedTopics.length > 0 && (
+          <div className="space-y-2 mt-2">
+            <p className="text-xs text-gray-500 font-medium">Clique para usar:</p>
+            <div className="flex flex-wrap gap-1.5">
+              {suggestedTopics.map((topic, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => { set('subject', topic); setSuggestedTopics([]) }}
+                  className="text-xs bg-purple-50 border border-purple-200 text-purple-700 rounded-lg px-2.5 py-1.5 hover:bg-purple-100 transition-colors text-left"
+                >
+                  {topic}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Writing Style */}
@@ -210,8 +260,9 @@ export function GeneratorForm({ onSubmit, isLoading }: Props) {
         </div>
       </div>
 
-      {/* Image */}
+      {/* Image + Caption toggles */}
       <div className="space-y-3">
+        {/* Image toggle */}
         <div className="flex items-center gap-3">
           <button
             type="button"
@@ -234,6 +285,20 @@ export function GeneratorForm({ onSubmit, isLoading }: Props) {
             className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 transition-colors"
           />
         )}
+
+        {/* Caption toggle */}
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            role="switch"
+            aria-checked={form.generateCaption}
+            onClick={() => set('generateCaption', !form.generateCaption)}
+            className={`relative w-11 h-6 rounded-full transition-colors ${form.generateCaption ? 'bg-purple-600' : 'bg-gray-300'}`}
+          >
+            <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${form.generateCaption ? 'translate-x-5' : ''}`} />
+          </button>
+          <span className="text-sm font-semibold text-gray-700">Gerar legenda + hashtags</span>
+        </div>
       </div>
 
       {/* Submit */}

@@ -3,10 +3,10 @@ export const maxDuration = 60
 import { NextRequest, NextResponse } from 'next/server'
 import { buildPrompt, getLogoForTheme, injectLogo } from '@/lib/prompt-builder'
 import { generateWithAI } from '@/lib/ai'
-import { extractVariations } from '@/lib/html-parser'
+import { extractVariations, extractCaptions } from '@/lib/html-parser'
 import { validateGenerateRequest } from '@/lib/validation'
 import { readAIConfig } from '@/lib/ai-config'
-import { readAppSettings } from '@/lib/app-settings'
+import { getActiveCompany } from '@/lib/companies'
 import type { GenerateRequest, GenerateResponse } from '@/types'
 
 // Rate limiting: 10 req/min por IP
@@ -77,16 +77,22 @@ export async function POST(req: NextRequest) {
 
   const { formData } = body as GenerateRequest
 
-  // Settings sempre lidas do servidor — nunca confiamos no cliente
-  const settings = readAppSettings()
+  // Company always read from server — never trust client
+  const company = getActiveCompany()
+  if (!company) {
+    return NextResponse.json<GenerateResponse>(
+      { variations: [], error: 'Nenhuma empresa configurada. Acesse Configurações para adicionar uma empresa.' },
+      { status: 400 }
+    )
+  }
 
   // Busca conteúdo do site da empresa para enriquecer o contexto do prompt
   let websiteContext: string | undefined
-  if (settings.company.websiteUrl) {
+  if (company.websiteUrl) {
     try {
       const controller = new AbortController()
       const timeout = setTimeout(() => controller.abort(), 6000)
-      const siteRes = await fetch(settings.company.websiteUrl, {
+      const siteRes = await fetch(company.websiteUrl, {
         signal: controller.signal,
         headers: { 'User-Agent': 'Mozilla/5.0 (compatible; GeradorPosts/1.0)' },
       })
@@ -109,7 +115,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const prompt = buildPrompt(settings, formData, websiteContext)
+    const prompt = buildPrompt(company, formData, websiteContext)
     const rawResponse = await generateWithAI(provider, apiKey, prompt)
     const rawVariations = extractVariations(rawResponse)
 
@@ -121,12 +127,14 @@ export async function POST(req: NextRequest) {
     }
 
     // Injeta o base64 da logo no HTML (era um placeholder no prompt para evitar tokens excessivos)
-    const logoBase64 = getLogoForTheme(settings, formData.theme)
+    const logoBase64 = getLogoForTheme(company, formData.theme)
     const variations = logoBase64
       ? rawVariations.map(html => injectLogo(html, logoBase64))
       : rawVariations
 
-    return NextResponse.json<GenerateResponse>({ variations })
+    const captions = formData.generateCaption ? extractCaptions(rawResponse) : undefined
+
+    return NextResponse.json<GenerateResponse>({ variations, captions })
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err)
     console.error(`[/api/generate] ip=${ip} error=${msg}`)

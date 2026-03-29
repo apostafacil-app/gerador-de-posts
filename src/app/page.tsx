@@ -7,6 +7,7 @@ import type { GeneratorFormData, GenerateRequest, GenerateResponse, PostFormat }
 
 export default function HomePage() {
   const [variations, setVariations] = useState<string[]>([])
+  const [captions, setCaptions] = useState<string[] | undefined>(undefined)
   const [lastFormat, setLastFormat] = useState<PostFormat>('post')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -15,6 +16,7 @@ export default function HomePage() {
     setIsLoading(true)
     setError(null)
     setVariations([])
+    setCaptions(undefined)
     setLastFormat(formData.format)
 
     try {
@@ -30,6 +32,7 @@ export default function HomePage() {
         setError(data.error)
       } else {
         setVariations(data.variations)
+        setCaptions(data.captions)
       }
     } catch {
       setError('Erro de conexão. Verifique sua internet e tente novamente.')
@@ -70,7 +73,7 @@ export default function HomePage() {
           )}
 
           {!isLoading && variations.length > 0 && (
-            <VariationGrid variations={variations} format={lastFormat} />
+            <VariationGrid variations={variations} format={lastFormat} captions={captions} />
           )}
 
           {!isLoading && variations.length === 0 && !error && (

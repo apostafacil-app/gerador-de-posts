@@ -7,9 +7,10 @@ import { VariationCard } from './VariationCard'
 interface Props {
   variations: string[]
   format: PostFormat
+  captions?: string[]
 }
 
-export function VariationGrid({ variations, format }: Props) {
+export function VariationGrid({ variations, format, captions }: Props) {
   const [exportingAll, setExportingAll] = useState(false)
 
   const [nativeW, nativeH] = format === 'post' ? [1080, 1350] : [1080, 1920]
@@ -22,6 +23,8 @@ export function VariationGrid({ variations, format }: Props) {
     for (let i = 0; i < iframes.length; i++) {
       const body = iframes[i].contentDocument?.body
       if (!body) continue
+      // Skip zoomed iframes (titles ending with "— ampliada")
+      if (iframes[i].title.includes('ampliada')) continue
       try {
         const blob = await domtoimage.toBlob(body, {
           width: nativeW,
@@ -74,7 +77,7 @@ export function VariationGrid({ variations, format }: Props) {
 
       <div className="flex flex-wrap gap-6">
         {variations.map((html, i) => (
-          <VariationCard key={i} html={html} index={i} format={format} />
+          <VariationCard key={i} html={html} index={i} format={format} caption={captions?.[i]} />
         ))}
       </div>
     </div>
