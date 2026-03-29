@@ -173,13 +173,25 @@ ESPAÇAMENTOS ENTRE BLOCOS (margin-top de cada filho):
   Texto: max 22 caracteres; relacionado ao tema do post; gerado pela IA conforme contexto
 
 [BLOCO 3] HEADLINE — EXATAMENTE 3 LINHAS (NEM MAIS, NEM MENOS)
-  ❌ NUNCA 4 ou 5 linhas — estoura o canvas, especialmente no Story
+  ❌ NUNCA 4 ou 5 linhas — é o erro mais comum e estoura o canvas
   ❌ NUNCA all-caps. ❌ NUNCA colorir palavras aleatórias na mesma linha.
-  Linha 1: <span style="color:[texto principal]">Frase curta</span><br>
-  Linha 2: <em style="color:[destaque vibrante]; font-style:normal">Destaque</em><br>
-  Linha 3: <span style="color:[texto principal]">Conclusão</span>
+
+  LIMITE RÍGIDO POR LINHA: máximo 18 caracteres (incluindo espaços)
+  Se o texto for longo → CORTE e reformule com palavras mais curtas.
+
+  ERRADO (4 linhas, 4ª quebrou o limite):
+    "5 Erros Que Todo" / "Apostador Já" / "Cometeu" / "Ao Preencher Jogos"
+
+  CORRETO (3 linhas, copy reformulado):
+    "5 Erros que" / "Apostadores" / "Cometem"
+
+  Estrutura obrigatória:
+    Linha 1: <span style="color:[texto principal]">Frase curta</span><br>
+    Linha 2: <em style="color:[destaque vibrante]; font-style:normal">2-3 palavras</em><br>
+    Linha 3: <span style="color:[texto principal]">Conclusão</span>
+
   font-size: Post=88px / Story=114px; font-weight:900; line-height:1.0; letter-spacing:-2px;
-  Cada linha: 2-4 palavras curtas. Se a frase for longa → CORTAR, não adicionar linha.
+  Cada linha: máximo 3 palavras e 18 caracteres. Se precisar de mais → refaça o copy.
   V2 centralizado: text-align:center.
 
 [BLOCO 4] SUBTEXTO — MÁXIMO 2 LINHAS

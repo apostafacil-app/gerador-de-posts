@@ -7,6 +7,7 @@ import { extractVariations, extractCaptions } from '@/lib/html-parser'
 import { validateGenerateRequest } from '@/lib/validation'
 import { readAIConfig } from '@/lib/ai-config'
 import { getActiveCompany } from '@/lib/companies'
+import { readSystemRules } from '@/lib/system-settings'
 import type { GenerateRequest, GenerateResponse } from '@/types'
 
 // Rate limiting: 10 req/min por IP
@@ -115,7 +116,8 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const prompt = buildPrompt(company, formData, websiteContext)
+    const systemRules = readSystemRules()
+    const prompt = buildPrompt(company, formData, websiteContext, systemRules)
     const rawResponse = await generateWithAI(provider, apiKey, prompt)
     const rawVariations = extractVariations(rawResponse)
 

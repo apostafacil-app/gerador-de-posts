@@ -20,6 +20,63 @@ function newCompanyTemplate(): Omit<Company, 'id' | 'createdAt'> {
   }
 }
 
+function SystemRulesEditor() {
+  const [rules, setRules] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [saved, setSaved] = useState(false)
+  const [err, setErr] = useState('')
+
+  useEffect(() => {
+    fetch('/api/settings/system-rules')
+      .then(r => r.json())
+      .then(d => { setRules(d.aiRules || DEFAULT_AI_RULES); setLoading(false) })
+      .catch(() => { setRules(DEFAULT_AI_RULES); setLoading(false) })
+  }, [])
+
+  async function handleSave() {
+    setSaving(true); setErr('')
+    try {
+      const res = await fetch('/api/settings/system-rules', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ aiRules: rules }),
+      })
+      if (!res.ok) { const d = await res.json(); setErr(d.error ?? 'Erro'); return }
+      setSaved(true); setTimeout(() => setSaved(false), 2000)
+    } catch { setErr('Erro de conexão.') }
+    finally { setSaving(false) }
+  }
+
+  if (loading) return <div className="h-8 bg-gray-100 rounded animate-pulse" />
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-sm font-semibold text-gray-700">Regras de IA do sistema</p>
+          <p className="text-xs text-gray-400">Valem para todas as empresas. São o "coração" do gerador.</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <button onClick={() => setRules(DEFAULT_AI_RULES)} className="text-xs text-gray-400 hover:text-gray-600">Restaurar padrão</button>
+          <button
+            onClick={handleSave} disabled={saving}
+            className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-all disabled:opacity-50 ${saved ? 'bg-green-500 text-white' : 'bg-purple-600 hover:bg-purple-700 text-white'}`}
+          >
+            {saving ? 'Salvando...' : saved ? '✓ Salvo!' : 'Salvar regras'}
+          </button>
+        </div>
+      </div>
+      <textarea
+        value={rules}
+        onChange={e => { setRules(e.target.value); setSaved(false) }}
+        rows={14}
+        className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-purple-400 resize-y transition-colors"
+      />
+      {err && <p className="text-xs text-red-500">{err}</p>}
+    </div>
+  )
+}
+
 export default function SettingsPage() {
   const [data, setData] = useState<CompaniesData | null>(null)
   const [selected, setSelected] = useState<Company | null>(null)
@@ -330,27 +387,6 @@ export default function SettingsPage() {
               </div>
             </div>
 
-            {/* AI Rules — collapsible */}
-            <div className="border border-gray-200 rounded-xl overflow-hidden">
-              <button
-                onClick={() => setRulesOpen(o => !o)}
-                className="w-full flex items-center justify-between px-4 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
-              >
-                <span>Regras de IA personalizadas</span>
-                <span className="text-gray-400 text-xs">{rulesOpen ? '▲ ocultar' : '▼ editar'}</span>
-              </button>
-              {rulesOpen && (
-                <div className="px-4 pb-4 border-t border-gray-100">
-                  <p className="text-xs text-gray-400 mt-3 mb-2">Regras customizadas para esta empresa. Deixe vazio para usar as regras padrão.</p>
-                  <textarea
-                    value={form.aiRules}
-                    onChange={e => setForm(f => ({ ...f, aiRules: e.target.value }))}
-                    rows={8}
-                    className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-purple-400 resize-y transition-colors"
-                  />
-                </div>
-              )}
-            </div>
           </div>
 
           {/* System settings */}
@@ -359,12 +395,15 @@ export default function SettingsPage() {
               onClick={() => setSysOpen(o => !o)}
               className="w-full flex items-center justify-between px-4 py-3 bg-white rounded-2xl border border-gray-200 shadow-sm text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
             >
-              <span>Configuracoes do sistema</span>
+              <span>⚙️ Configurações do sistema</span>
               <span className="text-gray-400 text-xs">{sysOpen ? '▲' : '▼'}</span>
             </button>
             {sysOpen && (
               <div className="mt-2 bg-white rounded-2xl border border-gray-200 shadow-sm p-6 space-y-6">
-                <AIConfigSection />
+                <SystemRulesEditor />
+                <div className="border-t border-gray-100 pt-6">
+                  <AIConfigSection />
+                </div>
                 <div className="border-t border-gray-100 pt-6">
                   <CredentialsSection />
                 </div>
