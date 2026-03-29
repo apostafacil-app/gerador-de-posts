@@ -90,12 +90,14 @@ BLOCO 1 — LOGO
       font-size:34px; font-weight:900; letter-spacing:-0.5px
 
 BLOCO 2 — PILL / LABEL DE CATEGORIA
-  display:inline-flex; align-items:center; gap:10px; align-self:flex-start
+  display:inline-flex; align-items:center; gap:10px; align-self:flex-start; white-space:nowrap
   background:[destaque com ~10% opacidade]; border:1.5px solid [destaque com ~40% opacidade];
   border-radius:100px; padding:10px 22px
-  Ponto interno: 9×9px; background:[destaque]; border-radius:50%
+  Ponto interno: UM único <span> de 9×9px; background:[destaque]; border-radius:50%; flex-shrink:0
+  ❌ NUNCA usar dois pontos ou bullet duplo — APENAS UM ponto decorativo
+  ❌ NUNCA deixar o texto do pill quebrar em 2 linhas — white-space:nowrap é obrigatório
   Texto: maiúsculas; font-weight:700; color:[destaque escuro]; letter-spacing:0.8px
-  Conteúdo: tag temática curta relacionada ao assunto do post (ex: "AUTOMATIZE SEUS JOGOS", "GANHE MAIS TEMPO")
+  Conteúdo: tag temática CURTA, máximo 22 caracteres, numa única linha (ex: "AUTOMATIZE AGORA", "GANHE MAIS TEMPO")
 
 BLOCO 3 — HEADLINE PRINCIPAL
   2 a 3 linhas com quebra manual (<br>)
@@ -124,16 +126,21 @@ BLOCO 6 — LISTA DE 3 BENEFÍCIOS
   Escolher emojis que representem visualmente o benefício (⚡ 🎯 🔔 ✅ 🏆 🚀 etc.)
 
 BLOCO 7 — CTA BUTTON
-  display:block; width:100%; text-align:center
-  background:linear-gradient(135deg,[primária],[destaque]); border-radius:24px
-  box-shadow:0 12px 40px rgba([rgb primária],0.35); color:#ffffff; font-weight:800
-  ❌ NUNCA usar texto genérico como "ACESSO RESTRITO" ou "SAIBA MAIS" sem contexto
-  ✅ Usar texto imperativo e específico: "Comece agora →", "Experimente grátis", "Garanta sua vaga", etc.
+  ❌ NUNCA usar tag <a> para o CTA — usar <div> ou <p> com cursor:default
+  ❌ NUNCA colocar text-decoration, underline ou qualquer estilo de link no CTA
+  ✅ Elemento: <div style="display:block; width:100%; text-align:center; ...">Texto do CTA</div>
+  background:linear-gradient(135deg,[primária 0%],[destaque 100%]); border-radius:24px (Post) / 28px (Story)
+  box-shadow:0 12px 40px rgba(45,0,85,0.40); color:#ffffff; font-weight:800; cursor:default
+  ❌ NUNCA usar texto genérico como "ACESSO RESTRITO" sem contexto
+  ✅ Usar texto imperativo e específico: "Comece agora →", "Experimente grátis", "Garanta sua vaga →"
 
 BLOCO 8 — SLOGAN RODAPÉ
-  text-align:center; text-transform:uppercase; letter-spacing:2px; font-weight:600
-  Dividir em 2 partes: primeira parte em [cor neutra/suporte], segunda em [destaque]; font-weight:800
-  Ex: "ECONOMIZE TEMPO " (neutro) + "COMECE HOJE" (destaque)
+  text-align:center; text-transform:uppercase; letter-spacing:2px; font-weight:600; white-space:nowrap
+  Estrutura: <p><span style="color:[neutro]">PRIMEIRA PARTE </span><span style="color:[destaque];font-weight:800">SEGUNDA PARTE</span></p>
+  ❌ NUNCA cortar palavras ao meio na divisão — a quebra deve ocorrer ENTRE palavras completas
+  ❌ NUNCA deixar o rodapé quebrar em 2 linhas — white-space:nowrap obrigatório
+  Ex correto: <span>JOGUE COM CONFIANÇA </span><span>COMECE HOJE</span>
+  Ex errado: <span>JOGUE COM CONFIA</span><span>NÇA COMECE HOJE</span>
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 🎨 TEMA ESCURO
