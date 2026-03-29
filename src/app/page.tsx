@@ -16,16 +16,25 @@ interface CompanyCard {
 export default function HomePage() {
   const [companies, setCompanies] = useState<CompanyCard[]>([])
   const [loading, setLoading] = useState(true)
+  const [fetchError, setFetchError] = useState<string | null>(null)
   const router = useRouter()
 
   useEffect(() => {
     fetch('/api/companies/public', { cache: 'no-store' })
       .then(r => r.json())
       .then(data => {
+        if (data.error) {
+          console.error('[home] API error:', data.error)
+          setFetchError(data.error)
+        }
         setCompanies(data.companies ?? [])
         setLoading(false)
       })
-      .catch(() => setLoading(false))
+      .catch(err => {
+        console.error('[home] fetch error:', err)
+        setFetchError(String(err))
+        setLoading(false)
+      })
   }, [])
 
   if (loading) {
@@ -53,8 +62,15 @@ export default function HomePage() {
         </Link>
       </div>
 
+      {/* Error state */}
+      {fetchError && (
+        <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-sm text-red-700">
+          <strong>Erro ao carregar empresas:</strong> {fetchError}
+        </div>
+      )}
+
       {/* Empty state */}
-      {companies.length === 0 && (
+      {companies.length === 0 && !fetchError && (
         <div className="flex flex-col items-center justify-center py-24 gap-5 text-center">
           <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-purple-100 to-violet-200 flex items-center justify-center">
             <Building2 size={32} className="text-purple-500" />

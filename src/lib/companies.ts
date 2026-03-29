@@ -58,7 +58,7 @@ function docToCompany(id: string, data: FirebaseFirestore.DocumentData): Omit<Co
 export async function readCompaniesData(): Promise<CompaniesData> {
   const db = getDb()
   const [snapshot, activeId] = await Promise.all([
-    db.collection(COLLECTIONS.companies).orderBy('createdAt', 'asc').get(),
+    db.collection(COLLECTIONS.companies).get(),   // sem orderBy — evita problema de índice
     getActiveCompanyId(),
   ])
 
