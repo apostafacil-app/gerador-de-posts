@@ -103,7 +103,7 @@ export default function HomePage() {
               >
                 {/* Top banner with brand gradient */}
                 <div
-                  className="relative h-28 w-full flex items-center justify-center"
+                  className="relative h-48 w-full flex items-center justify-center"
                   style={{
                     background: `linear-gradient(135deg, ${company.colors.primary} 0%, ${company.colors.secondary} 100%)`,
                   }}
@@ -116,7 +116,7 @@ export default function HomePage() {
 
                   {/* Logo */}
                   {logo ? (
-                    <img src={logo} alt={company.name} className="relative w-28 h-28 object-contain drop-shadow-xl" />
+                    <img src={logo} alt={company.name} className="relative w-44 h-44 object-contain drop-shadow-xl" />
                   ) : (
                     <Building2 size={48} className="relative text-white/90 drop-shadow-lg" />
                   )}
