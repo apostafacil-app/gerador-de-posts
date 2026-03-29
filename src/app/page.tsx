@@ -115,13 +115,11 @@ export default function HomePage() {
                     style={{ background: company.colors.accent }} />
 
                   {/* Logo */}
-                  <div className="relative w-20 h-20 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center overflow-hidden shadow-lg border border-white/20">
-                    {logo ? (
-                      <img src={logo} alt={company.name} className="w-full h-full object-contain p-2" />
-                    ) : (
-                      <Building2 size={32} className="text-white/90" />
-                    )}
-                  </div>
+                  {logo ? (
+                    <img src={logo} alt={company.name} className="relative w-28 h-28 object-contain drop-shadow-xl" />
+                  ) : (
+                    <Building2 size={48} className="relative text-white/90 drop-shadow-lg" />
+                  )}
 
                   {/* Arrow on hover */}
                   <div className="absolute top-3 right-3 w-7 h-7 rounded-full bg-white/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 group-hover:translate-x-0.5">
