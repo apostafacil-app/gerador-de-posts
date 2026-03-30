@@ -53,5 +53,10 @@ export const SYSTEM_DOCS = {
   meta:        'meta',        // { activeCompanyId }
   credentials: 'credentials', // { username, passHash }
   aiConfig:    'ai_config',   // { provider, apiKey }
-  settings:    'settings',    // { aiRules }
+  settings:    'settings',    // { aiRules } — legado
+  baseRules:   'base_rules',        // regras universais
+  postDark:    'rules_post_dark',   // addendum post escuro
+  postLight:   'rules_post_light',  // addendum post claro
+  storyDark:   'rules_story_dark',  // addendum story escuro
+  storyLight:  'rules_story_light', // addendum story claro
 } as const

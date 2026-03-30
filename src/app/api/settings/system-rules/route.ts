@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { jwtVerify } from 'jose'
-import { readSystemRules, writeSystemRules } from '@/lib/system-settings'
+import { readAllRules, writeRuleSection, type ModeKey } from '@/lib/system-settings'
+
+const VALID_SECTIONS: ModeKey[] = ['base', 'post_dark', 'post_light', 'story_dark', 'story_light']
 
 async function verifyAuth(req: NextRequest) {
   const token = req.cookies.get('session')?.value
@@ -14,15 +16,24 @@ async function verifyAuth(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   if (!(await verifyAuth(req))) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
-  return NextResponse.json({ aiRules: await readSystemRules() })
+  const allRules = await readAllRules()
+  return NextResponse.json(allRules)
 }
 
 export async function POST(req: NextRequest) {
   if (!(await verifyAuth(req))) return NextResponse.json({ error: 'Não autorizado' }, { status: 401 })
   const body = await req.json()
-  if (typeof body.aiRules !== 'string' || body.aiRules.length < 50) {
-    return NextResponse.json({ error: 'Regras inválidas.' }, { status: 400 })
+
+  const section = body.section as ModeKey
+  const rules   = body.rules as string
+
+  if (!VALID_SECTIONS.includes(section)) {
+    return NextResponse.json({ error: `Seção inválida. Use: ${VALID_SECTIONS.join(', ')}` }, { status: 400 })
   }
-  await writeSystemRules(body.aiRules)
+  if (typeof rules !== 'string' || rules.length < 20) {
+    return NextResponse.json({ error: 'Regras inválidas (muito curtas).' }, { status: 400 })
+  }
+
+  await writeRuleSection(section, rules)
   return NextResponse.json({ ok: true })
 }

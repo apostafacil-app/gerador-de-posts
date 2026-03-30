@@ -1,5 +1,5 @@
 import type { Company, GeneratorFormData } from '@/types'
-import { DEFAULT_AI_RULES } from './default-rules'
+import { DEFAULT_AI_RULES, getModeAddendum } from './default-rules'
 
 /**
  * Placeholder usado no prompt para a logo.
@@ -159,7 +159,13 @@ function pickStyles(variationIndex: number, _totalVariations: number, theme: str
   }
 }
 
-export function buildPrompt(company: Company, form: GeneratorFormData, websiteContext?: string, systemRules?: string): string {
+export function buildPrompt(
+  company: Company,
+  form: GeneratorFormData,
+  websiteContext?: string,
+  baseRules?: string,
+  modeAddendum?: string
+): string {
   const dimensions = form.format === 'post' ? '1080x1350px' : '1080x1920px'
   const [width, height] = form.format === 'post' ? [1080, 1350] : [1080, 1920]
   const hasLogo = Boolean(getLogoForTheme(company, form.theme))
@@ -197,9 +203,12 @@ ${styles.archetype.instruction}
   🔘  CTA OBRIGATÓRIO → ${styles.cta}`
   }).join('\n\n')
 
-  const rules = systemRules || DEFAULT_AI_RULES
+  const resolvedBase = baseRules || DEFAULT_AI_RULES
+  const resolvedAddendum = modeAddendum || getModeAddendum(form.format, form.theme)
 
-  return `${rules}
+  return `${resolvedBase}
+
+${resolvedAddendum}
 
 ---
 ## DADOS DA EMPRESA

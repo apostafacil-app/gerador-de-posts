@@ -4,10 +4,29 @@ import { useEffect, useState } from 'react'
 import { AIConfigSection } from '@/components/settings/AIConfigSection'
 import { CredentialsSection } from '@/components/settings/CredentialsSection'
 import type { Company, CompaniesData } from '@/types'
-import { DEFAULT_AI_RULES } from '@/lib/default-rules'
+import {
+  BASE_RULES,
+  POST_DARK_ADDENDUM,
+  POST_LIGHT_ADDENDUM,
+  STORY_DARK_ADDENDUM,
+  STORY_LIGHT_ADDENDUM,
+} from '@/lib/default-rules'
+import type { ModeKey } from '@/lib/system-settings'
 
 const DEFAULT_COLORS = { primary: '#7b00d4', secondary: '#2d0055', accent: '#b388f0' }
 const DEFAULT_LOGOS = { darkBackground: '', whiteBackground: '' }
+
+const RULE_SECTIONS: { key: ModeKey; label: string; default: string; description: string }[] = [
+  { key: 'base',        label: 'Base',         default: BASE_RULES,          description: 'Regras universais: arquétipos, componentes, logo, canvas, anti-fabricação.' },
+  { key: 'post_dark',   label: 'Post Escuro',  default: POST_DARK_ADDENDUM,  description: 'Cores, fundos e tipografia para posts 1080×1350 tema escuro.' },
+  { key: 'post_light',  label: 'Post Claro',   default: POST_LIGHT_ADDENDUM, description: 'Cores, fundos e tipografia para posts 1080×1350 tema claro.' },
+  { key: 'story_dark',  label: 'Story Escuro', default: STORY_DARK_ADDENDUM, description: 'Cores, fundos e tipografia para stories 1080×1920 tema escuro.' },
+  { key: 'story_light', label: 'Story Claro',  default: STORY_LIGHT_ADDENDUM, description: 'Cores, fundos e tipografia para stories 1080×1920 tema claro.' },
+]
+
+interface AllRulesState {
+  base: string; post_dark: string; post_light: string; story_dark: string; story_light: string
+}
 
 function newCompanyTemplate(): Omit<Company, 'id' | 'createdAt'> {
   return {
@@ -16,12 +35,16 @@ function newCompanyTemplate(): Omit<Company, 'id' | 'createdAt'> {
     websiteUrl: '',
     colors: { ...DEFAULT_COLORS },
     logos: { ...DEFAULT_LOGOS },
-    aiRules: DEFAULT_AI_RULES,
+    aiRules: BASE_RULES,
   }
 }
 
 function SystemRulesEditor() {
-  const [rules, setRules] = useState('')
+  const [allRules, setAllRules] = useState<AllRulesState>({
+    base: BASE_RULES, post_dark: POST_DARK_ADDENDUM,
+    post_light: POST_LIGHT_ADDENDUM, story_dark: STORY_DARK_ADDENDUM, story_light: STORY_LIGHT_ADDENDUM,
+  })
+  const [activeTab, setActiveTab] = useState<ModeKey>('base')
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -30,8 +53,17 @@ function SystemRulesEditor() {
   useEffect(() => {
     fetch('/api/settings/system-rules')
       .then(r => r.json())
-      .then(d => { setRules(d.aiRules || DEFAULT_AI_RULES); setLoading(false) })
-      .catch(() => { setRules(DEFAULT_AI_RULES); setLoading(false) })
+      .then(d => {
+        setAllRules({
+          base:        d.base        || BASE_RULES,
+          post_dark:   d.post_dark   || POST_DARK_ADDENDUM,
+          post_light:  d.post_light  || POST_LIGHT_ADDENDUM,
+          story_dark:  d.story_dark  || STORY_DARK_ADDENDUM,
+          story_light: d.story_light || STORY_LIGHT_ADDENDUM,
+        })
+        setLoading(false)
+      })
+      .catch(() => setLoading(false))
   }, [])
 
   async function handleSave() {
@@ -40,7 +72,7 @@ function SystemRulesEditor() {
       const res = await fetch('/api/settings/system-rules', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ aiRules: rules }),
+        body: JSON.stringify({ section: activeTab, rules: allRules[activeTab] }),
       })
       if (!res.ok) { const d = await res.json(); setErr(d.error ?? 'Erro'); return }
       setSaved(true); setTimeout(() => setSaved(false), 2000)
@@ -48,31 +80,68 @@ function SystemRulesEditor() {
     finally { setSaving(false) }
   }
 
+  function handleReset() {
+    const section = RULE_SECTIONS.find(s => s.key === activeTab)
+    if (section) setAllRules(prev => ({ ...prev, [activeTab]: section.default }))
+    setSaved(false)
+  }
+
+  const activeSection = RULE_SECTIONS.find(s => s.key === activeTab)!
+
   if (loading) return <div className="h-8 bg-gray-100 rounded animate-pulse" />
+
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm font-semibold text-gray-700">Regras de IA do sistema</p>
-          <p className="text-xs text-gray-400">Valem para todas as empresas. São o "coração" do gerador.</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <button onClick={() => setRules(DEFAULT_AI_RULES)} className="text-xs text-gray-400 hover:text-gray-600">Restaurar padrão</button>
+      <div>
+        <p className="text-sm font-semibold text-gray-700">Regras de IA do sistema</p>
+        <p className="text-xs text-gray-400">Divididas em Base (universal) + 4 addendums por modo. Valem para todas as empresas.</p>
+      </div>
+
+      {/* Tabs */}
+      <div className="flex gap-1 flex-wrap">
+        {RULE_SECTIONS.map(s => (
+          <button
+            key={s.key}
+            onClick={() => { setActiveTab(s.key); setSaved(false); setErr('') }}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+              activeTab === s.key
+                ? 'bg-purple-600 text-white'
+                : 'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-700'
+            }`}
+          >
+            {s.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Description + actions */}
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-xs text-gray-400 flex-1">{activeSection.description}</p>
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <button onClick={handleReset} className="text-xs text-gray-400 hover:text-gray-600">
+            Restaurar padrão
+          </button>
           <button
             onClick={handleSave} disabled={saving}
-            className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-all disabled:opacity-50 ${saved ? 'bg-green-500 text-white' : 'bg-purple-600 hover:bg-purple-700 text-white'}`}
+            className={`px-4 py-1.5 rounded-lg text-xs font-semibold transition-all disabled:opacity-50 ${
+              saved ? 'bg-green-500 text-white' : 'bg-purple-600 hover:bg-purple-700 text-white'
+            }`}
           >
-            {saving ? 'Salvando...' : saved ? '✓ Salvo!' : 'Salvar regras'}
+            {saving ? 'Salvando...' : saved ? '✓ Salvo!' : 'Salvar'}
           </button>
         </div>
       </div>
+
+      {/* Textarea */}
       <textarea
-        value={rules}
-        onChange={e => { setRules(e.target.value); setSaved(false) }}
-        rows={14}
+        key={activeTab}
+        value={allRules[activeTab]}
+        onChange={e => { setAllRules(prev => ({ ...prev, [activeTab]: e.target.value })); setSaved(false) }}
+        rows={16}
         className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-purple-400 resize-y transition-colors"
       />
       {err && <p className="text-xs text-red-500">{err}</p>}
+      <p className="text-xs text-gray-400 text-right">{allRules[activeTab].length.toLocaleString()} chars</p>
     </div>
   )
 }
