@@ -71,8 +71,37 @@ Layout: LEFT_ALIGNED`,
     id: 'F', name: 'QUOTE_CARD',
     instruction: `ARQUÉTIPO F — QUOTE CARD
 Estrutura obrigatória no .safe:
-  logo-row PEQUENA (height:100px) → .quote-wrap (flex:1, justify-content:center) com aspas decorativas 200px opacity:0.15 + frase 42px máx 3 linhas + atribuição 22px → spacer → cta-wrap
-SEM benefícios. SEM eyebrow. A frase é o elemento âncora.
+  logo-row PEQUENA (height:100px) → .quote-wrap (flex:1, display:flex, flex-direction:column, justify-content:center, position:relative) → .spacer → cta-wrap
+
+DETALHAMENTO OBRIGATÓRIO do .quote-wrap:
+  .quote-marks {
+    position:absolute; top:-20px; left:-10px;
+    font-size:260px; font-weight:900; line-height:1;
+    color:[destaque vibrante]; opacity:0.18;
+    font-family:'Poppins',sans-serif; user-select:none;
+    content:'"';
+  }
+  .quote-text {
+    font-size:52px; font-weight:800; line-height:1.25;
+    letter-spacing:-1px; color:[texto principal];
+    position:relative; z-index:1;
+    max 3 linhas, máx 28 chars/linha;
+  }
+  .quote-divider {
+    width:80px; height:4px; border-radius:4px;
+    background:[destaque]; margin:32px 0; opacity:0.8;
+  }
+  .attribution {
+    font-size:28px; font-weight:700;
+    color:[destaque vibrante]; margin-top:0;
+  }
+  .attribution-sub {
+    font-size:22px; font-weight:500;
+    color:[texto suporte]; margin-top:8px;
+  }
+
+CTA: texto de ação relacionado à prova social ("Quero o Mesmo Resultado")
+SEM benefícios. SEM eyebrow. As aspas + frase são o elemento âncora dominante.
 Layout: CENTERED`,
   },
   {
@@ -225,9 +254,13 @@ Cada variação tem arquétipo, decoração e CTA pré-definidos. NUNCA trocar o
 
 ${variationSpecs}
 
-⚠️ REGRA ABSOLUTA: cada variação DEVE implementar exatamente o arquétipo designado.
-❌ PROIBIDO usar Arquétipo B em duas variações.
+⚠️ REGRAS ABSOLUTAS:
+❌ PROIBIDO usar o mesmo arquétipo em duas variações.
 ❌ PROIBIDO ignorar a estrutura do arquétipo e criar layout livre.
+❌ PROIBIDO inventar números, percentuais ou estatísticas (ex: "93% do tempo", "12 horas", "1.875x").
+   → Se o assunto não tiver dado numérico real, use afirmações qualitativas.
+❌ PROIBIDO adicionar urgência falsa ("Últimas horas", "Apenas hoje") se o assunto não mencionar isso.
+   → Tom urgente só se o parâmetro "Tom emocional" for "Urgente".
 ✅ Copy diferente + arquétipo diferente + decoração diferente = variações realmente distintas.
 
 ---
