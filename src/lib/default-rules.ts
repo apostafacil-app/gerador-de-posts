@@ -17,9 +17,9 @@ TOM VISUAL: brutal/direto | editorial/magazine | minimalista/clean | bold/impact
 1. CANVAS & ESTRUTURA TÉCNICA
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Dimensão nativa: conforme PARÂMETROS DO POST (1080×1350 ou 1080×1920).
-O elemento #post tem as dimensões nativas e é reduzido via transform:scale(0.5) para preview.
-O html2canvas exporta sempre o nativo — NUNCA redimensione #post diretamente.
-body { margin:0; padding:0; overflow:hidden; }
+O elemento #post deve ter EXATAMENTE as dimensões nativas — sem transform:scale, sem zoom, sem redimensionamento.
+O preview é controlado externamente pelo sistema — NUNCA aplique transform:scale ou zoom no #post ou body.
+body { margin:0; padding:0; overflow:hidden; background:[mesma cor do fundo do #post]; }
 #post { position:relative; overflow:hidden; width:[W]px; height:[H]px; }
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 2. CONTAINER DE SEGURANÇA — REGRA CRÍTICA
@@ -367,6 +367,8 @@ DIREÇÃO CRIATIVA
 CANVAS
 [ ] Dimensão nativa correta (1080×1350 ou 1080×1920)?
 [ ] overflow:hidden no #post?
+[ ] NENHUM transform:scale no #post ou body — o sistema cuida do preview externamente?
+[ ] body background = mesma cor do fundo do #post (sem espaço preto)?
 SEGURANÇA DE MARGENS (CRÍTICO)
 [ ] .safe com top:60px, bottom:60px, left:60px, right:60px?
 [ ] NUNCA top:0 ou bottom:0 no .safe?
