@@ -6,6 +6,8 @@ import type { GeneratorFormData, WritingStyle, EmotionalTone, PersuasionTechniqu
 interface Props {
   onSubmit: (data: GeneratorFormData) => void
   isLoading: boolean
+  companyId: string
+  companyColors: { primary: string; secondary: string; accent: string }
 }
 
 const defaultForm: GeneratorFormData = {
@@ -21,7 +23,7 @@ const defaultForm: GeneratorFormData = {
   generateCaption: false,
 }
 
-export function GeneratorForm({ onSubmit, isLoading }: Props) {
+export function GeneratorForm({ onSubmit, isLoading, companyId, companyColors }: Props) {
   const [form, setForm] = useState<GeneratorFormData>(defaultForm)
   const [suggestingTopics, setSuggestingTopics] = useState(false)
   const [suggestedTopics, setSuggestedTopics] = useState<string[]>([])
@@ -39,7 +41,11 @@ export function GeneratorForm({ onSubmit, isLoading }: Props) {
   async function handleSuggestTopics() {
     setSuggestingTopics(true)
     try {
-      const res = await fetch('/api/suggest-topics', { method: 'POST' })
+      const res = await fetch('/api/suggest-topics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ companyId }),
+      })
       if (res.ok) {
         const data = await res.json()
         setSuggestedTopics(data.topics || [])
@@ -82,9 +88,17 @@ export function GeneratorForm({ onSubmit, isLoading }: Props) {
         <label className="block text-sm font-semibold text-gray-700 mb-2">Tema do post</label>
         <div className="grid grid-cols-2 gap-2">
           {([
-            { value: 'dark', label: 'Dark', colors: ['#1a0033', '#7b00d4'] },
-            { value: 'white', label: 'Claro', colors: ['#ffffff', '#f0f0f0'] },
-          ] as const).map(t => (
+            {
+              value: 'dark' as const,
+              label: 'Dark',
+              colors: [companyColors.primary, companyColors.secondary, companyColors.accent],
+            },
+            {
+              value: 'white' as const,
+              label: 'Claro',
+              colors: ['#ffffff', '#f5f5f5', companyColors.accent],
+            },
+          ]).map(t => (
             <button
               key={t.value}
               type="button"
@@ -96,8 +110,8 @@ export function GeneratorForm({ onSubmit, isLoading }: Props) {
               }`}
             >
               <div className="flex gap-1">
-                {t.colors.map(c => (
-                  <div key={c} className="w-4 h-4 rounded-full border border-gray-300" style={{ background: c }} />
+                {t.colors.map((c, i) => (
+                  <div key={i} className="w-4 h-4 rounded-full border border-gray-300" style={{ background: c }} />
                 ))}
               </div>
               <span className="font-semibold text-sm">{t.label}</span>

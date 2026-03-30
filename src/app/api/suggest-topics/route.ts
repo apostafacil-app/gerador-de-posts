@@ -2,7 +2,7 @@ export const maxDuration = 30
 
 import { NextRequest, NextResponse } from 'next/server'
 import { jwtVerify } from 'jose'
-import { getActiveCompany } from '@/lib/companies'
+import { getActiveCompany, getCompanyById } from '@/lib/companies'
 import { readAIConfig } from '@/lib/ai-config'
 import { generateWithAI } from '@/lib/ai'
 
@@ -22,7 +22,12 @@ export async function POST(req: NextRequest) {
   const aiConfig = await readAIConfig()
   if (!aiConfig) return NextResponse.json({ error: 'IA não configurada.' }, { status: 500 })
 
-  const company = await getActiveCompany()
+  const body = await req.json().catch(() => ({}))
+  const companyId: string | undefined = body?.companyId
+
+  const company = companyId
+    ? await getCompanyById(companyId)
+    : await getActiveCompany()
   if (!company) return NextResponse.json({ error: 'Nenhuma empresa cadastrada.' }, { status: 400 })
 
   // Fetch website content

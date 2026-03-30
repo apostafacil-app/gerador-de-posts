@@ -179,7 +179,12 @@ export default function EmpresaPage({ params }: { params: { id: string } }) {
         <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-6">
           {/* Left: Form */}
           <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
-            <GeneratorForm onSubmit={handleSubmit} isLoading={isLoading} />
+            <GeneratorForm
+              onSubmit={handleSubmit}
+              isLoading={isLoading}
+              companyId={companyId}
+              companyColors={company!.colors}
+            />
           </div>
 
           {/* Right: Results */}
