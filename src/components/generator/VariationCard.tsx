@@ -12,42 +12,76 @@ interface Props {
 
 // Remove qualquer transform:scale que a IA possa ter inserido no #post
 function sanitizeHtml(raw: string, nativeW: number, nativeH: number): string {
-  // CSS injetado pelo sistema — garante CTA visível e remove transforms indesejados
-  const systemCss = `<style id="__sys">
-/* força dimensões nativas */
-#post { width:${nativeW}px !important; height:${nativeH}px !important;
-        transform:none !important; zoom:1 !important; overflow:hidden !important; }
-/* reserva espaço mínimo para CTA — evita corte */
-.safe { overflow:hidden !important; }
-.spacer { flex:1 1 auto !important; min-height:8px !important; max-height:120px !important; }
-.cta-wrap { flex-shrink:0 !important; }
-/* garante texto escuro em elementos claro */
-.step-title[style*="color:#fff"], .step-title[style*="color: #fff"],
-.step-title[style*="color:white"], .step-title[style*="color: white"] { color:#0f0f1a !important; }
+  // 1) Remove transform:scale do #post em blocos <style>
+  let result = raw.replace(
+    /(<style[^>]*>)([\s\S]*?)(<\/style>)/gi,
+    (_m, open, css, close) =>
+      open +
+      css.replace(
+        /(#post\s*\{[^}]*?)transform\s*:[^;]+;?/g,
+        '$1'
+      ) +
+      close
+  )
+
+  // 2) Remove transform:scale de inline style do #post
+  result = result.replace(
+    /(<[^>]*id=["']post["'][^>]*style=["'])([^"']*)(["'])/gi,
+    (_m, before, style, quote) =>
+      before + style.replace(/transform\s*:[^;]*;?\s*/g, '') + quote
+  )
+
+  // 3) CSS do sistema — força dimensões e evita estouro
+  const W = nativeW, H = nativeH
+  const systemCss = `<style id="__sys_fix">
+html,body{margin:0!important;padding:0!important;overflow:hidden!important;
+  width:${W}px!important;height:${H}px!important;}
+#post{width:${W}px!important;height:${H}px!important;
+  transform:none!important;zoom:1!important;overflow:hidden!important;}
+.spacer{flex:1 1 auto!important;min-height:4px!important;max-height:100px!important;}
+.cta-wrap{flex-shrink:0!important;}
+.safe{overflow:hidden!important;}
 </style>`
 
-  return raw
-    // remove transform:scale no #post
-    .replace(/(id=["']post["'][^>]*style=["'][^"']*)transform\s*:\s*scale\([^)]*\)\s*;?/gi, '$1')
-    // injeta CSS do sistema antes do </head> (ou no início do body)
-    .replace(/<\/head>/i, `${systemCss}</head>`)
-    .replace(/^(?![\s\S]*<\/head>)/i, (m) => m ? `${systemCss}` : m)
-    // garante body sem margem
-    .replace(/<body([^>]*)>/i, (match, attrs) => {
-      if (/style=/i.test(attrs)) {
-        return match.replace(/style="([^"]*)"/i, (_, s) =>
-          `style="${s}; margin:0; padding:0; overflow:hidden;"`)
-      }
-      return `<body${attrs} style="margin:0;padding:0;overflow:hidden;">`
-    })
-    // script para forçar dimensões após render
-    .replace('</body>', `<script>
+  // 4) Injeta o CSS no lugar certo
+  if (/<\/head>/i.test(result)) {
+    result = result.replace(/<\/head>/i, `${systemCss}</head>`)
+  } else if (/<body/i.test(result)) {
+    result = result.replace(/<body/i, `${systemCss}<body`)
+  } else {
+    result = systemCss + result
+  }
+
+  // 5) Garante body sem margem
+  result = result.replace(/<body([^>]*)>/i, (_m, attrs) => {
+    const hasStyle = /style=/i.test(attrs)
+    if (hasStyle) {
+      return `<body${attrs}>`.replace(
+        /style="([^"]*)"/i,
+        (_s, v) => `style="${v};margin:0;padding:0;overflow:hidden;"`
+      )
+    }
+    return `<body${attrs} style="margin:0;padding:0;overflow:hidden;">`
+  })
+
+  // 6) Script de segurança pós-render
+  const safetyScript = `<script>
 (function(){
   var p=document.getElementById('post');
-  if(p){ p.style.transform='none'; p.style.zoom='1';
-         p.style.width='${nativeW}px'; p.style.height='${nativeH}px'; }
+  if(!p)return;
+  p.style.transform='none';
+  p.style.zoom='1';
+  p.style.width='${W}px';
+  p.style.height='${H}px';
+  p.style.overflow='hidden';
 })();
-</script></body>`)
+</script>`
+
+  result = result.includes('</body>')
+    ? result.replace('</body>', `${safetyScript}</body>`)
+    : result + safetyScript
+
+  return result
 }
 
 export function VariationCard({ html, index, format, caption }: Props) {
