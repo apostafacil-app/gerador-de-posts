@@ -12,27 +12,40 @@ interface Props {
 
 // Remove qualquer transform:scale que a IA possa ter inserido no #post
 function sanitizeHtml(raw: string, nativeW: number, nativeH: number): string {
+  // CSS injetado pelo sistema — garante CTA visível e remove transforms indesejados
+  const systemCss = `<style id="__sys">
+/* força dimensões nativas */
+#post { width:${nativeW}px !important; height:${nativeH}px !important;
+        transform:none !important; zoom:1 !important; overflow:hidden !important; }
+/* reserva espaço mínimo para CTA — evita corte */
+.safe { overflow:hidden !important; }
+.spacer { flex:1 1 auto !important; min-height:8px !important; max-height:120px !important; }
+.cta-wrap { flex-shrink:0 !important; }
+/* garante texto escuro em elementos claro */
+.step-title[style*="color:#fff"], .step-title[style*="color: #fff"],
+.step-title[style*="color:white"], .step-title[style*="color: white"] { color:#0f0f1a !important; }
+</style>`
+
   return raw
-    // remove transform:scale(...) inline no #post
+    // remove transform:scale no #post
     .replace(/(id=["']post["'][^>]*style=["'][^"']*)transform\s*:\s*scale\([^)]*\)\s*;?/gi, '$1')
-    // garante que body tem background correto (evita fundo preto/vazio)
+    // injeta CSS do sistema antes do </head> (ou no início do body)
+    .replace(/<\/head>/i, `${systemCss}</head>`)
+    .replace(/^(?![\s\S]*<\/head>)/i, (m) => m ? `${systemCss}` : m)
+    // garante body sem margem
     .replace(/<body([^>]*)>/i, (match, attrs) => {
       if (/style=/i.test(attrs)) {
         return match.replace(/style="([^"]*)"/i, (_, s) =>
-          s.includes('background') ? `style="${s}"` : `style="${s}; overflow:hidden;"`)
+          `style="${s}; margin:0; padding:0; overflow:hidden;"`)
       }
       return `<body${attrs} style="margin:0;padding:0;overflow:hidden;">`
     })
-    // injeta script para forçar dimensões nativas no #post após render
+    // script para forçar dimensões após render
     .replace('</body>', `<script>
 (function(){
   var p=document.getElementById('post');
-  if(p){
-    p.style.transform='none';
-    p.style.zoom='';
-    p.style.width='${nativeW}px';
-    p.style.height='${nativeH}px';
-  }
+  if(p){ p.style.transform='none'; p.style.zoom='1';
+         p.style.width='${nativeW}px'; p.style.height='${nativeH}px'; }
 })();
 </script></body>`)
 }

@@ -47,109 +47,57 @@ const ARCHETYPES = [
   {
     id: 'B', name: 'EDITORIAL',
     instruction: `ARQUÉTIPO B — EDITORIAL
-Estrutura obrigatória no .safe:
-  logo-row (height:160px) → eyebrow pill → h1 (88px, 3 linhas, máx 18 chars/linha) → subtexto (2 linhas, 30px) → divisor gradiente → 3 benefícios VERTICAIS (icon-card 72px à esquerda, título 28px, desc 21px) → spacer → cta-wrap
-Layout: LEFT_ALIGNED (align-items:flex-start; text-align:left)`,
+Intenção: post informativo com benefícios claros. Hierarquia editorial limpa.
+Sequência no .safe (top→bottom): logo → eyebrow pill → headline 3 linhas (76-88px) → subtexto 1-2 linhas (28px) → divisor gradiente → 2 ou 3 benefícios verticais (ícone 64px + título + desc) → spacer → [CTA se conversão] → slogan
+Layout: alinhado à esquerda.
+Regra de espaço: se 3 benefícios, use fonte 24px/18px. Se 2 benefícios, use 28px/21px.
+CTA: obrigatório apenas se o tom for "urgente" ou "exclusivo". Caso contrário: só slogan.`,
   },
   {
     id: 'A', name: 'HERO_STATEMENT',
     instruction: `ARQUÉTIPO A — HERO STATEMENT
-Estrutura obrigatória no .safe:
-  logo-row (height:140px) → h1 OVERSIZED → subtexto CURTO (1 linha, 32px) → spacer → cta-wrap
-SEM eyebrow. SEM benefícios. SEM divisor. A headline É o conteúdo visual dominante.
-Layout: CENTERED (align-items:center; text-align:center)
-
-HEADLINE OVERSIZED — detalhamento obrigatório:
-  font-size: 130-160px; font-weight:900; line-height:0.92; letter-spacing:-4px;
-  máx 3 linhas, 1-2 palavras por linha;
-  Linha 1: cor texto principal (branca no dark, #0f0f1a no claro);
-  Linha 2: cor destaque VIBRANTE (nunca escura — deve contrastar com o fundo);
-  Linha 3: cor texto principal;
-  A headline deve ocupar ~55% da altura útil do canvas.
-
-IMPACTO VISUAL obrigatório:
-  → Adicionar elemento decorativo de ALTO CONTRASTE atrás da headline:
-    palavra ou letra inicial em font-size:300px, font-weight:900, color:[destaque], opacity:0.06,
-    position:absolute, top:50%, left:50%, transform:translate(-50%,-50%), z-index:0, pointer-events:none
-  → Todo conteúdo do .safe em z-index:1 acima deste elemento`,
+Intenção: impacto máximo com mínimo de elementos. A headline gigante É o post.
+Sequência no .safe: logo pequena (100px) → headline oversized (120-150px, 2-3 linhas, 1-3 palavras/linha) → subtexto curto (1 linha, 30px) → spacer → slogan ou CTA pill
+Layout: centralizado.
+Criatividade: adicione elemento tipográfico fantasma atrás da headline (palavra em 280px, opacity:0.05-0.07, cor destaque) para profundidade.
+CTA: pill centralizado pequeno — ou apenas slogan. Nunca botão full-width aqui.`,
   },
   {
     id: 'D', name: 'LISTA_STEPS',
     instruction: `ARQUÉTIPO D — LISTA STEPS
-Estrutura obrigatória no .safe:
-  logo-row (height:140px) → eyebrow pill → h1 (88px, 3 linhas) → .steps-list → spacer → cta-wrap
-SEM benefícios com ícone-card. Os números SÃO os ícones visuais.
-Layout: LEFT_ALIGNED (align-items:flex-start; text-align:left)
-
-STEPS-LIST — detalhamento obrigatório:
-  .steps-list { display:flex; flex-direction:column; gap:36px; margin-top:40px; }
-  .step { display:flex; align-items:flex-start; gap:24px; padding-bottom:36px;
-    border-bottom:1px solid rgba([destaque],0.15); }
-  .step:last-child { border-bottom:none; }
-  .step-num { font-size:52px; font-weight:900; color:[destaque vibrante];
-    line-height:1; min-width:56px; flex-shrink:0; }
-  .step-title { font-size:28px; font-weight:800;
-    color: TEMA ESCURO=#ffffff / TEMA CLARO=#0f0f1a; }
-  .step-desc  { font-size:21px; font-weight:500; line-height:1.4; margin-top:6px;
-    color: TEMA ESCURO=rgba(255,255,255,0.70) / TEMA CLARO=#4a4a6a; }
-
-⚠️ TEMA CLARO: .step-title DEVE ser #0f0f1a e .step-desc DEVE ser #4a4a6a — NUNCA branco.`,
+Intenção: educar o leitor com passos claros. Os números grandes são o elemento visual.
+Sequência no .safe: logo → eyebrow → headline 2-3 linhas (76px) → 3 steps numerados → spacer → slogan ou CTA
+Cada step: número em 48px cor destaque + título em 26px bold + descrição em 20px (máx 2 linhas).
+Separador sutil entre steps (border-bottom 1px destaque 15% opacity).
+Cores texto: SEMPRE escuro no tema claro (#0f0f1a / #4a4a6a). NUNCA branco em fundo branco.
+CTA: opcional. Posts educativos funcionam bem só com slogan.`,
   },
   {
     id: 'F', name: 'QUOTE_CARD',
     instruction: `ARQUÉTIPO F — QUOTE CARD
-Estrutura obrigatória no .safe:
-  logo-row PEQUENA (height:100px) → .quote-wrap (flex:1, display:flex, flex-direction:column, justify-content:center, position:relative) → .spacer → cta-wrap
-
-DETALHAMENTO OBRIGATÓRIO do .quote-wrap:
-  .quote-marks {
-    position:absolute; top:-20px; left:-10px;
-    font-size:260px; font-weight:900; line-height:1;
-    color:[destaque vibrante]; opacity:0.18;
-    font-family:'Poppins',sans-serif; user-select:none;
-    content:'"';
-  }
-  .quote-text {
-    font-size:52px; font-weight:800; line-height:1.25;
-    letter-spacing:-1px; color:[texto principal];
-    position:relative; z-index:1;
-    max 3 linhas, máx 28 chars/linha;
-  }
-  .quote-divider {
-    width:80px; height:4px; border-radius:4px;
-    background:[destaque]; margin:32px 0; opacity:0.8;
-  }
-  .attribution {
-    font-size:28px; font-weight:700;
-    color:[destaque vibrante]; margin-top:0;
-  }
-  .attribution-sub {
-    font-size:22px; font-weight:500;
-    color:[texto suporte]; margin-top:8px;
-  }
-
-CTA: texto de ação relacionado à prova social ("Quero o Mesmo Resultado")
-SEM benefícios. SEM eyebrow. As aspas + frase são o elemento âncora dominante.
-Layout: CENTERED`,
+Intenção: prova social ou frase de impacto. As aspas gigantes criam drama visual.
+Sequência no .safe: logo pequena (90px) → bloco central (flex:1) com aspas decorativas + frase + atribuição → spacer → CTA ou slogan
+Aspas decorativas: div/span com conteúdo " (aspas) em 240-280px, font-weight:900, cor destaque vibrante, opacity:0.15-0.20, position:absolute top-left.
+Frase principal: 46-56px, font-weight:800, máx 3 linhas, z-index:1 acima das aspas.
+Linha divisora colorida (4px, 80px largura) entre frase e atribuição.
+Atribuição: nome em 26px bold destaque + cargo/contexto em 20px suporte.
+Layout: centralizado. Muito espaço negativo = elegância.`,
   },
   {
     id: 'C', name: 'STAT_CARD',
     instruction: `ARQUÉTIPO C — STAT CARD
-Estrutura obrigatória no .safe:
-  logo-row (height:120px) → .stat-number (font-size:220px, font-weight:900, cor destaque, line-height:0.85, letter-spacing:-8px) → .stat-label (32px abaixo do número) → subtexto (80px) → divisor → 2 benefícios HORIZONTAIS (flex-row, gap:20px, cards com borda) → spacer → cta-wrap
-Se o assunto NÃO tiver dado numérico real: use dado simbólico como "3×" ou "10×" sem inventar — ou troque para Arquétipo B.
-Layout: CENTERED`,
+Intenção: um dado numérico impactante domina o canvas como âncora visual.
+Sequência no .safe: logo (110px) → número/stat gigante (200-240px, cor destaque, letter-spacing:-8px) → label do stat (30px) → subtexto (1 linha, 28px) → divisor → 2 cards horizontais com dados de apoio → spacer → CTA
+Só use se o assunto do post contiver número real. Se não tiver: troque por Arquétipo B.
+Layout: centralizado.`,
   },
   {
     id: 'E', name: 'SPLIT_LAYOUT',
     instruction: `ARQUÉTIPO E — SPLIT LAYOUT
-Implementação: dois divs absolutos (left:0/right:0) dividindo o canvas verticalmente.
-  Lado esquerdo (width:46%, problema): fundo escuro da marca + label "ANTES" ou "SEM [produto]" + ícone negativo
-  Lado direito (width:54%, solução): fundo cor destaque vibrante + label "DEPOIS" ou "COM [produto]" + ícone positivo
-  Headline: position:absolute, z-index:10, centralizada no canvas cruzando os dois lados, font-size:72px
-  Logo: topo centralizada, z-index:10
-  CTA: abaixo do split, posição absolute bottom:60px, largura total
-SEM lista de benefícios convencional. O split É o conteúdo.`,
+Intenção: contraste visual direto entre problema e solução (antes/depois).
+Implementação: canvas dividido ao meio — lado esquerdo (problema, fundo escuro/neutro) e lado direito (solução, fundo cor destaque vibrante).
+Logo centralizada no topo (z-index alto). Headline grande cruzando ambos os lados (position:absolute, centralizada, font-size:68-80px). Labels "ANTES/DEPOIS" ou "SEM/COM" em cada lado. CTA full-width na base.
+Nenhuma lista de benefícios — o split visual É o argumento.`,
   },
 ]
 
@@ -293,6 +241,17 @@ ${variationSpecs}
 
 ---
 ## INSTRUÇÃO FINAL
+
+**CTA (botão de ação) é OPCIONAL:**
+- Tom "urgente" ou "exclusivo" → CTA botão obrigatório
+- Tom "empolgante" ou "confiável" → CTA ou só slogan (escolha o que for mais elegante)
+- Post educativo/informativo → apenas slogan rodapé, sem botão
+- Nunca force um CTA que deixe o post esmagado ou corte elementos
+
+**Espaço e respiração:**
+- Prefira MENOS elementos bem espaçados a MAIS elementos apertados
+- Se o conteúdo não couber com elegância → corte um benefício, encurte o subtexto
+- O slogan rodapé é sempre presente. O CTA botão é condicional.
 
 Gere EXATAMENTE ${form.variations} variação(ões) de HTML.
 Cada variação usa os tokens visuais definidos acima — copy, layout e estilo visual DIFERENTES entre si.
