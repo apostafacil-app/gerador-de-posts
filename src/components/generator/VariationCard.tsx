@@ -10,6 +10,33 @@ interface Props {
   caption?: string
 }
 
+// Remove qualquer transform:scale que a IA possa ter inserido no #post
+function sanitizeHtml(raw: string, nativeW: number, nativeH: number): string {
+  return raw
+    // remove transform:scale(...) inline no #post
+    .replace(/(id=["']post["'][^>]*style=["'][^"']*)transform\s*:\s*scale\([^)]*\)\s*;?/gi, '$1')
+    // garante que body tem background correto (evita fundo preto/vazio)
+    .replace(/<body([^>]*)>/i, (match, attrs) => {
+      if (/style=/i.test(attrs)) {
+        return match.replace(/style="([^"]*)"/i, (_, s) =>
+          s.includes('background') ? `style="${s}"` : `style="${s}; overflow:hidden;"`)
+      }
+      return `<body${attrs} style="margin:0;padding:0;overflow:hidden;">`
+    })
+    // injeta script para forçar dimensões nativas no #post após render
+    .replace('</body>', `<script>
+(function(){
+  var p=document.getElementById('post');
+  if(p){
+    p.style.transform='none';
+    p.style.zoom='';
+    p.style.width='${nativeW}px';
+    p.style.height='${nativeH}px';
+  }
+})();
+</script></body>`)
+}
+
 export function VariationCard({ html, index, format, caption }: Props) {
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const zoomRef = useRef<HTMLIFrameElement>(null)
@@ -18,6 +45,7 @@ export function VariationCard({ html, index, format, caption }: Props) {
   const [copied, setCopied] = useState(false)
 
   const [nativeW, nativeH] = format === 'post' ? [1080, 1350] : [1080, 1920]
+  const cleanHtml = sanitizeHtml(html, nativeW, nativeH)
   const displayW = 270
   const scale = displayW / nativeW
   const displayH = Math.round(nativeH * scale)
@@ -86,9 +114,9 @@ export function VariationCard({ html, index, format, caption }: Props) {
         >
           <iframe
             ref={iframeRef}
-            srcDoc={html}
             title={`Variação ${index + 1}`}
-            sandbox="allow-same-origin"
+            srcDoc={cleanHtml}
+            sandbox="allow-same-origin allow-scripts"
             style={{
               width: nativeW,
               height: nativeH,
@@ -154,9 +182,9 @@ export function VariationCard({ html, index, format, caption }: Props) {
             >
               <iframe
                 ref={zoomRef}
-                srcDoc={html}
+                srcDoc={cleanHtml}
                 title={`Variação ${index + 1} — ampliada`}
-                sandbox="allow-same-origin"
+                sandbox="allow-same-origin allow-scripts"
                 style={{
                   width: nativeW,
                   height: nativeH,
