@@ -55,17 +55,45 @@ Layout: LEFT_ALIGNED (align-items:flex-start; text-align:left)`,
     id: 'A', name: 'HERO_STATEMENT',
     instruction: `ARQUÉTIPO A — HERO STATEMENT
 Estrutura obrigatória no .safe:
-  logo-row (height:160px) → h1 OVERSIZED (120-160px, máx 3 linhas, 1-2 palavras por linha) → subtexto CURTO (1 linha, 30px) → spacer → cta-wrap
-SEM eyebrow. SEM benefícios. SEM divisor. A headline É o conteúdo.
-Layout: CENTERED (align-items:center; text-align:center)`,
+  logo-row (height:140px) → h1 OVERSIZED → subtexto CURTO (1 linha, 32px) → spacer → cta-wrap
+SEM eyebrow. SEM benefícios. SEM divisor. A headline É o conteúdo visual dominante.
+Layout: CENTERED (align-items:center; text-align:center)
+
+HEADLINE OVERSIZED — detalhamento obrigatório:
+  font-size: 130-160px; font-weight:900; line-height:0.92; letter-spacing:-4px;
+  máx 3 linhas, 1-2 palavras por linha;
+  Linha 1: cor texto principal (branca no dark, #0f0f1a no claro);
+  Linha 2: cor destaque VIBRANTE (nunca escura — deve contrastar com o fundo);
+  Linha 3: cor texto principal;
+  A headline deve ocupar ~55% da altura útil do canvas.
+
+IMPACTO VISUAL obrigatório:
+  → Adicionar elemento decorativo de ALTO CONTRASTE atrás da headline:
+    palavra ou letra inicial em font-size:300px, font-weight:900, color:[destaque], opacity:0.06,
+    position:absolute, top:50%, left:50%, transform:translate(-50%,-50%), z-index:0, pointer-events:none
+  → Todo conteúdo do .safe em z-index:1 acima deste elemento`,
   },
   {
     id: 'D', name: 'LISTA_STEPS',
     instruction: `ARQUÉTIPO D — LISTA STEPS
 Estrutura obrigatória no .safe:
-  logo-row (height:160px) → eyebrow pill → h1 (88px, 3 linhas) → .steps-list (3 passos: número 48px destaque + título 26px + desc 20px, gap:32px, separador entre passos) → spacer → cta-wrap
+  logo-row (height:140px) → eyebrow pill → h1 (88px, 3 linhas) → .steps-list → spacer → cta-wrap
 SEM benefícios com ícone-card. Os números SÃO os ícones visuais.
-Layout: LEFT_ALIGNED`,
+Layout: LEFT_ALIGNED (align-items:flex-start; text-align:left)
+
+STEPS-LIST — detalhamento obrigatório:
+  .steps-list { display:flex; flex-direction:column; gap:36px; margin-top:40px; }
+  .step { display:flex; align-items:flex-start; gap:24px; padding-bottom:36px;
+    border-bottom:1px solid rgba([destaque],0.15); }
+  .step:last-child { border-bottom:none; }
+  .step-num { font-size:52px; font-weight:900; color:[destaque vibrante];
+    line-height:1; min-width:56px; flex-shrink:0; }
+  .step-title { font-size:28px; font-weight:800;
+    color: TEMA ESCURO=#ffffff / TEMA CLARO=#0f0f1a; }
+  .step-desc  { font-size:21px; font-weight:500; line-height:1.4; margin-top:6px;
+    color: TEMA ESCURO=rgba(255,255,255,0.70) / TEMA CLARO=#4a4a6a; }
+
+⚠️ TEMA CLARO: .step-title DEVE ser #0f0f1a e .step-desc DEVE ser #4a4a6a — NUNCA branco.`,
   },
   {
     id: 'F', name: 'QUOTE_CARD',
@@ -161,15 +189,15 @@ const BG_STYLES_LIGHT = [
 ]
 
 // ─── CONFIGURAÇÕES POR VARIAÇÃO ────────────────────────────────────────────────
-// Cada slot combina arquétipo + decoração que funcionam bem juntos.
-// A rotação garante que variações 1 e 2 SEMPRE usem arquétipos diferentes.
+// bgDark / bgLight: índice ESPECÍFICO por arquétipo — nunca ciclico.
+// Garante que o fundo seja compatível com o layout do arquétipo.
 const VARIATION_SLOTS = [
-  { archetypeIdx: 0, decorationIdx: 0, ctaIdx: 0 }, // B Editorial   + Orb     + SolidGradient
-  { archetypeIdx: 1, decorationIdx: 1, ctaIdx: 1 }, // A Hero        + Mesh    + PillButton
-  { archetypeIdx: 2, decorationIdx: 2, ctaIdx: 2 }, // D Steps       + Grid    + OutlinedButton
-  { archetypeIdx: 3, decorationIdx: 4, ctaIdx: 3 }, // F Quote       + Arco    + GlassButton
-  { archetypeIdx: 4, decorationIdx: 3, ctaIdx: 4 }, // C Stat        + Diagonal+ SplitCTA
-  { archetypeIdx: 5, decorationIdx: 6, ctaIdx: 0 }, // E Split       + Shape   + SolidGradient
+  { archetypeIdx: 0, decorationIdx: 0, ctaIdx: 0, bgDark: 0, bgLight: 0 }, // B Editorial + DEEP_GRADIENT  / CLEAN_WHITE
+  { archetypeIdx: 1, decorationIdx: 1, ctaIdx: 1, bgDark: 1, bgLight: 3 }, // A Hero      + MESH_GLOW      / GRADIENT_FADE
+  { archetypeIdx: 2, decorationIdx: 2, ctaIdx: 2, bgDark: 3, bgLight: 1 }, // D Steps     + RICH_DARK      / SOFT_TINT
+  { archetypeIdx: 3, decorationIdx: 4, ctaIdx: 3, bgDark: 1, bgLight: 3 }, // F Quote     + MESH_GLOW      / GRADIENT_FADE
+  { archetypeIdx: 4, decorationIdx: 3, ctaIdx: 4, bgDark: 0, bgLight: 0 }, // C Stat      + DEEP_GRADIENT  / CLEAN_WHITE
+  { archetypeIdx: 5, decorationIdx: 6, ctaIdx: 0, bgDark: 2, bgLight: 1 }, // E Split     + SPLIT_DARK     / SOFT_TINT
 ]
 
 function pickStyles(variationIndex: number, _totalVariations: number, theme: string) {
@@ -179,7 +207,7 @@ function pickStyles(variationIndex: number, _totalVariations: number, theme: str
     archetype: ARCHETYPES[slot.archetypeIdx],
     decoration: DECORATIONS[slot.decorationIdx],
     cta: CTA_STYLES[slot.ctaIdx],
-    bg: bgArr[slot.archetypeIdx % bgArr.length],
+    bg: bgArr[theme === 'dark' ? slot.bgDark : slot.bgLight],
   }
 }
 
