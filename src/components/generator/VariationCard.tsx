@@ -29,15 +29,17 @@ export function VariationCard({ html, index, format, caption }: Props) {
 
   async function handleExport() {
     const iframe = iframeRef.current
-    if (!iframe?.contentDocument?.body) return
+    if (!iframe?.contentDocument) return
     setExporting(true)
     try {
       const domtoimage = (await import('dom-to-image-more')).default
-      const blob = await domtoimage.toBlob(iframe.contentDocument.body, {
+      // Captura o #post diretamente — evita fundo preto do body
+      const postEl = iframe.contentDocument.getElementById('post') ?? iframe.contentDocument.body
+      const blob = await domtoimage.toBlob(postEl, {
         width: nativeW,
         height: nativeH,
         style: {
-          transform: 'scale(1)',
+          transform: 'none',
           transformOrigin: 'top left',
           width: `${nativeW}px`,
           height: `${nativeH}px`,
