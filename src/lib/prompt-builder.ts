@@ -43,17 +43,19 @@ const persuasionLabel: Record<string, string> = {
 // Cada arquétipo tem estrutura detalhada obrigatória.
 // A rotação garante que variações nunca compartilhem o mesmo arquétipo.
 
+// NOTA: Os arquétipos definem ESTRUTURA e LAYOUT — não o fundo.
+// O fundo (background) é definido pelo SLOT de rotação — isso permite que o mesmo
+// arquétipo apareça em fundos completamente diferentes entre sessões.
 const ARCHETYPES = [
   {
     id: 'B', name: 'EDITORIAL',
     instruction: `ARQUÉTIPO B — EDITORIAL
 Intenção: post denso e estruturado com benefícios claros. Aparência editorial profissional.
 ━ USA OBRIGATORIAMENTE a estrutura de 3 ZONAS do post (.p-header / .p-body / .p-footer)
-━ ALINHAMENTO: À ESQUERDA — logo, eyebrow, headline, subtexto, benefits, CTA flush-left
-━ FUNDO OBRIGATÓRIO: DEEP_GRADIENT — NUNCA preto puro, NUNCA MESH_GLOW
+━ ALINHAMENTO: À ESQUERDA — logo, headline, subtextos, benefits, CTA todos flush-left
 ━ CTA: SOLID_GRADIENT full-width — NUNCA pill centralizado
 Estrutura HTML:
-  .p-header → logo-row (logo + eyebrow pill align-self:flex-start)
+  .p-header → logo-row (logo à esquerda + eyebrow pill OPCIONAL align-self:flex-start)
   .p-body (justify-content:center; gap:28px) →
     h1 (88px, 900, 3 linhas máx, à esquerda)
     p.sub (30px, 500, 2 linhas)
@@ -70,24 +72,19 @@ Estrutura HTML:
 Intenção: headline de impacto centralizada verticalmente. Minimalismo com força visual.
 ━ USA OBRIGATORIAMENTE a estrutura de 3 ZONAS do post (.p-header / .p-body / .p-footer)
 ━ ALINHAMENTO: TUDO CENTRALIZADO — text-align:center; align-items:center em .p-body
-━ FUNDO DARK: MESH_GLOW — background:#000000 PRETO PURO — NUNCA DEEP_GRADIENT
-━ FUNDO LIGHT: background:#ffffff + 2 círculos decorativos (ver addendum LIGHT)
 ━ CTA: PILL_BUTTON centralizado (border-radius:100px; max-width:700px; margin:0 auto)
-
 Estrutura HTML:
   .p-header → img logo centralizada (height:90px; margin:0 auto)
-  .p-body   → [conteúdo abaixo, justify-content:center já centra verticalmente]
+  .p-body (justify-content:center; align-items:center) →
     h1 (font-size:120px; font-weight:900; line-height:0.95; letter-spacing:-3px;
         text-align:center; MÁXIMO 3 LINHAS — EM BLOCO ÚNICO — não dividir em 2 elementos)
     p.sub (30px; 500; text-align:center; opacity:0.72; max 2 linhas)
   .p-footer → CTA pill centralizado + slogan centralizado
-
-Elemento decorativo obrigatório — dentro do #post, antes do .safe:
+Elemento decorativo obrigatório — dentro do #post, antes do .safe (z-index:0):
   span.ghost (position:absolute; top:45%; left:50%; transform:translate(-50%,-50%);
     font-size:480px; font-weight:900; color:[destaque]; opacity:0.04; white-space:nowrap;
-    user-select:none; pointer-events:none; z-index:0; line-height:1)
-⛔ PROIBIDO: headline dividida em 2 elementos separados, lista de benefícios, eyebrow pill
-⛔ PROIBIDO: usar .spacer — o justify-content:center do .p-body já distribui o espaço`,
+    user-select:none; pointer-events:none; line-height:1)
+⛔ PROIBIDO: headline dividida em 2 elementos, lista de benefícios, eyebrow pill, .spacer`,
   },
   {
     id: 'D', name: 'LISTA_STEPS',
@@ -95,18 +92,17 @@ Elemento decorativo obrigatório — dentro do #post, antes do .safe:
 Intenção: passos numerados educam o leitor. Os números grandes são o elemento visual dominante.
 ━ USA OBRIGATORIAMENTE a estrutura de 3 ZONAS do post (.p-header / .p-body / .p-footer)
 ━ ALINHAMENTO: À ESQUERDA
-━ FUNDO OBRIGATÓRIO: RICH_DARK
 Estrutura HTML:
-  .p-header → logo-row (logo à esquerda + eyebrow pill)
+  .p-header → logo-row (logo à esquerda + eyebrow pill OPCIONAL)
   .p-body (justify-content:center; gap:24px) →
     h1 (76px, 900, 2 linhas máx)
     div.steps (display:flex; flex-direction:column; gap:24px):
       4 × div.step (display:flex; align-items:flex-start; gap:24px):
         span.num (48px, 900, cor destaque, min-width:52px, flex-shrink:0)
         div: p.step-title(26px,800) + p.step-desc(20px,500,opacity:0.72,margin-top:4px)
-        + border-bottom:1px solid rgba(destaque,0.15) exceto último
+        border-bottom:1px solid rgba(destaque,0.15) exceto último
   .p-footer → CTA ou slogan
-⛔ PROIBIDO: ícones emoji nos steps, space-evenly nas listas`,
+⛔ PROIBIDO: ícones emoji nos steps, space-evenly`,
   },
   {
     id: 'F', name: 'QUOTE_CARD',
@@ -114,7 +110,6 @@ Estrutura HTML:
 Intenção: frase de impacto ou depoimento. Espaço negativo = elegância.
 ━ USA OBRIGATORIAMENTE a estrutura de 3 ZONAS do post (.p-header / .p-body / .p-footer)
 ━ ALINHAMENTO: CENTRALIZADO
-━ FUNDO OBRIGATÓRIO: MESH_GLOW
 Estrutura HTML:
   .p-header → logo centralizada (height:90px; margin:0 auto)
   .p-body (justify-content:center; position:relative) →
@@ -124,26 +119,34 @@ Estrutura HTML:
     p.q-author (26px, 800, cor destaque, text-align:center)
     p.q-role (20px, 500, opacity:0.65, text-align:center)
   .p-footer → CTA centralizado ou apenas slogan
-⛔ PROIBIDO: lista de benefícios, eyebrow pill, qualquer elemento à esquerda`,
+⛔ PROIBIDO: lista de benefícios, eyebrow pill`,
   },
   {
     id: 'C', name: 'STAT_CARD',
     instruction: `ARQUÉTIPO C — STAT CARD
 Intenção: um número real e impactante domina visualmente o canvas como âncora.
+━ USA OBRIGATORIAMENTE a estrutura de 3 ZONAS do post (.p-header / .p-body / .p-footer)
 ━ ALINHAMENTO: CENTRALIZADO
-━ FUNDO OBRIGATÓRIO: DEEP_GRADIENT — o número flutua sobre o gradiente profundo
-Sequência no .safe: logo centralizada (110px) → número gigante (200-240px, 900, cor destaque, letter-spacing:-8px) → label do stat (30px) → subtexto (1 linha) → divisor → 2 cards horizontais → spacer → CTA centralizado
-⛔ Só usar se o assunto contiver número real. Caso contrário: usar Arquétipo B.`,
+Estrutura HTML:
+  .p-header → logo centralizada
+  .p-body (justify-content:center; gap:20px) →
+    span.stat (200-240px, 900, cor destaque, letter-spacing:-8px, text-align:center)
+    p.stat-label (30px, 700, text-align:center)
+    p.sub (26px, 500, opacity:0.72, text-align:center, 1 linha)
+    div.divider (2px, gradiente)
+    div.mini-cards (display:flex; gap:24px; justify-content:center):
+      2 × div.card (bg glass; border-radius:16px; padding:24px; text-align:center)
+  .p-footer → CTA centralizado
+⛔ Só usar se o assunto contiver número real`,
   },
   {
     id: 'E', name: 'SPLIT_LAYOUT',
     instruction: `ARQUÉTIPO E — SPLIT LAYOUT
-Intenção: contraste visual direto entre problema (esquerda) e solução (direita).
-━ FUNDO: o split é o fundo — metade escuro, metade cor destaque vibrante
-Implementação: 2 divs absolutos side-by-side (45% escuro + 55% destaque) + clip-path diagonal.
-Logo centralizada no topo (z-index:10). Headline cruzando ambos os lados (position:absolute, centralizada, 68-80px).
-Labels "ANTES/SEM" à esquerda + "DEPOIS/COM" à direita. CTA full-width na base.
-⛔ PROIBIDO: lista de benefícios, eyebrow pill, fundo decorativo adicional`,
+Intenção: contraste visual direto entre problema e solução, lado a lado.
+Implementação: 2 divs absolutos side-by-side (45% escuro + 55% cor destaque vibrante) + clip-path diagonal.
+Logo centralizada no topo (z-index:10). Headline grande cruzando os dois lados (position:absolute, centralizada, 68-80px).
+Labels "ANTES/SEM" à esquerda + "DEPOIS/COM" à direita, em tipografia contrastante. CTA full-width na base.
+⛔ PROIBIDO: lista de benefícios, fundo decorativo adicional`,
   },
 ]
 
@@ -189,71 +192,76 @@ const BG_STYLES_LIGHT = [
 
 interface SlotSpec { arch: string; bgDark: number; bgLight: number; cta: number; deco: number }
 
-// Sets para 2 variações — 6 combinações distintas, rotacionam aleatoriamente
+// FUNDOS DARK:  0=DEEP_GRADIENT(roxo vibrante)  1=MESH_GLOW(preto+glow)
+//               2=SPLIT_DARK_LIGHT(escuro+branco)  3=RICH_DARK(escuro+dots)
+// FUNDOS LIGHT: 0=CLEAN_WHITE  1=SOFT_TINT  2=CARD_SPLIT  3=GRADIENT_FADE
+// Cada set varia deliberadamente os fundos — B nem sempre roxo, A nem sempre preto.
+
+// Sets para 2 variações — 6 combinações com fundos rotacionando
 const SETS_2: SlotSpec[][] = [
-  [ // Set 0: Hero + Editorial
+  [ // Set 0: Hero preto + Editorial roxo (clássico)
     { arch:'A', bgDark:1, bgLight:3, cta:1, deco:1 },
     { arch:'B', bgDark:0, bgLight:0, cta:0, deco:0 },
   ],
-  [ // Set 1: Steps + Hero
-    { arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 },
+  [ // Set 1: Steps roxo + Hero preto
+    { arch:'D', bgDark:0, bgLight:2, cta:2, deco:2 },
     { arch:'A', bgDark:1, bgLight:3, cta:1, deco:7 },
   ],
-  [ // Set 2: Editorial + Split
-    { arch:'B', bgDark:0, bgLight:2, cta:0, deco:6 },
-    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 },
+  [ // Set 2: Editorial dots-escuro + Split
+    { arch:'B', bgDark:3, bgLight:1, cta:0, deco:6 },
+    { arch:'E', bgDark:2, bgLight:2, cta:4, deco:3 },
   ],
-  [ // Set 3: Steps + Editorial
-    { arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 },
-    { arch:'B', bgDark:0, bgLight:0, cta:3, deco:0 },
+  [ // Set 3: Hero ROXO (diferente!) + Steps dots
+    { arch:'A', bgDark:0, bgLight:1, cta:1, deco:1 },
+    { arch:'D', bgDark:3, bgLight:0, cta:2, deco:2 },
   ],
-  [ // Set 4: Hero + Split
-    { arch:'A', bgDark:1, bgLight:3, cta:1, deco:1 },
-    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 },
+  [ // Set 4: Editorial split-claro + Hero preto
+    { arch:'B', bgDark:2, bgLight:2, cta:3, deco:0 },
+    { arch:'A', bgDark:1, bgLight:3, cta:1, deco:7 },
   ],
-  [ // Set 5: Split + Steps
-    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 },
-    { arch:'D', bgDark:3, bgLight:1, cta:2, deco:6 },
+  [ // Set 5: Split + Editorial dots
+    { arch:'E', bgDark:2, bgLight:2, cta:4, deco:3 },
+    { arch:'B', bgDark:3, bgLight:1, cta:0, deco:6 },
   ],
 ]
 
-// Sets para 4 variações — 6 ordens distintas de [A, B, D, E]
+// Sets para 4 variações — cada set tem fundos completamente diferentes
 const SETS_4: SlotSpec[][] = [
-  [ // Set 0
+  [ // Set 0: B(roxo) A(preto) D(dots) E(split)
     { arch:'B', bgDark:0, bgLight:0, cta:0, deco:0 },
     { arch:'A', bgDark:1, bgLight:3, cta:1, deco:1 },
     { arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 },
-    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 },
+    { arch:'E', bgDark:2, bgLight:2, cta:4, deco:3 },
   ],
-  [ // Set 1
+  [ // Set 1: A(preto) D(roxo) E(split) B(dots) — fundos trocados!
     { arch:'A', bgDark:1, bgLight:3, cta:1, deco:1 },
-    { arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 },
-    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 },
-    { arch:'B', bgDark:0, bgLight:2, cta:3, deco:6 },
+    { arch:'D', bgDark:0, bgLight:2, cta:2, deco:2 },
+    { arch:'E', bgDark:2, bgLight:2, cta:4, deco:3 },
+    { arch:'B', bgDark:3, bgLight:1, cta:3, deco:6 },
   ],
-  [ // Set 2
+  [ // Set 2: D(dots) B(split) A(roxo!) E(preto-ish)
     { arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 },
+    { arch:'B', bgDark:2, bgLight:2, cta:0, deco:0 },
+    { arch:'A', bgDark:0, bgLight:1, cta:1, deco:7 },
+    { arch:'E', bgDark:2, bgLight:2, cta:4, deco:3 },
+  ],
+  [ // Set 3: E(split) A(preto) B(dots) D(roxo)
+    { arch:'E', bgDark:2, bgLight:2, cta:4, deco:3 },
+    { arch:'A', bgDark:1, bgLight:3, cta:1, deco:1 },
+    { arch:'B', bgDark:3, bgLight:1, cta:3, deco:6 },
+    { arch:'D', bgDark:0, bgLight:0, cta:2, deco:2 },
+  ],
+  [ // Set 4: B(roxo) E(split) A(dots-glow) D(preto-ish)
     { arch:'B', bgDark:0, bgLight:0, cta:0, deco:0 },
-    { arch:'A', bgDark:1, bgLight:3, cta:1, deco:7 },
-    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 },
+    { arch:'E', bgDark:2, bgLight:2, cta:4, deco:3 },
+    { arch:'A', bgDark:3, bgLight:1, cta:1, deco:7 },
+    { arch:'D', bgDark:1, bgLight:3, cta:2, deco:2 },
   ],
-  [ // Set 3
-    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 },
-    { arch:'A', bgDark:1, bgLight:3, cta:1, deco:1 },
-    { arch:'B', bgDark:0, bgLight:2, cta:3, deco:6 },
-    { arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 },
-  ],
-  [ // Set 4
-    { arch:'B', bgDark:0, bgLight:0, cta:0, deco:0 },
-    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 },
-    { arch:'A', bgDark:1, bgLight:3, cta:1, deco:7 },
-    { arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 },
-  ],
-  [ // Set 5
-    { arch:'A', bgDark:1, bgLight:3, cta:1, deco:1 },
-    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 },
-    { arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 },
-    { arch:'B', bgDark:0, bgLight:0, cta:0, deco:6 },
+  [ // Set 5: A(roxo!) D(preto-glow) B(dots) E(split)
+    { arch:'A', bgDark:0, bgLight:1, cta:1, deco:1 },
+    { arch:'D', bgDark:1, bgLight:3, cta:2, deco:2 },
+    { arch:'B', bgDark:3, bgLight:0, cta:0, deco:6 },
+    { arch:'E', bgDark:2, bgLight:2, cta:4, deco:3 },
   ],
 ]
 
