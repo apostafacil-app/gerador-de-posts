@@ -17,6 +17,20 @@ interface HistoryDoc {
   expiresAt: Timestamp
 }
 
+interface HistoryRow {
+  id: string
+  companyId: string
+  subject: string
+  format: PostFormat
+  theme: PostTheme
+  variations: string[]
+  captions?: string[]
+  createdAt: string
+  expiresAt: string
+  _createdMs: number
+  _expiresMs: number
+}
+
 // ── GET /api/history?companyId=X ─────────────────────────────────────────────
 export async function GET(req: NextRequest) {
   const companyId = req.nextUrl.searchParams.get('companyId')
@@ -26,18 +40,16 @@ export async function GET(req: NextRequest) {
 
   try {
     const db = getDb()
-    const now = Timestamp.now()
+    const now = new Date()
 
+    // Busca apenas por companyId (sem orderBy) para evitar índice composto.
+    // Filtro e ordenação feitos em memória.
     const snap = await db
       .collection(COLLECTIONS.history)
       .where('companyId', '==', companyId)
-      .where('expiresAt', '>', now)
-      .orderBy('expiresAt', 'desc')
-      .orderBy('createdAt', 'desc')
-      .limit(MAX_ENTRIES_PER_COMPANY)
       .get()
 
-    const entries = snap.docs.map((doc: QueryDocumentSnapshot) => {
+    const rows: HistoryRow[] = snap.docs.map((doc: QueryDocumentSnapshot) => {
       const d = doc.data() as HistoryDoc
       return {
         id: doc.id,
@@ -49,8 +61,17 @@ export async function GET(req: NextRequest) {
         captions: d.captions,
         createdAt: d.createdAt.toDate().toISOString(),
         expiresAt: d.expiresAt.toDate().toISOString(),
+        _createdMs: d.createdAt.toDate().getTime(),
+        _expiresMs: d.expiresAt.toDate().getTime(),
       }
     })
+
+    const entries = rows
+      .filter((e: HistoryRow) => e._expiresMs > now.getTime())
+      .sort((a: HistoryRow, b: HistoryRow) => b._createdMs - a._createdMs)
+      .slice(0, MAX_ENTRIES_PER_COMPANY)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      .map(({ _createdMs, _expiresMs, ...e }: HistoryRow) => e)
 
     return NextResponse.json({ entries })
   } catch (err) {
@@ -90,15 +111,18 @@ export async function POST(req: NextRequest) {
 
     await db.collection(COLLECTIONS.history).add(doc)
 
-    // Cleanup: remove excess entries beyond the limit (oldest first)
+    // Cleanup: remove excess entries beyond the limit (oldest first, sem orderBy)
     const allSnap = await db
       .collection(COLLECTIONS.history)
       .where('companyId', '==', companyId)
-      .orderBy('createdAt', 'asc')
       .get()
 
     if (allSnap.size > MAX_ENTRIES_PER_COMPANY) {
-      const toDelete = allSnap.docs.slice(0, allSnap.size - MAX_ENTRIES_PER_COMPANY)
+      const sorted = [...allSnap.docs].sort((a, b) =>
+        (a.data() as HistoryDoc).createdAt.toDate().getTime() -
+        (b.data() as HistoryDoc).createdAt.toDate().getTime()
+      )
+      const toDelete = sorted.slice(0, allSnap.size - MAX_ENTRIES_PER_COMPANY)
       const batch = db.batch()
       toDelete.forEach((d: QueryDocumentSnapshot) => batch.delete(d.ref))
       await batch.commit()
