@@ -171,18 +171,19 @@ const CTA_STYLES = [
   'SPLIT_CTA: flex-row — texto à esquerda ("Pronto para começar?") + botão quadrado 100px com ícone → à direita, align-items:center, gap:24px',
 ]
 
+// Nomes batem exatamente com o addendum — a IA consulta a definição completa no addendum
 const BG_STYLES_DARK = [
-  'DEEP_GRADIENT: linear-gradient(135deg,[secundária] 0%,[primária] 50%,#050010 100%)',
-  'MESH_GLOW: fundo #060010 + círculo de luz destaque 20% opacity atrás da headline + círculo primária 10% opacity no canto inferior',
-  'SPLIT_DARK_LIGHT: top 45% gradiente escuro da marca, bottom 55% #f8f8ff — divisória clip-path:polygon(0 0,100% 0,100% 85%,0 100%)',
-  'RICH_DARK: fundo #0a0018 + SVG repeating-linear-gradient diagonal 45deg opacity:0.03 + orbe roxo atrás do CTA',
+  'DEEP_GRADIENT',   // roxo vibrante saturado
+  'MESH_GLOW',       // preto puro + glow radial centralizado
+  'SPLIT_DARK',      // metade escuro/colorido + metade claro
+  'RICH_DARK',       // quase preto + textura pontilhada + glow inferior
 ]
 
 const BG_STYLES_LIGHT = [
-  'CLEAN_WHITE: fundo #ffffff + círculo decorativo neutro canto superior direito',
-  'SOFT_TINT: fundo cor primária 5% opacity (ex: primária #7b00d4 → fundo #f9f0ff)',
-  'CARD_SPLIT: fundo branco + faixa colorida topo height:320px gradiente da marca + card branco sobreposto com sombra',
-  'GRADIENT_FADE: linear-gradient(180deg,[primária 8%] 0%,#ffffff 40%) — degrade suave top→bottom',
+  'CLEAN_WHITE',     // branco + círculos decorativos suaves
+  'SOFT_TINT',       // tint primária encapsulando o conteúdo
+  'CARD_SPLIT',      // faixa colorida forte no topo + corpo branco
+  'GRADIENT_FADE',   // gradiente diagonal da marca → branco
 ]
 
 // ─── SETS DE ROTAÇÃO ───────────────────────────────────────────────────────────

@@ -329,33 +329,31 @@ PALETA DARK:
   Ícone card bg:    rgba([destaque], 0.12) → rgba([destaque], 0.20)
   Ícone card border:rgba([destaque], 0.30)
 
-OPÇÕES DE FUNDO DARK — aparências RADICALMENTE diferentes, visíveis até em thumbnail pequeno:
+OPÇÕES DE FUNDO DARK — o fundo OBRIGATÓRIO de cada variação vem da ESPECIFICAÇÃO VISUAL acima.
+Não há vínculo fixo fundo↔arquétipo — qualquer arquétipo pode usar qualquer fundo:
 
-  DEEP_GRADIENT: linear-gradient(135deg,[secundária] 0%,[primária] 50%,#1a0040 100%)
-    → ROXO SATURADO e vibrante. A cor da marca domina. Claramente colorido.
-    → Arquétipo B — layout editorial denso à esquerda
+  DEEP_GRADIENT: background:linear-gradient(135deg,[secundária] 0%,[primária] 50%,#1a0040 100%)
+    → ROXO SATURADO e vibrante. Cor da marca domina 100% do canvas.
 
-  MESH_GLOW:     background:#000000 (PRETO PURO) +
+  MESH_GLOW:     background:#000000 +
                  div(position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);
                    width:1000px;height:1000px;border-radius:50%;
-                   background:radial-gradient(circle,[destaque] 0%,[destaque 60% opacity] 20%,transparent 65%);
+                   background:radial-gradient(circle,[destaque] 0%,transparent 65%);
                    opacity:0.35;pointer-events:none;z-index:0)
-    → PRETO com glow brilhante e luminoso. Visualmente oposto ao DEEP_GRADIENT.
-    → Arquétipo A — headline gigante centralizada flutua sobre o glow
+    → PRETO PURO com glow brilhante centralizado — contraste máximo.
 
-  SPLIT_DARK:    top 45% linear-gradient(135deg,[secundária],[primária]), bottom 55% #f8f8ff
-                 clip-path:polygon(0 0,100% 0,100% 85%,0 100%) no div superior
-    → Metade escuro marca, metade branco. Dramático e único.
-    → Arquétipo E — split layout
+  SPLIT_DARK:    div superior (position:absolute;top:0;left:0;width:100%;height:55%;
+                   background:linear-gradient(135deg,[secundária],[primária]);
+                   clip-path:polygon(0 0,100% 0,100% 80%,0 100%)) +
+                 fundo do #post: #f4f0ff
+    → Metade escuro/colorido em cima, metade claro embaixo. Visual único e moderno.
 
   RICH_DARK:     background:#05000f +
-                 SVG: <pattern id="p" width="48" height="48"><circle cx="24" cy="24" r="1.5" fill="[destaque]" opacity="0.18"/></pattern>
-                 (grade pontilhada sutil cobrindo todo o canvas) +
-                 div(position:absolute;bottom:-80px;left:50%;transform:translateX(-50%);
-                   width:900px;height:900px;border-radius:50%;
-                   background:radial-gradient(circle,[primária] 0%,transparent 55%);opacity:0.20;pointer-events:none)
-    → Roxo muito escuro com micro-pontos e glow embaixo. Diferente do DEEP_GRADIENT (sem o gradiente colorido).
-    → Arquétipo D — números grandes com máximo contraste
+                 SVG inline: <svg style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0.15"><defs><pattern id="pd" width="48" height="48" patternUnits="userSpaceOnUse"><circle cx="24" cy="24" r="1.5" fill="[destaque]"/></pattern></defs><rect width="100%" height="100%" fill="url(#pd)"/></svg> +
+                 div(position:absolute;bottom:-100px;left:50%;transform:translateX(-50%);
+                   width:800px;height:800px;border-radius:50%;
+                   background:radial-gradient(circle,[primária] 0%,transparent 60%);opacity:0.18;pointer-events:none)
+    → Quase preto com textura pontilhada e glow inferior suave.
 
 HIERARQUIA TIPOGRÁFICA — POST 1080×1350:
   Eyebrow/Pill:       20px | 700 | uppercase | letter-spacing:1px
@@ -412,11 +410,32 @@ PALETA LIGHT:
   ⚠️ TEMA CLARO = TEXTOS ESCUROS. Qualquer #ffffff em texto = POST INVISÍVEL e REPROVADO.
   ⚠️ NUNCA usar rgba(255,255,255,x) em qualquer texto ou label no tema claro.
 
-OPÇÕES DE FUNDO LIGHT (escolha a definida na ESPECIFICAÇÃO VISUAL por variação):
-  CLEAN_WHITE:    fundo #ffffff + círculo decorativo neutro canto superior direito (rgba([primária],0.06), 600×600px)
-  SOFT_TINT:      fundo cor primária 5% opacity (ex: primária #7b00d4 → fundo #f9f0ff)
-  CARD_SPLIT:     fundo #ffffff + faixa colorida topo height:320px gradiente horizontal da marca + conteúdo sobre fundo branco
-  GRADIENT_FADE:  linear-gradient(180deg,[primária 8%] 0%,#ffffff 40%) — degrade suave top→bottom
+OPÇÕES DE FUNDO LIGHT — o fundo OBRIGATÓRIO de cada variação vem da ESPECIFICAÇÃO VISUAL acima.
+Não há vínculo fixo fundo↔arquétipo — qualquer arquétipo pode usar qualquer fundo:
+
+  CLEAN_WHITE:   background:#ffffff +
+                 div(position:absolute;top:-160px;right:-160px;width:700px;height:700px;
+                   border-radius:50%;background:[primária];opacity:0.07;pointer-events:none) +
+                 div(position:absolute;bottom:-100px;left:-80px;width:400px;height:400px;
+                   border-radius:50%;background:[destaque];opacity:0.05;pointer-events:none)
+    → Branco limpo com dois círculos decorativos suaves — minimalismo moderno.
+
+  SOFT_TINT:     background: gradiente radial central — radial-gradient(ellipse 120% 80% at 50% 0%,
+                   [primária com 18% opacity] 0%, #ffffff 65%) +
+                 div(position:absolute;bottom:0;left:0;width:100%;height:280px;
+                   background:linear-gradient(0deg,[primária 6% opacity],transparent))
+    → Tint suave na parte superior e inferior — encapsula o conteúdo com cor.
+
+  CARD_SPLIT:    background:#ffffff +
+                 div(position:absolute;top:0;left:0;width:100%;height:380px;
+                   background:linear-gradient(135deg,[secundária],[primária])) +
+                 (conteúdo flutua sobre fundo branco abaixo da faixa colorida)
+    → Faixa colorida forte no topo + corpo branco limpo. Alto contraste.
+
+  GRADIENT_FADE: background:linear-gradient(160deg,[primária 22%] 0%,#ffffff 55%) +
+                 div(position:absolute;top:-50px;right:-50px;width:500px;height:500px;
+                   border-radius:50%;background:[destaque];opacity:0.08;pointer-events:none)
+    → Gradiente diagonal da marca desbotando para branco. Elegante e colorido.
 
 HIERARQUIA TIPOGRÁFICA — POST 1080×1350:
   Eyebrow/Pill:       20px | 700 | uppercase | letter-spacing:1px | cor primária escurecida
