@@ -182,25 +182,128 @@ const BG_STYLES_LIGHT = [
   'GRADIENT_FADE: linear-gradient(180deg,[primária 8%] 0%,#ffffff 40%) — degrade suave top→bottom',
 ]
 
-// ─── MENU DE OPÇÕES PARA A IA ──────────────────────────────────────────────────
-// A IA escolhe livremente os melhores arquétipos para o conteúdo.
-// Não há pré-atribuição — isso garante variações genuinamente diferentes.
+// ─── SETS DE ROTAÇÃO ───────────────────────────────────────────────────────────
+// Cada set define uma combinação DIFERENTE de arquétipos.
+// A geração sorteia aleatoriamente um set — garantindo variedade entre sessões.
+// A IA não escolhe: ela recebe o arquétipo obrigatório e aplica criatividade DENTRO dele.
 
-function buildArchetypeMenu(): string {
-  return ARCHETYPES.map(a => `▸ ${a.id} — ${a.name}\n${a.instruction}`).join('\n\n')
+interface SlotSpec { arch: string; bgDark: number; bgLight: number; cta: number; deco: number }
+
+// Sets para 2 variações — 6 combinações distintas, rotacionam aleatoriamente
+const SETS_2: SlotSpec[][] = [
+  [ // Set 0: Hero + Editorial
+    { arch:'A', bgDark:1, bgLight:3, cta:1, deco:1 },
+    { arch:'B', bgDark:0, bgLight:0, cta:0, deco:0 },
+  ],
+  [ // Set 1: Steps + Hero
+    { arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 },
+    { arch:'A', bgDark:1, bgLight:3, cta:1, deco:7 },
+  ],
+  [ // Set 2: Editorial + Split
+    { arch:'B', bgDark:0, bgLight:2, cta:0, deco:6 },
+    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 },
+  ],
+  [ // Set 3: Steps + Editorial
+    { arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 },
+    { arch:'B', bgDark:0, bgLight:0, cta:3, deco:0 },
+  ],
+  [ // Set 4: Hero + Split
+    { arch:'A', bgDark:1, bgLight:3, cta:1, deco:1 },
+    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 },
+  ],
+  [ // Set 5: Split + Steps
+    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 },
+    { arch:'D', bgDark:3, bgLight:1, cta:2, deco:6 },
+  ],
+]
+
+// Sets para 4 variações — 6 ordens distintas de [A, B, D, E]
+const SETS_4: SlotSpec[][] = [
+  [ // Set 0
+    { arch:'B', bgDark:0, bgLight:0, cta:0, deco:0 },
+    { arch:'A', bgDark:1, bgLight:3, cta:1, deco:1 },
+    { arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 },
+    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 },
+  ],
+  [ // Set 1
+    { arch:'A', bgDark:1, bgLight:3, cta:1, deco:1 },
+    { arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 },
+    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 },
+    { arch:'B', bgDark:0, bgLight:2, cta:3, deco:6 },
+  ],
+  [ // Set 2
+    { arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 },
+    { arch:'B', bgDark:0, bgLight:0, cta:0, deco:0 },
+    { arch:'A', bgDark:1, bgLight:3, cta:1, deco:7 },
+    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 },
+  ],
+  [ // Set 3
+    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 },
+    { arch:'A', bgDark:1, bgLight:3, cta:1, deco:1 },
+    { arch:'B', bgDark:0, bgLight:2, cta:3, deco:6 },
+    { arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 },
+  ],
+  [ // Set 4
+    { arch:'B', bgDark:0, bgLight:0, cta:0, deco:0 },
+    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 },
+    { arch:'A', bgDark:1, bgLight:3, cta:1, deco:7 },
+    { arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 },
+  ],
+  [ // Set 5
+    { arch:'A', bgDark:1, bgLight:3, cta:1, deco:1 },
+    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 },
+    { arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 },
+    { arch:'B', bgDark:0, bgLight:0, cta:0, deco:6 },
+  ],
+]
+
+// Sets para 1 ou 3 variações — fallback simples
+const SETS_1: SlotSpec[][] = [
+  [{ arch:'B', bgDark:0, bgLight:0, cta:0, deco:0 }],
+  [{ arch:'A', bgDark:1, bgLight:3, cta:1, deco:1 }],
+  [{ arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 }],
+  [{ arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 }],
+]
+
+const SETS_3: SlotSpec[][] = [
+  [
+    { arch:'B', bgDark:0, bgLight:0, cta:0, deco:0 },
+    { arch:'A', bgDark:1, bgLight:3, cta:1, deco:1 },
+    { arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 },
+  ],
+  [
+    { arch:'A', bgDark:1, bgLight:3, cta:1, deco:1 },
+    { arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 },
+    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 },
+  ],
+  [
+    { arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 },
+    { arch:'B', bgDark:0, bgLight:0, cta:0, deco:0 },
+    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 },
+  ],
+  [
+    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 },
+    { arch:'A', bgDark:1, bgLight:3, cta:1, deco:1 },
+    { arch:'B', bgDark:0, bgLight:2, cta:3, deco:6 },
+  ],
+]
+
+function pickSet(numVar: number, seed: number): SlotSpec[] {
+  const map: Record<number, SlotSpec[][]> = { 1: SETS_1, 2: SETS_2, 3: SETS_3, 4: SETS_4 }
+  const sets = map[numVar] ?? SETS_4
+  return sets[seed % sets.length]
 }
 
-function buildBgMenu(theme: string): string {
-  const list = theme === 'dark' ? BG_STYLES_DARK : BG_STYLES_LIGHT
-  return list.map((b, i) => `  ${i + 1}) ${b}`).join('\n')
-}
-
-function buildCtaMenu(): string {
-  return CTA_STYLES.map((c, i) => `  ${i + 1}) ${c}`).join('\n')
-}
-
-function buildDecorationMenu(): string {
-  return DECORATIONS.map((d, i) => `  ${i + 1}) ${d}`).join('\n')
+function buildSlotSpec(slot: SlotSpec, theme: string): string {
+  const arch = ARCHETYPES.find(a => a.id === slot.arch)!
+  const bg = theme === 'dark' ? BG_STYLES_DARK[slot.bgDark] : BG_STYLES_LIGHT[slot.bgLight]
+  const cta = CTA_STYLES[slot.cta]
+  const deco = DECORATIONS[Math.min(slot.deco, DECORATIONS.length - 1)]
+  return `🏗  ARQUÉTIPO → ${arch.id} — ${arch.name}
+${arch.instruction}
+🎨  FUNDO → ${bg}
+✨  DECORAÇÃO → ${deco}
+🔘  CTA → ${cta}`
 }
 
 export function buildPrompt(
@@ -239,11 +342,11 @@ Separe cada legenda com os marcadores:
 <!-- CAPTION_END -->`
     : ''
 
-  // Menu de opções criativas — a IA escolhe a melhor combinação para o conteúdo
-  const archetypeMenu = buildArchetypeMenu()
-  const bgMenu = buildBgMenu(form.theme)
-  const ctaMenu = buildCtaMenu()
-  const decorationMenu = buildDecorationMenu()
+  // Sorteia o set de rotação — garante combinações diferentes a cada geração
+  const rotationSet = pickSet(form.variations, visualSeed)
+  const variationSpecs = rotationSet.map((slot, i) =>
+    `━━ VARIAÇÃO ${i + 1} ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n${buildSlotSpec(slot, form.theme)}`
+  ).join('\n\n')
 
   const resolvedBase = baseRules || DEFAULT_AI_RULES
   const resolvedAddendum = modeAddendum || getModeAddendum(form.format, form.theme)
@@ -275,46 +378,17 @@ Técnica de persuasão: ${persuasionLabel[form.persuasionTechnique] ?? 'benefici
 Usar imagem/arte visual: ${form.useImage ? `Sim — estilo desejado: ${form.imageStyle || 'premium, abstrato geométrico'}` : 'Não — usar apenas tipografia e gradientes'}
 
 ---
-## SUA MISSÃO CRIATIVA
+## ESPECIFICAÇÃO VISUAL — SEGUIR OBRIGATORIAMENTE
 
-Crie ${form.variations} variações VISUALMENTE DISTINTAS. Para cada variação, você escolhe livremente
-o arquétipo, fundo, CTA e decoração que melhor servem o conteúdo — desde que nenhuma repita outra.
+🎲 SEMENTE: ${visualSeed} — use para variar copy, emoji, posição de elementos, tom do slogan.
 
-🎲 SEMENTE CRIATIVA: ${visualSeed}
-   Use para diversificar: ângulo do copy, posição de elementos, emoji, tom do slogan.
+${variationSpecs}
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-ARQUÉTIPOS DISPONÍVEIS — escolha os que melhor servem o conteúdo:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${archetypeMenu}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-FUNDOS DISPONÍVEIS:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${bgMenu}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CTAs DISPONÍVEIS:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${ctaMenu}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-DECORAÇÕES DISPONÍVEIS:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${decorationMenu}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-REGRAS DE CRIATIVIDADE:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-✅ Cada variação usa um arquétipo DIFERENTE
-✅ Cada variação usa um fundo DIFERENTE
-✅ Varie alinhamentos: misture centralizadas e à esquerda
-✅ Varie densidade: uma densa (B), uma minimalista (A ou F), uma estruturada (D)
-✅ O eyebrow pill é OPCIONAL — use só quando acrescentar valor, não por padrão
-❌ PROIBIDO: dois arquétipos iguais na mesma geração
-❌ PROIBIDO: arquétipo F (Quote) sem depoimento real fornecido — invente copy próprio em vez
-❌ PROIBIDO: inventar números, estatísticas ou urgência falsa
-❌ PROIBIDO: arquétipo C (Stat) sem número real no assunto
+⚠️ REGRAS:
+❌ PROIBIDO trocar o arquétipo atribuído — execute exatamente o que está especificado.
+❌ PROIBIDO inventar números, estatísticas ou urgência falsa.
+✅ O eyebrow pill é OPCIONAL — use só se agregar contexto, não por padrão.
+✅ Cada variação deve ter copy e ângulo de mensagem DIFERENTES entre si.
 
 ---
 ## INSTRUÇÃO FINAL
