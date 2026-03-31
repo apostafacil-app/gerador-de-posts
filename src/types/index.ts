@@ -46,7 +46,8 @@ export interface GeneratorFormData {
   variations: number
   useImage: boolean
   imageStyle: string
-  generateCaption: boolean   // NEW: generate caption + hashtags
+  generateCaption: boolean   // generate caption + hashtags
+  showCta: boolean           // include CTA button in the post
 }
 
 export interface GenerateRequest {

@@ -46,6 +46,7 @@ export const COLLECTIONS = {
   companies:    'companies',
   companyLogos: 'company_logos',  // logos separados para evitar limite 1 MB/doc
   system:       'system',         // documentos de configuração do sistema
+  history:      'history',        // histórico de posts gerados (30 dias, máx 50/empresa)
 } as const
 
 // IDs dos documentos de sistema

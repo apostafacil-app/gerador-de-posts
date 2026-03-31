@@ -251,11 +251,14 @@ ${variationSpecs}
 ---
 ## INSTRUÇÃO FINAL
 
-**CTA (botão de ação) é OPCIONAL:**
-- Tom "urgente" ou "exclusivo" → CTA botão obrigatório
+**CTA (botão de ação):**
+${form.showCta === false
+  ? '⛔ CTA DESATIVADO pelo usuário: NÃO incluir botão CTA em NENHUMA variação. Usar apenas slogan no rodapé. Ignorar qualquer instrução de arquétipo que diga CTA obrigatório.'
+  : `- Tom "urgente" ou "exclusivo" → CTA botão obrigatório
 - Tom "empolgante" ou "confiável" → CTA ou só slogan (escolha o que for mais elegante)
 - Post educativo/informativo → apenas slogan rodapé, sem botão
-- Nunca force um CTA que deixe o post esmagado ou corte elementos
+- Nunca force um CTA que deixe o post esmagado ou corte elementos`
+}
 
 **Espaço e respiração:**
 - Prefira MENOS elementos bem espaçados a MAIS elementos apertados

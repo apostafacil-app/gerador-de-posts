@@ -11,21 +11,25 @@ interface Props {
 
 export function HistoryTab({ companyId }: Props) {
   const [entries, setEntries] = useState<HistoryEntry[]>([])
+  const [loading, setLoading] = useState(true)
   const [zoomed, setZoomed] = useState<{ html: string; format: PostFormat } | null>(null)
 
   useEffect(() => {
-    setEntries(getHistory(companyId))
+    setLoading(true)
+    getHistory(companyId)
+      .then(data => setEntries(data))
+      .finally(() => setLoading(false))
   }, [companyId])
 
   function handleDelete(id: string) {
-    deleteFromHistory(companyId, id)
     setEntries(prev => prev.filter(e => e.id !== id))
+    deleteFromHistory(id)
   }
 
   function handleClearAll() {
     if (!confirm('Apagar todo o histórico desta empresa?')) return
-    clearHistory(companyId)
     setEntries([])
+    clearHistory(companyId)
   }
 
   async function handleExport(html: string, format: PostFormat, label: string) {
@@ -58,6 +62,14 @@ export function HistoryTab({ companyId }: Props) {
     return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' })
   }
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="w-8 h-8 border-4 border-purple-200 border-t-purple-500 rounded-full animate-spin" />
+      </div>
+    )
+  }
+
   if (entries.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-64 gap-3 text-center">
@@ -74,9 +86,12 @@ export function HistoryTab({ companyId }: Props) {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-500">
-          <span className="font-semibold text-gray-900">{entries.length}</span> post{entries.length !== 1 ? 's' : ''} gerado{entries.length !== 1 ? 's' : ''}
-        </p>
+        <div>
+          <p className="text-sm text-gray-500">
+            <span className="font-semibold text-gray-900">{entries.length}</span> post{entries.length !== 1 ? 's' : ''} gerado{entries.length !== 1 ? 's' : ''}
+          </p>
+          <p className="text-xs text-gray-400 mt-0.5">Retidos por 30 dias · sincronizado entre dispositivos</p>
+        </div>
         <button
           onClick={handleClearAll}
           className="text-xs text-red-400 hover:text-red-600 font-medium transition-colors"

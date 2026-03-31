@@ -1,6 +1,7 @@
 /**
- * Histórico de posts gerados — armazenado no localStorage do browser.
- * Máx. 50 entradas por empresa para não encher o storage.
+ * Histórico de posts gerados — armazenado no Firebase Firestore via API.
+ * Retenção: 30 dias. Máx 50 entradas por empresa.
+ * Acessível de qualquer dispositivo logado.
  */
 
 import type { PostFormat, PostTheme } from '@/types'
@@ -14,56 +15,41 @@ export interface HistoryEntry {
   variations: string[]   // HTML completo de cada variação
   captions?: string[]
   createdAt: string      // ISO string
+  expiresAt: string      // ISO string (createdAt + 30 dias)
 }
 
-const MAX_ENTRIES = 50
-
-function storageKey(companyId: string) {
-  return `post-history-${companyId}`
+/** Salva uma geração no histórico. Fire-and-forget — não lança exceção. */
+export function saveToHistory(entry: Omit<HistoryEntry, 'id' | 'createdAt' | 'expiresAt'>): void {
+  if (typeof window === 'undefined') return
+  fetch('/api/history', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(entry),
+  }).catch(() => { /* histórico não é crítico */ })
 }
 
-export function saveToHistory(entry: Omit<HistoryEntry, 'id' | 'createdAt'>): HistoryEntry {
-  const full: HistoryEntry = {
-    ...entry,
-    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
-    createdAt: new Date().toISOString(),
-  }
-  if (typeof window === 'undefined') return full
-
+/** Busca histórico de uma empresa (mais recentes primeiro, máx 50). */
+export async function getHistory(companyId: string): Promise<HistoryEntry[]> {
   try {
-    const existing = getHistory(entry.companyId)
-    const updated = [full, ...existing].slice(0, MAX_ENTRIES)
-    localStorage.setItem(storageKey(entry.companyId), JSON.stringify(updated))
-  } catch {
-    // localStorage cheio: limpa metade mais antiga e tenta de novo
-    try {
-      const existing = getHistory(entry.companyId)
-      const trimmed = [full, ...existing.slice(0, MAX_ENTRIES / 2 - 1)]
-      localStorage.setItem(storageKey(entry.companyId), JSON.stringify(trimmed))
-    } catch {
-      // silencioso — histórico não é crítico
-    }
-  }
-  return full
-}
-
-export function getHistory(companyId: string): HistoryEntry[] {
-  if (typeof window === 'undefined') return []
-  try {
-    const raw = localStorage.getItem(storageKey(companyId))
-    return raw ? (JSON.parse(raw) as HistoryEntry[]) : []
+    const res = await fetch(`/api/history?companyId=${encodeURIComponent(companyId)}`, {
+      cache: 'no-store',
+    })
+    if (!res.ok) return []
+    const data = await res.json()
+    return (data.entries as HistoryEntry[]) ?? []
   } catch {
     return []
   }
 }
 
-export function deleteFromHistory(companyId: string, id: string): void {
-  if (typeof window === 'undefined') return
-  const updated = getHistory(companyId).filter(e => e.id !== id)
-  localStorage.setItem(storageKey(companyId), JSON.stringify(updated))
+/** Remove uma entrada do histórico pelo id. */
+export async function deleteFromHistory(id: string): Promise<void> {
+  await fetch(`/api/history?id=${encodeURIComponent(id)}`, { method: 'DELETE' }).catch(() => {})
 }
 
-export function clearHistory(companyId: string): void {
-  if (typeof window === 'undefined') return
-  localStorage.removeItem(storageKey(companyId))
+/** Remove todo o histórico de uma empresa. */
+export async function clearHistory(companyId: string): Promise<void> {
+  await fetch(`/api/history?companyId=${encodeURIComponent(companyId)}&all=true`, {
+    method: 'DELETE',
+  }).catch(() => {})
 }
