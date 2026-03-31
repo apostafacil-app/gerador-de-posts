@@ -505,7 +505,7 @@ ORÇAMENTO VERTICAL STORY (1800px úteis — distribuir respiro nos gaps):
   Arquétipo B: Logo 120 | Eyebrow 56 | Headline 264 | Sub 92 | Divisor 38 | Benefícios 3×110=330 | Spacer flex | CTA 124 | Slogan 42 ≈ 1066px + ~734px em gaps e respiro ✓
   Arquétipo A: Logo 110 | Headline 290 | Sub 100 | MiniPills 70 | Spacer flex | CTA 124 | Slogan 42 ≈ 736px + ~1064px em gaps e espaço ✓
   Arquétipo D: Logo 110 | Eyebrow 56 | Headline 200 | Steps 4×110=440 | Spacer flex | CTA 124 | Slogan 42 ≈ 972px + ~828px em gaps ✓
-  Arquétipo F: Logo 110 | QuoteWrap flex | ContextCard 126 | Spacer 40 | CTA 124 | Slogan 42 ≈ 1800px ✓
+  Arquétipo F: Logo 110 | QuoteWrap flex | ContextCard 126 | Spacer 40 | CTA 124 | Slogan 42 ≈ 1800px ✓`
 
 // ─── ADDENDUM: STORY CLARO ────────────────────────────────────────────────────
 export const STORY_LIGHT_ADDENDUM = `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -555,7 +555,7 @@ ORÇAMENTO VERTICAL STORY (1800px úteis — distribuir respiro nos gaps):
   Arquétipo B: conteúdo ~1066px + ~734px em gaps e respiro ✓
   Arquétipo A: conteúdo ~736px + ~1064px em gaps e espaço ✓
   Arquétipo D: conteúdo ~972px + ~828px em gaps ✓
-  Arquétipo F: QuoteWrap flex preenche restante ✓
+  Arquétipo F: QuoteWrap flex preenche restante ✓`
 
 // ─── Compatibilidade retroativa ───────────────────────────────────────────────
 // DEFAULT_AI_RULES é usado como fallback quando Firebase não está configurado.
