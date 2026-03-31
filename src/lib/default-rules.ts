@@ -347,6 +347,7 @@ Não há vínculo fixo fundo↔arquétipo — qualquer arquétipo pode usar qual
                    clip-path:polygon(0 0,100% 0,100% 80%,0 100%)) +
                  fundo do #post: #f4f0ff
     → Metade escuro/colorido em cima, metade claro embaixo. Visual único e moderno.
+    ⚠️ SPLIT_DARK é compatível APENAS com Arquétipo E (Split Layout). Nunca usar com B, A ou D.
 
   RICH_DARK:     background:#05000f +
                  SVG inline: <svg style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0.15"><defs><pattern id="pd" width="48" height="48" patternUnits="userSpaceOnUse"><circle cx="24" cy="24" r="1.5" fill="[destaque]"/></pattern></defs><rect width="100%" height="100%" fill="url(#pd)"/></svg> +

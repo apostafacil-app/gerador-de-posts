@@ -216,8 +216,8 @@ const SETS_2: SlotSpec[][] = [
     { arch:'A', bgDark:0, bgLight:1, cta:1, deco:1 },
     { arch:'D', bgDark:3, bgLight:0, cta:2, deco:2 },
   ],
-  [ // Set 4: Editorial split-claro + Hero preto
-    { arch:'B', bgDark:2, bgLight:2, cta:3, deco:0 },
+  [ // Set 4: Editorial dots + Hero preto
+    { arch:'B', bgDark:3, bgLight:2, cta:3, deco:0 },
     { arch:'A', bgDark:1, bgLight:3, cta:1, deco:7 },
   ],
   [ // Set 5: Split + Editorial dots
@@ -240,10 +240,10 @@ const SETS_4: SlotSpec[][] = [
     { arch:'E', bgDark:2, bgLight:2, cta:4, deco:3 },
     { arch:'B', bgDark:3, bgLight:1, cta:3, deco:6 },
   ],
-  [ // Set 2: D(dots) B(split) A(roxo!) E(preto-ish)
+  [ // Set 2: D(dots) B(roxo) A(roxo!) E(split) — SPLIT_DARK só para E
     { arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 },
-    { arch:'B', bgDark:2, bgLight:2, cta:0, deco:0 },
-    { arch:'A', bgDark:0, bgLight:1, cta:1, deco:7 },
+    { arch:'B', bgDark:0, bgLight:2, cta:0, deco:0 },
+    { arch:'A', bgDark:1, bgLight:1, cta:1, deco:7 },
     { arch:'E', bgDark:2, bgLight:2, cta:4, deco:3 },
   ],
   [ // Set 3: E(split) A(preto) B(dots) D(roxo)
