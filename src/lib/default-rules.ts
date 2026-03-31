@@ -434,23 +434,28 @@ ESTRUTURA OBRIGATÓRIA — 3 ZONAS
 Stories profissionais usam 3 zonas verticais. Nunca usar estrutura alternativa.
 
 CSS OBRIGATÓRIO:
-  .safe        { position:absolute; top:60px; bottom:60px; left:60px; right:60px;
-                 display:flex; flex-direction:column; overflow:hidden; }
-  .s-header    { flex-shrink:0; display:flex; flex-direction:column; gap:20px; padding-bottom:36px; }
-  .s-body      { flex:1; display:flex; flex-direction:column; gap:32px; overflow:hidden; }
-  .s-footer    { flex-shrink:0; display:flex; flex-direction:column; gap:16px; padding-top:36px; }
+  .safe     { position:absolute; top:60px; bottom:60px; left:60px; right:60px;
+              display:flex; flex-direction:column; overflow:hidden; }
+  .s-header { flex-shrink:0; height:200px; display:flex; flex-direction:column;
+              justify-content:flex-start; gap:20px; padding-bottom:40px; }
+  .s-body   { flex:1; display:flex; flex-direction:column;
+              justify-content:center; gap:48px; overflow:hidden; }
+  .s-footer { flex-shrink:0; height:260px; display:flex; flex-direction:column;
+              justify-content:flex-end; gap:16px; padding-top:40px; }
 
-ZONA 1 — .s-header (auto, ~160-200px):
+ZONA 1 — .s-header (200px fixo):
   → Logo: height:110px; width:auto
   → Eyebrow pill (se o arquétipo usa)
 
-ZONA 2 — .s-body (flex:1 — ocupa TODO o espaço restante, ~1360px):
-  → Conteúdo principal do arquétipo
-  → justify-content DENTRO do .s-body: ver por arquétipo abaixo
+ZONA 2 — .s-body (flex:1, justify-content:center):
+  → Conteúdo AGRUPADO — não usa space-evenly, não usa flex:1 interno
+  → O conteúdo fica compacto e centralizado verticalmente
+  → Espaço vazio distribui-se simetricamente acima e abaixo do bloco
   ❌ NUNCA colocar o CTA aqui
+  ❌ NUNCA usar justify-content:space-evenly nas listas internas
 
-ZONA 3 — .s-footer (auto, ~240-280px):
-  → Sempre: .cta-btn + .cta-slogan
+ZONA 3 — .s-footer (260px fixo, justify-content:flex-end):
+  → Sempre: .cta-btn + .cta-slogan ancorados no fundo
   → Quote: também recebe o .context-card
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -482,11 +487,11 @@ ESCALA PROPORCIONAL OBRIGATÓRIA:
 ⛔ PROIBIDO usar fonte menor que 32px em qualquer texto de conteúdo (títulos, descrições, subtextos).
    Exceções únicas permitidas abaixo de 32px: slogan rodapé, eyebrow/pill, stat label.
 
-ARQUÉTIPO B — EDITORIAL (.s-body justify-content:space-between; gap:28px):
+ARQUÉTIPO B — EDITORIAL (.s-body justify-content:center; gap:48px):
   h1 (80px, 900, 3 linhas máx, letter-spacing:-2px)
-  p.sub (36px, 500, 2 linhas)
+  p.sub (38px, 500, 2 linhas)
   div.divider (height:2px; background:linear-gradient(90deg,[primária],[destaque],transparent))
-  div.benefits (flex:1; display:flex; flex-direction:column; justify-content:space-evenly):
+  div.benefits (display:flex; flex-direction:column; gap:40px):
     3 × div.benefit (display:flex; align-items:center; gap:28px):
       div.icon (72×72px; border-radius:18px; font-size:34px; flex-shrink:0)
       div: p.benefit-title(38px,800) + p.benefit-desc(34px,500,opacity:0.88,margin-top:6px)
@@ -496,20 +501,20 @@ ARQUÉTIPO A — HERO (.s-body justify-content:center; gap:44px):
     span.ghost (font-size:260px; font-weight:900; color:[destaque]; opacity:0.05;
       position:absolute; top:-60px; left:-30px; line-height:1; pointer-events:none; user-select:none)
     h1 (96px, 900, line-height:0.95, letter-spacing:-3px, MÁXIMO 3 linhas, z-index:1, position:relative)
-  p.sub (36px, 500, line-height:1.45, 2-3 linhas)
+  p.sub (38px, 500, line-height:1.45, 2-3 linhas)
   div.pills (display:flex; gap:20px; flex-wrap:wrap):
     2 × span.pill (bg:rgba(255,255,255,0.10); border-radius:100px; padding:14px 32px;
       font-size:24px; font-weight:600)
 
-ARQUÉTIPO D — STEPS (.s-body justify-content:flex-start; gap:28px):
+ARQUÉTIPO D — STEPS (.s-body justify-content:center; gap:48px):
   h1 (80px, 900, 2 linhas máx)
-  div.steps (flex:1; display:flex; flex-direction:column; justify-content:space-evenly):
+  div.steps (display:flex; flex-direction:column; gap:44px):
     4 × div.step (display:flex; align-items:flex-start; gap:24px):
       span.num (64px, 900, cor destaque, line-height:1, min-width:70px, flex-shrink:0)
       div: p.step-title(38px,800) + p.step-desc(34px,500,opacity:0.88,line-height:1.35,margin-top:8px)
 
-ARQUÉTIPO F — QUOTE (.s-body justify-content:flex-start):
-  div.quote-block (flex:1; position:relative; display:flex; flex-direction:column; justify-content:center):
+ARQUÉTIPO F — QUOTE (.s-body justify-content:center):
+  div.quote-block (position:relative; display:flex; flex-direction:column; justify-content:center):
     span.q-marks (200px, 900, cor destaque, opacity:0.15, position:absolute, top:0, left:-10px,
       line-height:1, pointer-events:none, user-select:none, z-index:0) — &#8220;
     p.q-text (44px, 700, line-height:1.35, z-index:1, position:relative, MÁXIMO 3 LINHAS — frase CURTA e impactante)
@@ -548,9 +553,12 @@ ESTRUTURA OBRIGATÓRIA — 3 ZONAS (igual ao Story Escuro)
 CSS OBRIGATÓRIO:
   .safe     { position:absolute; top:60px; bottom:60px; left:60px; right:60px;
               display:flex; flex-direction:column; overflow:hidden; }
-  .s-header { flex-shrink:0; display:flex; flex-direction:column; gap:20px; padding-bottom:36px; }
-  .s-body   { flex:1; display:flex; flex-direction:column; gap:32px; overflow:hidden; }
-  .s-footer { flex-shrink:0; display:flex; flex-direction:column; gap:16px; padding-top:36px; }
+  .s-header { flex-shrink:0; height:200px; display:flex; flex-direction:column;
+              justify-content:flex-start; gap:20px; padding-bottom:40px; }
+  .s-body   { flex:1; display:flex; flex-direction:column;
+              justify-content:center; gap:48px; overflow:hidden; }
+  .s-footer { flex-shrink:0; height:260px; display:flex; flex-direction:column;
+              justify-content:flex-end; gap:16px; padding-top:40px; }
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ESCALA TIPOGRÁFICA — HARMONIA STORY CLARO
@@ -581,11 +589,11 @@ ESCALA PROPORCIONAL OBRIGATÓRIA:
 CONTEÚDO DO .s-body POR ARQUÉTIPO
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-ARQUÉTIPO B — EDITORIAL (.s-body justify-content:space-between; gap:28px):
+ARQUÉTIPO B — EDITORIAL (.s-body justify-content:center; gap:48px):
   h1 (80px, 900, 3 linhas máx, letter-spacing:-2px, #0f0f1a)
-  p.sub (36px, 500, 2 linhas, #4a4a6a)
+  p.sub (38px, 500, 2 linhas, #4a4a6a)
   div.divider (height:2px; background:linear-gradient(90deg,[primária],[destaque],transparent))
-  div.benefits (flex:1; display:flex; flex-direction:column; justify-content:space-evenly):
+  div.benefits (display:flex; flex-direction:column; gap:40px):
     3 × div.benefit (display:flex; align-items:center; gap:28px):
       div.icon (72×72px; border-radius:18px; background:primária 10%; font-size:34px; flex-shrink:0)
       div: p.benefit-title(38px,800,#0f0f1a) + p.benefit-desc(34px,500,#4a4a6a,opacity:0.88,margin-top:6px)
@@ -595,20 +603,20 @@ ARQUÉTIPO A — HERO (.s-body justify-content:center; gap:44px):
     span.ghost (font-size:260px; font-weight:900; color:#0f0f1a; opacity:0.04;
       position:absolute; top:-60px; left:-30px; line-height:1; pointer-events:none; user-select:none)
     h1 (96px, 900, line-height:0.95, letter-spacing:-3px, MÁXIMO 3 linhas, z-index:1, position:relative, #0f0f1a)
-  p.sub (36px, 500, line-height:1.45, 2-3 linhas, #4a4a6a)
+  p.sub (38px, 500, line-height:1.45, 2-3 linhas, #4a4a6a)
   div.pills (display:flex; gap:20px; flex-wrap:wrap):
     2 × span.pill (bg:primária 8%; border:1px solid primária 20%; border-radius:100px; padding:14px 32px;
       font-size:24px; font-weight:600; color:primária)
 
-ARQUÉTIPO D — STEPS (.s-body justify-content:flex-start; gap:28px):
+ARQUÉTIPO D — STEPS (.s-body justify-content:center; gap:48px):
   h1 (80px, 900, 2 linhas máx, #0f0f1a)
-  div.steps (flex:1; display:flex; flex-direction:column; justify-content:space-evenly):
+  div.steps (display:flex; flex-direction:column; gap:44px):
     4 × div.step (display:flex; align-items:flex-start; gap:24px):
       span.num (64px, 900, cor primária, line-height:1, min-width:70px, flex-shrink:0)
       div: p.step-title(38px,800,#0f0f1a) + p.step-desc(34px,500,#4a4a6a,opacity:0.88,line-height:1.35,margin-top:8px)
 
-ARQUÉTIPO F — QUOTE (.s-body justify-content:flex-start):
-  div.quote-block (flex:1; position:relative; display:flex; flex-direction:column; justify-content:center):
+ARQUÉTIPO F — QUOTE (.s-body justify-content:center):
+  div.quote-block (position:relative; display:flex; flex-direction:column; justify-content:center):
     span.q-marks (200px, 900, cor primária, opacity:0.10, position:absolute, top:0, left:-10px,
       line-height:1, pointer-events:none, user-select:none, z-index:0) — &#8220;
     p.q-text (44px, 700, line-height:1.35, #0f0f1a, z-index:1, position:relative, MÁXIMO 3 LINHAS — frase CURTA e impactante)
