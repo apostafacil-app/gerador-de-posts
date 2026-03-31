@@ -11,7 +11,7 @@ interface Props {
 }
 
 // Remove qualquer transform:scale que a IA possa ter inserido no #post
-function sanitizeHtml(raw: string, nativeW: number, nativeH: number): string {
+export function sanitizeHtml(raw: string, nativeW: number, nativeH: number): string {
   // 1) Remove transform:scale do #post em blocos <style>
   let result = raw.replace(
     /(<style[^>]*>)([\s\S]*?)(<\/style>)/gi,
@@ -38,7 +38,7 @@ html,body{margin:0!important;padding:0!important;overflow:hidden!important;
   width:${W}px!important;height:${H}px!important;}
 #post{width:${W}px!important;height:${H}px!important;
   transform:none!important;zoom:1!important;overflow:hidden!important;}
-.spacer{flex:1 1 auto!important;min-height:4px!important;max-height:100px!important;}
+.spacer{flex:1 1 auto!important;min-height:4px!important;}
 .cta-wrap{flex-shrink:0!important;}
 .safe{overflow:hidden!important;}
 </style>`

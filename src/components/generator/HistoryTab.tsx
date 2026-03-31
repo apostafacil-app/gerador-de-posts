@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Trash2, Download, Clock, ChevronRight } from 'lucide-react'
 import { getHistory, deleteFromHistory, clearHistory, type HistoryEntry } from '@/lib/history'
+import { sanitizeHtml } from '@/components/generator/VariationCard'
 import type { PostFormat } from '@/types'
 
 interface Props {
@@ -133,19 +134,21 @@ export function HistoryTab({ companyId }: Props) {
 
               {/* Thumbnails */}
               <div className="flex gap-3 overflow-x-auto pb-1 scrollbar-hide">
-                {entry.variations.map((html, vi) => (
+                {entry.variations.map((html, vi) => {
+                  const cleanHtml = sanitizeHtml(html, nativeW, nativeH)
+                  return (
                   <div key={vi} className="flex-shrink-0 flex flex-col gap-2">
                     {/* Thumb preview */}
                     <div
                       className="rounded-xl overflow-hidden border border-gray-200 bg-gray-100 cursor-zoom-in shadow-sm"
                       style={{ width: thumbW, height: thumbH }}
-                      onClick={() => setZoomed({ html, format: entry.format })}
+                      onClick={() => setZoomed({ html: cleanHtml, format: entry.format })}
                       title="Clique para ampliar"
                     >
                       <iframe
-                        srcDoc={html}
+                        srcDoc={cleanHtml}
                         title={`Histórico variação ${vi + 1}`}
-                        sandbox="allow-same-origin"
+                        sandbox="allow-same-origin allow-scripts"
                         style={{
                           width: nativeW,
                           height: nativeH,
@@ -168,7 +171,7 @@ export function HistoryTab({ companyId }: Props) {
                       PNG
                     </button>
                   </div>
-                ))}
+                )})}
               </div>
 
               {/* Captions (if any) */}
