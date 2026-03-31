@@ -370,12 +370,22 @@ HIERARQUIA TIPOGRÁFICA — POST 1080×1350:
   CTA botão:          36px | 800 | letter-spacing:0.5px
   Slogan:             22px | 600 | uppercase | letter-spacing:2px
 
-ORÇAMENTO VERTICAL (1230px úteis):
-  Arquétipo B: Logo 160 | Eyebrow 76 | Headline 320 | Sub 110 | Divisor 38 | Benefícios 320 | Spacer 48 | CTA 116 | Slogan 42 = 1230px
-  Arquétipo A: Logo 160 | Headline 420 | Sub 70 | Spacer flex | CTA 116 | Slogan 42 ≈ 1230px
-  Arquétipo D: Logo 160 | Eyebrow 76 | Headline 320 | Steps 342 | Spacer 48 | CTA 116 | Slogan 42 ≈ 1104px
-  Arquétipo F: Logo 120 | Quote flex(~480) | Atribuição 70 | Spacer 48 | CTA 116 | Slogan 42 ≈ 876px
-  Arquétipo C: Logo 120 | Stat 260 | Label 70 | Sub 80 | Divisor 38 | Benefícios 200 | Spacer 48 | CTA 116 | Slogan 42 ≈ 974px`
+ESTRUTURA OBRIGATÓRIA — 3 ZONAS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CSS OBRIGATÓRIO dentro do .safe:
+  .p-header { flex-shrink:0; height:160px; display:flex; flex-direction:column;
+              justify-content:flex-start; }
+  .p-body   { flex:1; display:flex; flex-direction:column;
+              justify-content:center; gap:32px; overflow:hidden; }
+  .p-footer { flex-shrink:0; height:200px; display:flex; flex-direction:column;
+              justify-content:flex-end; gap:14px; }
+
+ZONA 1 — .p-header (160px fixo): logo
+ZONA 2 — .p-body (flex:1, justify-content:center): conteúdo agrupado e centralizado verticalmente
+  → espaço vazio distribui-se simetricamente acima e abaixo — parece INTENCIONAL
+  → listas internas usam gap FIXO (ex: gap:28px) — ❌ NUNCA space-evenly
+  → ❌ NUNCA colocar CTA aqui
+ZONA 3 — .p-footer (200px fixo, justify-content:flex-end): CTA + slogan ancorados no fundo`
 
 // ─── ADDENDUM: POST CLARO ─────────────────────────────────────────────────────
 export const POST_LIGHT_ADDENDUM = `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -421,12 +431,22 @@ HIERARQUIA TIPOGRÁFICA — POST 1080×1350:
   CTA botão:          36px | 800 | letter-spacing:0.5px | cor #ffffff
   Slogan:             22px | 600 | uppercase | letter-spacing:2px | cor #4a4a6a
 
-ORÇAMENTO VERTICAL (1230px úteis):
-  Arquétipo B: Logo 160 | Eyebrow 76 | Headline 320 | Sub 110 | Divisor 38 | Benefícios 320 | Spacer 48 | CTA 116 | Slogan 42 = 1230px
-  Arquétipo A: Logo 160 | Headline 420 | Sub 70 | Spacer flex | CTA 116 | Slogan 42 ≈ 1230px
-  Arquétipo D: Logo 160 | Eyebrow 76 | Headline 320 | Steps 342 | Spacer 48 | CTA 116 | Slogan 42 ≈ 1104px
-  Arquétipo F: Logo 120 | Quote flex(~480) | Atribuição 70 | Spacer 48 | CTA 116 | Slogan 42 ≈ 876px
-  Arquétipo C: Logo 120 | Stat 260 | Label 70 | Sub 80 | Divisor 38 | Benefícios 200 | Spacer 48 | CTA 116 | Slogan 42 ≈ 974px`
+ESTRUTURA OBRIGATÓRIA — 3 ZONAS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CSS OBRIGATÓRIO dentro do .safe:
+  .p-header { flex-shrink:0; height:160px; display:flex; flex-direction:column;
+              justify-content:flex-start; }
+  .p-body   { flex:1; display:flex; flex-direction:column;
+              justify-content:center; gap:32px; overflow:hidden; }
+  .p-footer { flex-shrink:0; height:200px; display:flex; flex-direction:column;
+              justify-content:flex-end; gap:14px; }
+
+ZONA 1 — .p-header (160px fixo): logo
+ZONA 2 — .p-body (flex:1, justify-content:center): conteúdo agrupado e centralizado verticalmente
+  → espaço vazio distribui-se simetricamente acima e abaixo — parece INTENCIONAL
+  → listas internas usam gap FIXO (ex: gap:28px) — ❌ NUNCA space-evenly
+  → ❌ NUNCA colocar CTA aqui
+ZONA 3 — .p-footer (200px fixo, justify-content:flex-end): CTA + slogan ancorados no fundo`
 
 // ─── ADDENDUM: STORY ESCURO ───────────────────────────────────────────────────
 export const STORY_DARK_ADDENDUM = `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
