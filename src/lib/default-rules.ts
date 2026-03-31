@@ -411,115 +411,105 @@ ADDENDUM — STORY ESCURO (1080×1920px)
 DIMENSÃO EXATA:
   body { width:1080px; height:1920px; overflow:hidden; }
   #post { width:1080px; height:1920px; }
-  Altura útil .safe: 1800px (1920 − 60top − 60bottom)
-  Largura útil texto: 960px (1080 − 60esq − 60dir)
 
-ESTRUTURA .safe — STORY USA justify-content:space-between:
-  .safe {
-    position: absolute;
-    top: 60px; bottom: 60px; left: 60px; right: 60px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;  ← OBRIGATÓRIO EM STORY (distribui elementos no eixo vertical)
-    overflow: hidden;
-  }
-  ❌ NÃO use .spacer em stories — o space-between distribui automaticamente.
-  ❌ NÃO use margin-top:auto — o space-between já faz isso.
-  ✅ Elementos ficam distribuídos do topo ao fundo: logo no topo, slogan embaixo, conteúdo no meio.
-  ✅ Para o Quote Card: .quote-wrap deve ter flex:1 para preencher o meio.
+PALETA DARK:
+  Fundo:         linear-gradient(135deg,[secundária] 0%,[primária] 50%,#050010 100%)
+  body bg:       MESMA cor/gradiente do #post
+  Texto:         #ffffff | Suporte: rgba(255,255,255,0.72)
+  Destaque:      versão CLARA/VIBRANTE — ex: #a855f7 ou #c084fc
+  CTA:           gradiente vibrante distinto do fundo
 
-PALETA DARK (igual ao Post Escuro):
-  Fundo do post:    gradiente escuro — linear-gradient(135deg,[secundária] 0%,[primária] 50%,#050010 100%)
-  body background:  MESMA cor/gradiente do #post
-  Texto principal:  #ffffff
-  Texto suporte:    rgba(255,255,255,0.72)
-  Destaque:         versão CLARA/VIBRANTE da cor de destaque
-  CTA:              gradiente vibrante distinto do fundo
+FUNDOS DARK PARA STORY:
+  DEEP_GRADIENT: linear-gradient(135deg,[secundária],[primária],#050010)
+  MESH_GLOW: fundo #060010 +
+    div(position:absolute;top:-100px;right:-150px;width:900px;height:900px;border-radius:50%;
+        background:radial-gradient(circle,[destaque] 0%,transparent 55%);opacity:0.30;pointer-events:none) +
+    div(position:absolute;bottom:-100px;left:-150px;width:700px;height:700px;border-radius:50%;
+        background:radial-gradient(circle,[primária] 0%,transparent 55%);opacity:0.22;pointer-events:none)
+  RICH_DARK: fundo #0a0018 + orbe roxo 600px atrás do CTA opacity:0.20
 
-FUNDOS DARK PARA STORY — MAIS DRAMÁTICOS QUE O POST:
-  DEEP_GRADIENT: linear-gradient(135deg,[secundária] 0%,[primária] 50%,#050010 100%)
-  MESH_GLOW (story):
-    fundo #060010
-    + div position:absolute top:-100px right:-150px width:900px height:900px border-radius:50%
-        background:radial-gradient(circle,[destaque 30% opacity] 0%,transparent 55%) pointer-events:none
-    + div position:absolute bottom:-100px left:-150px width:700px height:700px border-radius:50%
-        background:radial-gradient(circle,[primária 22% opacity] 0%,transparent 55%) pointer-events:none
-    ← ORBes GRANDES e VISÍVEIS — não sutis como no post
-  RICH_DARK: fundo #0a0018
-    + SVG diagonal 45deg opacity:0.04 + orbe roxo grande atrás do CTA (600×600px opacity:0.20)
-  SPLIT_DARK: top 45% gradiente escuro da marca, bottom 55% #f8f8ff — clip-path:polygon(0 0,100% 0,100% 85%,0 100%)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ESTRUTURA OBRIGATÓRIA — 3 ZONAS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Stories profissionais usam 3 zonas verticais. Nunca usar estrutura alternativa.
 
-HIERARQUIA TIPOGRÁFICA — STORY 1080×1920:
-  ⚠️ Story NÃO usa texto maior. A altura extra = MAIS RESPIRO + MAIS ELEMENTOS, não letras gigantes.
-  Eyebrow/Pill:       20px | 700 | uppercase | letter-spacing:1px   (igual ao post)
-  Headline padrão:    88px | 900 | line-height:1.0 | letter-spacing:-2px  (igual ao post)
-  Headline oversized: 110px | 900 | line-height:0.95 | letter-spacing:-3px (ligeiramente maior)
-  Stat/Número:        200px | 900 | line-height:0.85 | letter-spacing:-6px (igual ao post)
-  Subtexto:           28px | 500 | line-height:1.5  (igual ao post)
-  Step número:        48px | 900 | cor destaque     (igual ao post)
-  Step título:        26px | 800
-  Step descrição:     20px | 500 | line-height:1.4
-  Quote frase:        40px | 700 | line-height:1.35
-  Quote aspas dec.:   200px | 900 | opacity:0.15
-  CTA botão:          36px | 800 | letter-spacing:0.5px | padding:44px 60px
-  Slogan:             22px | 600 | uppercase | letter-spacing:2px
-  Gap padrão entre elementos: 40-52px (post usa 24-32px) — O RESPIRO É O DIFERENCIAL
+CSS OBRIGATÓRIO:
+  .safe        { position:absolute; top:60px; bottom:60px; left:60px; right:60px;
+                 display:flex; flex-direction:column; overflow:hidden; }
+  .s-header    { flex-shrink:0; display:flex; flex-direction:column; gap:20px; padding-bottom:36px; }
+  .s-body      { flex:1; display:flex; flex-direction:column; gap:32px; overflow:hidden; }
+  .s-footer    { flex-shrink:0; display:flex; flex-direction:column; gap:16px; padding-top:36px; }
 
-ADAPTAÇÕES POR ARQUÉTIPO — COMO PREENCHER OS 1800px DE STORY:
+ZONA 1 — .s-header (auto, ~160-200px):
+  → Logo: height:110px; width:auto
+  → Eyebrow pill (se o arquétipo usa)
 
-ARQUÉTIPO A — Hero Statement em Story (MESH_GLOW bgDark):
-  ⚠️ NÃO apenas "headline + sub + CTA" — adicionar elementos extras para preencher.
-  Estrutura OBRIGATÓRIA:
-    .logo-row (logo height:90px, margin-bottom:48px) →
-    .word-ghost (palavra única 260px, position:absolute, opacity:0.05, cor destaque,
-      top:140px, left:-20px, font-weight:900, pointer-events:none, z-index:0) →
-    h1 (110px, 2-3 linhas, z-index:1, line-height:0.95) →
-    .sub (28px, 2-3 linhas, margin-top:40px) →
-    .mini-pills (flex-row gap:20px, margin-top:52px:
-      2 pills: background rgba(255,255,255,0.08), border-radius:100px, padding:16px 28px,
-      ícone emoji + texto 22px) →
-    .spacer (flex:1 min-height:60px) →
-    .cta-btn (36px, padding:44px) →
-    .cta-slogan (22px)
+ZONA 2 — .s-body (flex:1 — ocupa TODO o espaço restante, ~1360px):
+  → Conteúdo principal do arquétipo
+  → justify-content DENTRO do .s-body: ver por arquétipo abaixo
+  ❌ NUNCA colocar o CTA aqui
 
-ARQUÉTIPO B — Editorial em Story (DEEP_GRADIENT bgDark):
-  Usar SEMPRE 3 benefícios verticais (não 2 horizontais).
-  Logo height:120px. Gap entre seções: 44px. Gap entre benefícios: 40px. Ícone: 68×68px.
-  Subtexto: 2 linhas (28px). Headline: 3 linhas (88px). Benefício título: 26px. Desc: 20px.
+ZONA 3 — .s-footer (auto, ~240-280px):
+  → Sempre: .cta-btn + .cta-slogan
+  → Quote: também recebe o .context-card
 
-ARQUÉTIPO D — Lista Steps em Story (RICH_DARK bgDark):
-  Usar 4 steps (não 3) — o espaço comporta.
-  Step número: 48px. Step título: 26px. Step desc: 20px.
-  Gap entre steps: 44px. Separador: border-bottom:1px solid rgba([destaque],0.15).
-  Logo height:110px. Headline: 2 linhas (88px). Eyebrow: obrigatório.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CONTEÚDO DO .s-body POR ARQUÉTIPO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-ARQUÉTIPO F — Quote Card em Story (MESH_GLOW bgDark):
-  ⚠️ NÃO apenas "logo + frase + nome + CTA" — adicionar context-card.
-  Estrutura OBRIGATÓRIA:
-    .logo-row (logo height:90px, margin-bottom:40px) →
-    .quote-wrap (flex:1, position:relative, display:flex, flex-direction:column,
-      justify-content:center):
-        span.quote-marks (font-size:200px, font-weight:900, color:[destaque vibrante],
-          opacity:0.15, position:absolute, top:-10px, left:-10px, line-height:1,
-          pointer-events:none, user-select:none, z-index:0,
-          font-family:'Poppins',sans-serif — conteúdo: ") →
-        p.quote-text (40px, 700, line-height:1.35, z-index:1, position:relative, máx 4 linhas) →
-        div (width:80px, height:4px, background:[destaque], border-radius:2px, margin-top:36px) →
-        p.attr-name (26px, 800, color:[destaque], margin-top:20px) →
-        p.attr-role (20px, 500, opacity:0.65, margin-top:8px) →
-      div.context-card (margin-top:44px, background:rgba(255,255,255,0.07),
-        border:1px solid rgba(255,255,255,0.13), border-radius:20px, padding:28px 36px,
-        display:flex, justify-content:space-around, gap:20px):
-          div.stat × 2: p.stat-val (32px, 900, color:[destaque]) + p.stat-lbl (18px, 500, opacity:0.65) →
-    .spacer (min-height:40px) →
-    .cta-btn (36px, padding:44px, full-width) →
-    .cta-slogan (22px)
+ARQUÉTIPO B — EDITORIAL (.s-body com justify-content:space-between):
+  h1.headline (88px, 900, 3 linhas)
+  p.sub (28px, 500, 2 linhas, rgba(255,255,255,0.72))
+  div.divider (height:2px; background:linear-gradient(90deg,[primária],[destaque],transparent))
+  div.benefits (flex:1; display:flex; flex-direction:column; justify-content:space-evenly):
+    3 × div.benefit (display:flex; align-items:center; gap:24px):
+      div.benefit-icon (68×68px; border-radius:18px; font-size:32px; flex-shrink:0)
+      div: p.benefit-title(26px,800) + p.benefit-desc(20px,500,opacity:0.72)
+  → benefits com space-evenly distribui os 3 itens no espaço disponível
 
-ORÇAMENTO VERTICAL STORY (1800px úteis — distribuir respiro nos gaps):
-  Arquétipo B: Logo 120 | Eyebrow 56 | Headline 264 | Sub 92 | Divisor 38 | Benefícios 3×110=330 | Spacer flex | CTA 124 | Slogan 42 ≈ 1066px + ~734px em gaps e respiro ✓
-  Arquétipo A: Logo 110 | Headline 290 | Sub 100 | MiniPills 70 | Spacer flex | CTA 124 | Slogan 42 ≈ 736px + ~1064px em gaps e espaço ✓
-  Arquétipo D: Logo 110 | Eyebrow 56 | Headline 200 | Steps 4×110=440 | Spacer flex | CTA 124 | Slogan 42 ≈ 972px + ~828px em gaps ✓
-  Arquétipo F: Logo 110 | QuoteWrap flex | ContextCard 126 | Spacer 40 | CTA 124 | Slogan 42 ≈ 1800px ✓`
+ARQUÉTIPO A — HERO (.s-body com justify-content:center; gap:40px):
+  div.headline-wrap (position:relative):
+    span.ghost (font-size:260px; font-weight:900; color:[destaque]; opacity:0.05;
+      position:absolute; top:-60px; left:-30px; line-height:1; pointer-events:none; user-select:none)
+    h1 (font-size:110px; font-weight:900; line-height:0.95; letter-spacing:-3px; position:relative; z-index:1)
+  p.sub (28px, 500, line-height:1.5, 2-3 linhas, rgba(255,255,255,0.72))
+  div.pills-row (display:flex; gap:20px; flex-wrap:wrap):
+    2 × span.pill (background:rgba(255,255,255,0.10); border-radius:100px;
+      padding:14px 28px; font-size:22px; font-weight:600)
+
+ARQUÉTIPO D — STEPS (.s-body com justify-content:flex-start; gap:24px):
+  h1.headline (88px, 900, 2 linhas)
+  div.steps (flex:1; display:flex; flex-direction:column; justify-content:space-evenly):
+    4 × div.step (display:flex; align-items:flex-start; gap:20px; padding:4px 0):
+      span.num (font-size:48px; font-weight:900; color:[destaque]; line-height:1; min-width:52px; flex-shrink:0)
+      div: p.step-title(26px,800) + p.step-desc(20px,500,opacity:0.72,margin-top:6px)
+  → steps com space-evenly distribui 4 steps uniformemente no espaço
+
+ARQUÉTIPO F — QUOTE (.s-body com justify-content:flex-start; gap:0):
+  div.quote-block (flex:1; position:relative; display:flex; flex-direction:column; justify-content:center; padding:20px 0):
+    span.q-marks (font-size:200px; font-weight:900; color:[destaque]; opacity:0.15;
+      position:absolute; top:0; left:-10px; line-height:1;
+      pointer-events:none; user-select:none; z-index:0) — conteúdo HTML: &#8220;
+    p.q-text (font-size:40px; font-weight:700; line-height:1.35; position:relative; z-index:1)
+    div (width:80px; height:4px; background:[destaque]; border-radius:2px; margin-top:28px)
+    p.q-author (font-size:26px; font-weight:800; color:[destaque]; margin-top:18px)
+    p.q-role   (font-size:20px; font-weight:500; opacity:0.65; margin-top:6px)
+  → .s-footer do Quote recebe também o context-card ANTES do cta-btn:
+    div.context-card (background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14);
+      border-radius:20px; padding:28px 36px; display:flex; justify-content:space-around; gap:20px;
+      margin-bottom:16px):
+        2 × div.stat: p(font-size:32px;font-weight:900;color:[destaque]) + p(font-size:18px;opacity:0.65)
+
+TIPOGRAFIA STORY:
+  Headline:    88px | 900 | line-height:1.0 | letter-spacing:-2px
+  Oversized:  110px | 900 | line-height:0.95 | letter-spacing:-3px  (Hero)
+  Sub:         28px | 500 | line-height:1.5
+  Step num:    48px | 900 | cor destaque
+  Step título: 26px | 800
+  Step desc:   20px | 500
+  Quote text:  40px | 700 | line-height:1.35
+  CTA btn:     36px | 800 | padding:44px 60px
+  Slogan:      22px | 600 | uppercase | letter-spacing:2px`
 
 // ─── ADDENDUM: STORY CLARO ────────────────────────────────────────────────────
 export const STORY_LIGHT_ADDENDUM = `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -528,60 +518,63 @@ ADDENDUM — STORY CLARO (1080×1920px)
 DIMENSÃO EXATA:
   body { width:1080px; height:1920px; overflow:hidden; background:#ffffff; }
   #post { width:1080px; height:1920px; }
-  Altura útil .safe: 1800px (1920 − 60top − 60bottom)
-  Largura útil texto: 960px (1080 − 60esq − 60dir)
 
-ESTRUTURA .safe — STORY USA justify-content:space-between:
-  .safe {
-    position: absolute;
-    top: 60px; bottom: 60px; left: 60px; right: 60px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;  ← OBRIGATÓRIO EM STORY
-    overflow: hidden;
-  }
-  ❌ NÃO use .spacer em stories — o space-between distribui automaticamente.
-  ✅ Elementos ficam distribuídos do topo ao fundo: logo no topo, slogan embaixo, conteúdo no meio.
+PALETA LIGHT:
+  Fundo:   #ffffff | body bg: #ffffff (IGUAL ao fundo do post — sem borda preta)
+  Texto:   #0f0f1a (SEMPRE ESCURO — NUNCA branco)
+  Suporte: #4a4a6a (SEMPRE ESCURO)
+  Destaque headline: cor primária sólida
+  CTA:     linear-gradient(135deg,[primária],[destaque]) | texto #ffffff
+  ⚠️ TEMA CLARO = TEXTOS ESCUROS. Cor branca (#fff) em texto = REPROVADO.
 
-PALETA LIGHT (igual ao Post Claro):
-  Fundo do post:    #ffffff
-  body background:  #ffffff (OBRIGATÓRIO — igual ao fundo do post)
-  Texto principal:  #0f0f1a  ← SEMPRE ESCURO — NUNCA branco em tema claro
-  Texto suporte:    #4a4a6a  ← SEMPRE ESCURO — NUNCA branco em tema claro
-  Destaque headline:cor primária sólida da empresa
-  CTA:              gradiente vibrante — linear-gradient(135deg,[primária],[destaque])
-  ⚠️ TEMA CLARO = TEXTOS ESCUROS. Qualquer #ffffff em texto = POST INVISÍVEL e REPROVADO.
+FUNDOS LIGHT:
+  CLEAN_WHITE:   #ffffff + círculo decorativo rgba([primária],0.06) 700px canto superior direito
+  SOFT_TINT:     primária 5% opacity (ex: #f9f0ff)
+  GRADIENT_FADE: linear-gradient(180deg,[primária 8%],#ffffff 40%)
 
-OPÇÕES DE FUNDO LIGHT:
-  CLEAN_WHITE, SOFT_TINT, CARD_SPLIT, GRADIENT_FADE (mesmos do Post Claro)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ESTRUTURA OBRIGATÓRIA — 3 ZONAS (igual ao Story Escuro)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CSS OBRIGATÓRIO:
+  .safe     { position:absolute; top:60px; bottom:60px; left:60px; right:60px;
+              display:flex; flex-direction:column; overflow:hidden; }
+  .s-header { flex-shrink:0; display:flex; flex-direction:column; gap:20px; padding-bottom:36px; }
+  .s-body   { flex:1; display:flex; flex-direction:column; gap:32px; overflow:hidden; }
+  .s-footer { flex-shrink:0; display:flex; flex-direction:column; gap:16px; padding-top:36px; }
 
-HIERARQUIA TIPOGRÁFICA — STORY 1080×1920:
-  ⚠️ Story NÃO usa texto maior. A altura extra = MAIS RESPIRO + MAIS ELEMENTOS, não letras gigantes.
-  Eyebrow/Pill:       20px | 700 | uppercase | letter-spacing:1px | cor primária escurecida
-  Headline padrão:    88px | 900 | line-height:1.0 | letter-spacing:-2px | cor #0f0f1a
-  Headline oversized: 110px | 900 | line-height:0.95 | letter-spacing:-3px | cor #0f0f1a
-  Stat/Número:        200px | 900 | line-height:0.85 | letter-spacing:-6px | cor primária
-  Subtexto:           28px | 500 | line-height:1.5 | cor #4a4a6a
-  Step número:        48px | 900 | cor primária
-  Step título:        26px | 800 | cor #0f0f1a
-  Step descrição:     20px | 500 | cor #4a4a6a
-  Quote frase:        40px | 700 | line-height:1.35 | cor #0f0f1a
-  Quote aspas dec.:   200px | 900 | opacity:0.10 | cor primária
-  CTA botão:          36px | 800 | letter-spacing:0.5px | cor #ffffff | padding:44px 60px
-  Slogan:             22px | 600 | uppercase | letter-spacing:2px | cor #4a4a6a
-  Gap padrão entre elementos: 40-52px (post usa 24-32px) — O RESPIRO É O DIFERENCIAL
+CONTEÚDO DO .s-body POR ARQUÉTIPO (mesma estrutura do Story Escuro, cores substituídas):
 
-ADAPTAÇÕES POR ARQUÉTIPO (iguais ao Story Escuro, exceto cores):
-  B Editorial: 3 benefícios verticais, logo 120px, gaps 44px.
-  A Hero: word-ghost + mini-pills extras para preencher altura.
-  D Steps: 4 steps, gaps 44px, logo 110px, headline 2 linhas.
-  F Quote: context-card obrigatório com 2 stats abaixo da atribuição.
+ARQUÉTIPO B — EDITORIAL (.s-body justify-content:space-between):
+  h1 (88px,900,3 linhas,#0f0f1a) → p.sub (28px,#4a4a6a) → divider (primária→destaque→transparent)
+  div.benefits (flex:1;flex-direction:column;justify-content:space-evenly):
+    3 × benefit: ícone(68×68px,primária 10% bg) + título(26px,800,#0f0f1a) + desc(20px,500,#4a4a6a)
 
-ORÇAMENTO VERTICAL STORY (1800px úteis — distribuir respiro nos gaps):
-  Arquétipo B: conteúdo ~1066px + ~734px em gaps e respiro ✓
-  Arquétipo A: conteúdo ~736px + ~1064px em gaps e espaço ✓
-  Arquétipo D: conteúdo ~972px + ~828px em gaps ✓
-  Arquétipo F: QuoteWrap flex preenche restante ✓`
+ARQUÉTIPO A — HERO (.s-body justify-content:center; gap:40px):
+  headline-wrap(position:relative):
+    span.ghost(260px,#0f0f1a,opacity:0.04,absolute,top:-60px,left:-30px) +
+    h1(110px,900,#0f0f1a,z-index:1)
+  p.sub (28px,500,#4a4a6a,2-3 linhas)
+  pills-row: 2×pill(bg:primária 8%,border:primária 20%,cor:primária,22px,600)
+
+ARQUÉTIPO D — STEPS (.s-body justify-content:flex-start; gap:24px):
+  h1 (88px,900,#0f0f1a,2 linhas)
+  div.steps (flex:1;flex-direction:column;justify-content:space-evenly):
+    4×step: num(48px,900,cor primária) + título(26px,800,#0f0f1a) + desc(20px,500,#4a4a6a)
+
+ARQUÉTIPO F — QUOTE (.s-body justify-content:flex-start):
+  div.quote-block(flex:1;position:relative;display:flex;flex-direction:column;justify-content:center):
+    span.q-marks(200px,900,cor primária,opacity:0.10,absolute,top:0,left:-10px) — &#8220;
+    p.q-text(40px,700,#0f0f1a,line-height:1.35,z-index:1)
+    div(80px×4px,bg:primária,margin-top:28px)
+    p.q-author(26px,800,cor primária,margin-top:18px) + p.q-role(20px,500,#4a4a6a,margin-top:6px)
+  → .s-footer do Quote: context-card(bg:primária 6%,border:primária 15%,border-radius:20px,
+      padding:28px 36px,flex,justify-content:space-around) com 2 stats(32px cor primária + 18px #4a4a6a)
+      + cta-btn + cta-slogan
+
+TIPOGRAFIA STORY CLARO:
+  Headline: 88px | 900 | #0f0f1a | Oversized: 110px (Hero)
+  Sub: 28px | 500 | #4a4a6a | CTA: 36px | padding:44px 60px | cor #ffffff
+  Slogan: 22px | 600 | uppercase | #4a4a6a`
 
 // ─── Compatibilidade retroativa ───────────────────────────────────────────────
 // DEFAULT_AI_RULES é usado como fallback quando Firebase não está configurado.
