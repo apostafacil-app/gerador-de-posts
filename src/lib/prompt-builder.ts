@@ -141,24 +141,32 @@ Estrutura HTML:
   },
   {
     id: 'E', name: 'SPLIT_LAYOUT',
-    instruction: `ARQUÉTIPO E — SPLIT LAYOUT
-Intenção: contraste visual forte entre "antes" e "depois", dividindo o canvas em dois campos visuais.
+    instruction: `ARQUÉTIPO E — COMPARAÇÃO VISUAL (antes × depois)
+Intenção: contrastar "sem o app" vs "com o app" de forma visual e impactante.
 
-LIBERDADE CRIATIVA NA DIVISÃO — escolha UMA das abordagens abaixo (ou crie sua própria):
-  • DIAGONAL: clip-path no div superior criando corte inclinado (clássico)
-  • CURVA: border-radius 0 0 60% 60% / 0 0 120px 120px no div colorido criando arco suave
-  • BLOB: clip-path com SVG path bezier — forma orgânica irregular separando os dois lados
-  • VERTICAL: dois divs lado a lado (50%/50%) com borda central de 4px cor destaque + gradiente bleeding entre eles
-  • DIAGONAL INVERSA: div colorido no canto inferior direito, conteúdo claro no superior esquerdo
-  • ARCO CENTRAL: círculo gigante 1400×1400px posicionado saindo do centro, metade roxa metade clara
+ESTRUTURA HTML — usa as 3 ZONAS (.p-header / .p-body / .p-footer) sobre o fundo bicolor:
 
-Elementos obrigatórios:
-  → Logo centralizada no topo (z-index:10, position:relative)
-  → Labels MANUAL/SEM em um lado + APOSTEMAIS/COM no outro (20px, uppercase, weight:700)
-  → Headline grande (68-80px) cruzando visualmente os dois campos
-  → Métricas comparativas (ex: 30min × 2min) — uma de cada lado, números grandes 80-100px
-  → CTA full-width na base
-⛔ PROIBIDO: lista de benefícios verticais, eyebrow pill padrão`,
+FUNDO BICOLOR (dentro do #post, antes do .safe, z-index:0):
+  Escolha UMA forma criativa para dividir o canvas em 2 campos de cor:
+  • Diagonal top: div(position:absolute;top:0;left:0;width:100%;height:52%;background:linear-gradient(135deg,[secundária],[primária]);clip-path:polygon(0 0,100% 0,100% 80%,0 100%))
+  • Curva suave: div(position:absolute;top:0;left:0;width:100%;height:50%;background:linear-gradient(135deg,[secundária],[primária]);border-radius:0 0 50% 50%/0 0 100px 100px)
+  • Blob orgânico: div(position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,[secundária],[primária]);clip-path:path('M0,0 L1080,0 L1080,580 Q800,780 400,700 Q100,640 0,750 Z'))
+  • Vertical com divisor: div(position:absolute;top:0;left:0;width:49%;height:100%;background:linear-gradient(180deg,[secundária],[primária])) + div(2px;height:100%;background:[destaque];right:51%;)
+  Fundo do #post: #f4f0ff ou #ffffff (claro, contrasta com o campo escuro)
+
+CONTEÚDO (nas 3 zonas normais, z-index:1 acima do fundo):
+  .p-header → logo centralizada
+  .p-body (justify-content:center; gap:36px) →
+    div.labels (display:flex; justify-content:space-between):
+      span "SEM APOSTEMAIS" (22px,700,uppercase,opacity:0.6,cor adaptada ao campo)
+      span "COM APOSTEMAIS" (22px,700,uppercase,cor destaque)
+    h1 (72px,900,text-align:center,line-height:1.0) — headline de contraste
+    div.compare (display:flex; justify-content:center; gap:80px):
+      div.before: span(90px,900,opacity:0.55) + p(24px,500,text-align:center)
+      div.after:  span(90px,900,cor destaque,font-weight:900) + p(24px,500,text-align:center)
+  .p-footer → CTA full-width + slogan
+
+⛔ PROIBIDO: position:absolute no conteúdo, texto cruzando o fundo, lista de benefícios`,
   },
 ]
 
