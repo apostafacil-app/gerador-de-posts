@@ -327,11 +327,23 @@ PALETA DARK:
   Ícone card bg:    rgba([destaque], 0.12) → rgba([destaque], 0.20)
   Ícone card border:rgba([destaque], 0.30)
 
-OPÇÕES DE FUNDO DARK (escolha a definida na ESPECIFICAÇÃO VISUAL por variação):
+OPÇÕES DE FUNDO DARK — cada uma tem aparência RADICALMENTE diferente:
   DEEP_GRADIENT: linear-gradient(135deg,[secundária] 0%,[primária] 50%,#050010 100%)
-  MESH_GLOW:     fundo #060010 + radial-gradient([destaque 20%] 0%,transparent 55%) center + radial-gradient([primária 10%] 0%,transparent 50%) bottom-left
+    → Gradiente rico e colorido. Cor da marca visível e vibrante. Usado no Arquétipo B.
+  MESH_GLOW:     background:#060010 (quase preto) +
+                 div(position:absolute;top:30%;left:50%;transform:translate(-50%,-50%);
+                   width:900px;height:900px;border-radius:50%;
+                   background:radial-gradient(circle,[destaque] 0%,transparent 55%);opacity:0.28;pointer-events:none) +
+                 div(position:absolute;bottom:-100px;left:-100px;width:600px;height:600px;border-radius:50%;
+                   background:radial-gradient(circle,[primária] 0%,transparent 60%);opacity:0.18;pointer-events:none)
+    → Fundo quase preto com glow luminoso atrás do conteúdo. Muito diferente do DEEP_GRADIENT. Usado no Arquétipo A e F.
   SPLIT_DARK:    top 45% gradiente escuro da marca, bottom 55% #f8f8ff — clip-path:polygon(0 0,100% 0,100% 85%,0 100%)
-  RICH_DARK:     fundo #0a0018 + SVG repeating-linear-gradient diagonal 45deg opacity:0.03 + orbe roxo atrás do CTA
+    → Divisão bi-cromática. Topo escuro, fundo claro. Dramático. Usado no Arquétipo E.
+  RICH_DARK:     background:#0a0018 +
+                 SVG repeating-linear-gradient(45deg,[destaque 4% opacity] 0px,[destaque 4% opacity] 1px,transparent 1px,transparent 48px) +
+                 div(position:absolute;bottom:-60px;left:50%;transform:translateX(-50%);width:800px;height:800px;
+                   border-radius:50%;background:radial-gradient(circle,[primária] 0%,transparent 60%);opacity:0.15;pointer-events:none)
+    → Quase preto com micro-textura diagonal e glow sutil embaixo. Máximo contraste para texto/números. Usado no Arquétipo D.
 
 HIERARQUIA TIPOGRÁFICA — POST 1080×1350:
   Eyebrow/Pill:       20px | 700 | uppercase | letter-spacing:1px

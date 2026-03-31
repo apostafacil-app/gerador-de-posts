@@ -47,57 +47,77 @@ const ARCHETYPES = [
   {
     id: 'B', name: 'EDITORIAL',
     instruction: `ARQUÉTIPO B — EDITORIAL
-Intenção: post informativo com benefícios claros. Hierarquia editorial limpa.
-Sequência no .safe (top→bottom): logo → eyebrow pill → headline 3 linhas (76-88px) → subtexto 1-2 linhas (28px) → divisor gradiente → 2 ou 3 benefícios verticais (ícone 64px + título + desc) → spacer → [CTA se conversão] → slogan
-Layout: alinhado à esquerda.
-Regra de espaço: se 3 benefícios, use fonte 24px/18px. Se 2 benefícios, use 28px/21px.
-CTA: obrigatório apenas se o tom for "urgente" ou "exclusivo". Caso contrário: só slogan.`,
+Intenção: post denso e estruturado com benefícios claros. Aparência editorial profissional.
+━ ALINHAMENTO: estritamente À ESQUERDA — logo, eyebrow, headline, subtexto, benefits, CTA todos flush-left
+━ FUNDO OBRIGATÓRIO: DEEP_GRADIENT (gradiente escuro e texturizado da marca) — NUNCA MESH_GLOW
+━ CTA: botão full-width SOLID_GRADIENT — NUNCA pill centralizado
+Sequência no .safe (top→bottom):
+  logo-row (flush left) → eyebrow pill (align-self:flex-start) → h1 (88px, 900, 3 linhas, à esquerda)
+  → subtexto (30px, 2 linhas) → divisor gradiente horizontal → 3 benefícios verticais
+  → spacer → CTA full-width → slogan
+Cada benefício: ícone 72×72px bg glass + título 28px 800 + desc 21px 500 — todos left-aligned
+Resultado esperado: post denso, informativo, com hierarquia clara de cima a baixo`,
   },
   {
     id: 'A', name: 'HERO_STATEMENT',
     instruction: `ARQUÉTIPO A — HERO STATEMENT
-Intenção: impacto máximo com mínimo de elementos. A headline gigante É o post.
-Sequência no .safe: logo pequena (100px) → headline oversized (120-150px, 2-3 linhas, 1-3 palavras/linha) → subtexto curto (1 linha, 30px) → spacer → slogan ou CTA pill
-Layout: centralizado.
-Criatividade: adicione elemento tipográfico fantasma atrás da headline (palavra em 280px, opacity:0.05-0.07, cor destaque) para profundidade.
-CTA: pill centralizado pequeno — ou apenas slogan. Nunca botão full-width aqui.`,
+Intenção: uma headline gigante no centro. Tudo o mais é secundário. Máximo impacto, mínimo de ruído.
+━ ALINHAMENTO: TUDO CENTRALIZADO — text-align:center em todo o .safe, logo centralizada, headline centralizada
+━ FUNDO OBRIGATÓRIO: MESH_GLOW (fundo quase preto #060010 com glow radial vibrante atrás da headline) — NUNCA DEEP_GRADIENT
+━ CTA: PILL_BUTTON centralizado (border-radius:100px, max-width:700px, margin:0 auto) — NUNCA botão full-width
+Sequência no .safe:
+  logo centralizada (height:100px, display:block, margin:0 auto)
+  → headline oversized (140-160px, 900, MÁXIMO 3 linhas, 1-2 palavras/linha, text-align:center)
+  → subtexto curto (1 linha, 30px, text-align:center)
+  → spacer
+  → CTA pill centralizado → slogan centralizado
+Elemento obrigatório: palavra fantasma position:absolute (280px, opacity:0.05, cor destaque) atrás da headline
+⛔ PROIBIDO: lista de benefícios, eyebrow pill, headline abaixo de 120px, qualquer elemento à esquerda
+Resultado esperado: post minimalista, headline domina 50-60% do canvas, muito espaço negativo`,
   },
   {
     id: 'D', name: 'LISTA_STEPS',
     instruction: `ARQUÉTIPO D — LISTA STEPS
-Intenção: educar o leitor com passos claros. Os números grandes são o elemento visual.
-Sequência no .safe: logo → eyebrow → headline 2-3 linhas (76px) → 3 steps numerados → spacer → slogan ou CTA
-Cada step: número em 48px cor destaque + título em 26px bold + descrição em 20px (máx 2 linhas).
-Separador sutil entre steps (border-bottom 1px destaque 15% opacity).
-Cores texto: SEMPRE escuro no tema claro (#0f0f1a / #4a4a6a). NUNCA branco em fundo branco.
-CTA: opcional. Posts educativos funcionam bem só com slogan.`,
+Intenção: passos numerados educam o leitor. Os números grandes são o elemento visual dominante.
+━ ALINHAMENTO: À ESQUERDA
+━ FUNDO OBRIGATÓRIO: RICH_DARK (quase preto, contraste máximo para os números)
+━ CTA: apenas slogan; botão só se tom "urgente"
+Sequência no .safe: logo-row → eyebrow → h1 (76px, 2 linhas) → 4 steps numerados → spacer → slogan
+Cada step (display:flex, align-items:flex-start, gap:24px):
+  número (48px, 900, cor destaque, min-width:52px) + título (26px, 800) + desc (20px, 500, 2 linhas)
+  separador sutil border-bottom 1px rgba(destaque, 0.15) exceto o último
+⛔ PROIBIDO: ícones emoji nos steps (os números SÃO os ícones)`,
   },
   {
     id: 'F', name: 'QUOTE_CARD',
     instruction: `ARQUÉTIPO F — QUOTE CARD
-Intenção: prova social ou frase de impacto. As aspas gigantes criam drama visual.
-Sequência no .safe: logo pequena (90px) → bloco central (flex:1) com aspas decorativas + frase + atribuição → spacer → CTA ou slogan
-Aspas decorativas: div/span com conteúdo " (aspas) em 240-280px, font-weight:900, cor destaque vibrante, opacity:0.15-0.20, position:absolute top-left.
-Frase principal: 46-56px, font-weight:800, máx 3 linhas, z-index:1 acima das aspas.
-Linha divisora colorida (4px, 80px largura) entre frase e atribuição.
-Atribuição: nome em 26px bold destaque + cargo/contexto em 20px suporte.
-Layout: centralizado. Muito espaço negativo = elegância.`,
+Intenção: frase de impacto ou depoimento no centro. Espaço negativo = elegância.
+━ ALINHAMENTO: CENTRALIZADO — tudo centralizado, frase com text-align:center
+━ FUNDO OBRIGATÓRIO: MESH_GLOW — a frase flutua sobre o escuro
+Sequência no .safe:
+  logo pequena centralizada (height:90px, margin:0 auto)
+  → bloco central flex:1 com aspas decorativas (240px, opacity:0.15, position:absolute, top-left) + frase (46-52px, 700, 2-3 linhas, centralizada) + linha colorida 80px×4px + atribuição centralizada
+  → spacer → CTA ou slogan centralizado
+⛔ PROIBIDO: lista de benefícios, eyebrow pill, qualquer elemento à esquerda`,
   },
   {
     id: 'C', name: 'STAT_CARD',
     instruction: `ARQUÉTIPO C — STAT CARD
-Intenção: um dado numérico impactante domina o canvas como âncora visual.
-Sequência no .safe: logo (110px) → número/stat gigante (200-240px, cor destaque, letter-spacing:-8px) → label do stat (30px) → subtexto (1 linha, 28px) → divisor → 2 cards horizontais com dados de apoio → spacer → CTA
-Só use se o assunto do post contiver número real. Se não tiver: troque por Arquétipo B.
-Layout: centralizado.`,
+Intenção: um número real e impactante domina visualmente o canvas como âncora.
+━ ALINHAMENTO: CENTRALIZADO
+━ FUNDO OBRIGATÓRIO: DEEP_GRADIENT — o número flutua sobre o gradiente profundo
+Sequência no .safe: logo centralizada (110px) → número gigante (200-240px, 900, cor destaque, letter-spacing:-8px) → label do stat (30px) → subtexto (1 linha) → divisor → 2 cards horizontais → spacer → CTA centralizado
+⛔ Só usar se o assunto contiver número real. Caso contrário: usar Arquétipo B.`,
   },
   {
     id: 'E', name: 'SPLIT_LAYOUT',
     instruction: `ARQUÉTIPO E — SPLIT LAYOUT
-Intenção: contraste visual direto entre problema e solução (antes/depois).
-Implementação: canvas dividido ao meio — lado esquerdo (problema, fundo escuro/neutro) e lado direito (solução, fundo cor destaque vibrante).
-Logo centralizada no topo (z-index alto). Headline grande cruzando ambos os lados (position:absolute, centralizada, font-size:68-80px). Labels "ANTES/DEPOIS" ou "SEM/COM" em cada lado. CTA full-width na base.
-Nenhuma lista de benefícios — o split visual É o argumento.`,
+Intenção: contraste visual direto entre problema (esquerda) e solução (direita).
+━ FUNDO: o split é o fundo — metade escuro, metade cor destaque vibrante
+Implementação: 2 divs absolutos side-by-side (45% escuro + 55% destaque) + clip-path diagonal.
+Logo centralizada no topo (z-index:10). Headline cruzando ambos os lados (position:absolute, centralizada, 68-80px).
+Labels "ANTES/SEM" à esquerda + "DEPOIS/COM" à direita. CTA full-width na base.
+⛔ PROIBIDO: lista de benefícios, eyebrow pill, fundo decorativo adicional`,
   },
 ]
 
@@ -166,6 +186,9 @@ export function buildPrompt(
   baseRules?: string,
   modeAddendum?: string
 ): string {
+  // Semente visual aleatória — força a IA a tomar decisões criativas diferentes a cada geração
+  const visualSeed = Math.floor(Math.random() * 9000) + 1000
+
   const dimensions = form.format === 'post' ? '1080x1350px' : '1080x1920px'
   const [width, height] = form.format === 'post' ? [1080, 1350] : [1080, 1920]
   const hasLogo = Boolean(getLogoForTheme(company, form.theme))
@@ -239,9 +262,15 @@ Cada variação tem arquétipo, decoração e CTA pré-definidos. NUNCA trocar o
 
 ${variationSpecs}
 
+🎲 SEMENTE VISUAL: ${visualSeed}
+  Use este número para variar detalhes criativos: posição do elemento decorativo, número exato de linhas
+  na headline, tom do copy, emoji escolhido nos ícones, texto do slogan. Nunca repita os mesmos detalhes
+  de uma geração anterior — esta semente garante unicidade.
+
 ⚠️ REGRAS ABSOLUTAS:
 ❌ PROIBIDO usar o mesmo arquétipo em duas variações.
 ❌ PROIBIDO ignorar a estrutura do arquétipo e criar layout livre.
+❌ PROIBIDO misturar alinhamentos: se o arquétipo é CENTRALIZADO, tudo centralizado; se À ESQUERDA, tudo à esquerda.
 ❌ PROIBIDO inventar números, percentuais ou estatísticas (ex: "93% do tempo", "12 horas", "1.875x").
    → Se o assunto não tiver dado numérico real, use afirmações qualitativas.
 ❌ PROIBIDO adicionar urgência falsa ("Últimas horas", "Apenas hoje") se o assunto não mencionar isso.
