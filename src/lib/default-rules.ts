@@ -470,7 +470,7 @@ ESCALA PROPORCIONAL OBRIGATÓRIA:
   Componente título:  32px | 800
   Componente desc:    28px | 500 | line-height:1.45
   Step número:        58px | 900 | cor destaque
-  Quote frase:        36px | 700 | line-height:1.4  (máx 3 linhas — frase CURTA)
+  Quote frase:        44px | 700 | line-height:1.35 (máx 3 linhas — frase CURTA)
   Quote attribution:  26px | 800
   Quote cargo:        22px | 500
   CTA botão:          34px | 800 | padding:42px 60px
@@ -486,7 +486,7 @@ ARQUÉTIPO B — EDITORIAL (.s-body justify-content:space-between; gap:28px):
   div.benefits (flex:1; display:flex; flex-direction:column; justify-content:space-evenly):
     3 × div.benefit (display:flex; align-items:center; gap:28px):
       div.icon (72×72px; border-radius:18px; font-size:34px; flex-shrink:0)
-      div: p.benefit-title(32px,800) + p.benefit-desc(28px,500,opacity:0.72,margin-top:6px)
+      div: p.benefit-title(32px,800) + p.benefit-desc(28px,500,opacity:0.88,margin-top:6px)
 
 ARQUÉTIPO A — HERO (.s-body justify-content:center; gap:44px):
   div.headline-wrap (position:relative):
@@ -503,13 +503,13 @@ ARQUÉTIPO D — STEPS (.s-body justify-content:flex-start; gap:28px):
   div.steps (flex:1; display:flex; flex-direction:column; justify-content:space-evenly):
     4 × div.step (display:flex; align-items:flex-start; gap:24px):
       span.num (58px, 900, cor destaque, line-height:1, min-width:60px, flex-shrink:0)
-      div: p.step-title(32px,800) + p.step-desc(28px,500,opacity:0.72,line-height:1.35,margin-top:8px)
+      div: p.step-title(32px,800) + p.step-desc(28px,500,opacity:0.88,line-height:1.35,margin-top:8px)
 
 ARQUÉTIPO F — QUOTE (.s-body justify-content:flex-start):
   div.quote-block (flex:1; position:relative; display:flex; flex-direction:column; justify-content:center):
     span.q-marks (200px, 900, cor destaque, opacity:0.15, position:absolute, top:0, left:-10px,
       line-height:1, pointer-events:none, user-select:none, z-index:0) — &#8220;
-    p.q-text (36px, 700, line-height:1.4, z-index:1, position:relative, MÁXIMO 3 LINHAS — frase CURTA e impactante)
+    p.q-text (44px, 700, line-height:1.35, z-index:1, position:relative, MÁXIMO 3 LINHAS — frase CURTA e impactante)
     div (80px×4px, bg:destaque, border-radius:2px, margin-top:28px)
     p.q-author (26px, 800, cor destaque, margin-top:20px)
     p.q-role   (22px, 500, opacity:0.65, margin-top:8px)
@@ -562,7 +562,7 @@ ESCALA PROPORCIONAL OBRIGATÓRIA:
   Componente título:  32px | 800 | #0f0f1a
   Componente desc:    28px | 500 | line-height:1.45 | #4a4a6a
   Step número:        58px | 900 | cor primária
-  Quote frase:        36px | 700 | line-height:1.4  (máx 3 linhas — frase CURTA) | #0f0f1a
+  Quote frase:        44px | 700 | line-height:1.35 (máx 3 linhas — frase CURTA) | #0f0f1a
   Quote attribution:  26px | 800 | cor primária
   Quote cargo:        22px | 500 | #4a4a6a
   CTA botão:          34px | 800 | padding:42px 60px | cor #ffffff
@@ -582,7 +582,7 @@ ARQUÉTIPO B — EDITORIAL (.s-body justify-content:space-between; gap:28px):
   div.benefits (flex:1; display:flex; flex-direction:column; justify-content:space-evenly):
     3 × div.benefit (display:flex; align-items:center; gap:28px):
       div.icon (72×72px; border-radius:18px; background:primária 10%; font-size:34px; flex-shrink:0)
-      div: p.benefit-title(32px,800,#0f0f1a) + p.benefit-desc(28px,500,#4a4a6a,opacity:0.72,margin-top:6px)
+      div: p.benefit-title(32px,800,#0f0f1a) + p.benefit-desc(28px,500,#4a4a6a,opacity:0.88,margin-top:6px)
 
 ARQUÉTIPO A — HERO (.s-body justify-content:center; gap:44px):
   div.headline-wrap (position:relative):
@@ -599,13 +599,13 @@ ARQUÉTIPO D — STEPS (.s-body justify-content:flex-start; gap:28px):
   div.steps (flex:1; display:flex; flex-direction:column; justify-content:space-evenly):
     4 × div.step (display:flex; align-items:flex-start; gap:24px):
       span.num (58px, 900, cor primária, line-height:1, min-width:60px, flex-shrink:0)
-      div: p.step-title(32px,800,#0f0f1a) + p.step-desc(28px,500,#4a4a6a,line-height:1.35,margin-top:8px)
+      div: p.step-title(32px,800,#0f0f1a) + p.step-desc(28px,500,#4a4a6a,opacity:0.88,line-height:1.35,margin-top:8px)
 
 ARQUÉTIPO F — QUOTE (.s-body justify-content:flex-start):
   div.quote-block (flex:1; position:relative; display:flex; flex-direction:column; justify-content:center):
     span.q-marks (200px, 900, cor primária, opacity:0.10, position:absolute, top:0, left:-10px,
       line-height:1, pointer-events:none, user-select:none, z-index:0) — &#8220;
-    p.q-text (36px, 700, line-height:1.4, #0f0f1a, z-index:1, position:relative, MÁXIMO 3 LINHAS — frase CURTA e impactante)
+    p.q-text (44px, 700, line-height:1.35, #0f0f1a, z-index:1, position:relative, MÁXIMO 3 LINHAS — frase CURTA e impactante)
     div (80px×4px, bg:primária, border-radius:2px, margin-top:28px)
     p.q-author (26px, 800, cor primária, margin-top:20px)
     p.q-role   (22px, 500, #4a4a6a, margin-top:8px)
