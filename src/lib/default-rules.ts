@@ -466,18 +466,21 @@ Texto legível no Instagram requer MÍNIMO 28px no canvas (= ~10dp na tela).
 ESCALA PROPORCIONAL OBRIGATÓRIA:
   Headline principal: 80px | 900 | line-height:1.05 | letter-spacing:-2px
   Headline Hero (A):  96px | 900 | line-height:0.95 | letter-spacing:-3px  ← único com size maior
-  Subtexto:           36px | 500 | line-height:1.45
-  Componente título:  32px | 800
-  Componente desc:    28px | 500 | line-height:1.45
-  Step número:        58px | 900 | cor destaque
+  Subtexto:           38px | 500 | line-height:1.45
+  Componente título:  38px | 800
+  Componente desc:    34px | 500 | line-height:1.4
+  Step número:        64px | 900 | cor destaque
   Quote frase:        44px | 700 | line-height:1.35 (máx 3 linhas — frase CURTA)
-  Quote attribution:  26px | 800
-  Quote cargo:        22px | 500
-  CTA botão:          34px | 800 | padding:42px 60px
-  Eyebrow/Pill:       20px | 700 | uppercase | letter-spacing:1px
-  Slogan rodapé:      20px | 600 | uppercase | letter-spacing:2px
-  Stat valor (card):  36px | 900
-  Stat label (card):  20px | 500
+  Quote attribution:  30px | 800
+  Quote cargo:        26px | 500
+  CTA botão:          36px | 800 | padding:44px 64px
+  Eyebrow/Pill:       24px | 700 | uppercase | letter-spacing:1px
+  Slogan rodapé:      22px | 600 | uppercase | letter-spacing:2px
+  Stat valor (card):  40px | 900
+  Stat label (card):  24px | 500
+
+⛔ PROIBIDO usar fonte menor que 32px em qualquer texto de conteúdo (títulos, descrições, subtextos).
+   Exceções únicas permitidas abaixo de 32px: slogan rodapé, eyebrow/pill, stat label.
 
 ARQUÉTIPO B — EDITORIAL (.s-body justify-content:space-between; gap:28px):
   h1 (80px, 900, 3 linhas máx, letter-spacing:-2px)
@@ -486,7 +489,7 @@ ARQUÉTIPO B — EDITORIAL (.s-body justify-content:space-between; gap:28px):
   div.benefits (flex:1; display:flex; flex-direction:column; justify-content:space-evenly):
     3 × div.benefit (display:flex; align-items:center; gap:28px):
       div.icon (72×72px; border-radius:18px; font-size:34px; flex-shrink:0)
-      div: p.benefit-title(32px,800) + p.benefit-desc(28px,500,opacity:0.88,margin-top:6px)
+      div: p.benefit-title(38px,800) + p.benefit-desc(34px,500,opacity:0.88,margin-top:6px)
 
 ARQUÉTIPO A — HERO (.s-body justify-content:center; gap:44px):
   div.headline-wrap (position:relative):
@@ -502,8 +505,8 @@ ARQUÉTIPO D — STEPS (.s-body justify-content:flex-start; gap:28px):
   h1 (80px, 900, 2 linhas máx)
   div.steps (flex:1; display:flex; flex-direction:column; justify-content:space-evenly):
     4 × div.step (display:flex; align-items:flex-start; gap:24px):
-      span.num (58px, 900, cor destaque, line-height:1, min-width:60px, flex-shrink:0)
-      div: p.step-title(32px,800) + p.step-desc(28px,500,opacity:0.88,line-height:1.35,margin-top:8px)
+      span.num (64px, 900, cor destaque, line-height:1, min-width:70px, flex-shrink:0)
+      div: p.step-title(38px,800) + p.step-desc(34px,500,opacity:0.88,line-height:1.35,margin-top:8px)
 
 ARQUÉTIPO F — QUOTE (.s-body justify-content:flex-start):
   div.quote-block (flex:1; position:relative; display:flex; flex-direction:column; justify-content:center):
@@ -558,18 +561,21 @@ Texto legível no Instagram requer MÍNIMO 28px no canvas (= ~10dp na tela).
 ESCALA PROPORCIONAL OBRIGATÓRIA:
   Headline principal: 80px | 900 | line-height:1.05 | letter-spacing:-2px | #0f0f1a
   Headline Hero (A):  96px | 900 | line-height:0.95 | letter-spacing:-3px | #0f0f1a  ← único com size maior
-  Subtexto:           36px | 500 | line-height:1.45 | #4a4a6a
-  Componente título:  32px | 800 | #0f0f1a
-  Componente desc:    28px | 500 | line-height:1.45 | #4a4a6a
-  Step número:        58px | 900 | cor primária
+  Subtexto:           38px | 500 | line-height:1.45 | #4a4a6a
+  Componente título:  38px | 800 | #0f0f1a
+  Componente desc:    34px | 500 | line-height:1.4 | #4a4a6a
+  Step número:        64px | 900 | cor primária
   Quote frase:        44px | 700 | line-height:1.35 (máx 3 linhas — frase CURTA) | #0f0f1a
-  Quote attribution:  26px | 800 | cor primária
-  Quote cargo:        22px | 500 | #4a4a6a
-  CTA botão:          34px | 800 | padding:42px 60px | cor #ffffff
-  Eyebrow/Pill:       20px | 700 | uppercase | letter-spacing:1px
-  Slogan rodapé:      20px | 600 | uppercase | letter-spacing:2px | #4a4a6a
-  Stat valor (card):  36px | 900 | cor primária
-  Stat label (card):  20px | 500 | #4a4a6a
+  Quote attribution:  30px | 800 | cor primária
+  Quote cargo:        26px | 500 | #4a4a6a
+  CTA botão:          36px | 800 | padding:44px 64px | cor #ffffff
+  Eyebrow/Pill:       24px | 700 | uppercase | letter-spacing:1px
+  Slogan rodapé:      22px | 600 | uppercase | letter-spacing:2px | #4a4a6a
+  Stat valor (card):  40px | 900 | cor primária
+  Stat label (card):  24px | 500 | #4a4a6a
+
+⛔ PROIBIDO usar fonte menor que 32px em qualquer texto de conteúdo (títulos, descrições, subtextos).
+   Exceções únicas permitidas abaixo de 32px: slogan rodapé, eyebrow/pill, stat label.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 CONTEÚDO DO .s-body POR ARQUÉTIPO
@@ -582,7 +588,7 @@ ARQUÉTIPO B — EDITORIAL (.s-body justify-content:space-between; gap:28px):
   div.benefits (flex:1; display:flex; flex-direction:column; justify-content:space-evenly):
     3 × div.benefit (display:flex; align-items:center; gap:28px):
       div.icon (72×72px; border-radius:18px; background:primária 10%; font-size:34px; flex-shrink:0)
-      div: p.benefit-title(32px,800,#0f0f1a) + p.benefit-desc(28px,500,#4a4a6a,opacity:0.88,margin-top:6px)
+      div: p.benefit-title(38px,800,#0f0f1a) + p.benefit-desc(34px,500,#4a4a6a,opacity:0.88,margin-top:6px)
 
 ARQUÉTIPO A — HERO (.s-body justify-content:center; gap:44px):
   div.headline-wrap (position:relative):
@@ -598,8 +604,8 @@ ARQUÉTIPO D — STEPS (.s-body justify-content:flex-start; gap:28px):
   h1 (80px, 900, 2 linhas máx, #0f0f1a)
   div.steps (flex:1; display:flex; flex-direction:column; justify-content:space-evenly):
     4 × div.step (display:flex; align-items:flex-start; gap:24px):
-      span.num (58px, 900, cor primária, line-height:1, min-width:60px, flex-shrink:0)
-      div: p.step-title(32px,800,#0f0f1a) + p.step-desc(28px,500,#4a4a6a,opacity:0.88,line-height:1.35,margin-top:8px)
+      span.num (64px, 900, cor primária, line-height:1, min-width:70px, flex-shrink:0)
+      div: p.step-title(38px,800,#0f0f1a) + p.step-desc(34px,500,#4a4a6a,opacity:0.88,line-height:1.35,margin-top:8px)
 
 ARQUÉTIPO F — QUOTE (.s-body justify-content:flex-start):
   div.quote-block (flex:1; position:relative; display:flex; flex-direction:column; justify-content:center):
