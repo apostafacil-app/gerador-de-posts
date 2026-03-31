@@ -414,6 +414,20 @@ DIMENSÃO EXATA:
   Altura útil .safe: 1800px (1920 − 60top − 60bottom)
   Largura útil texto: 960px (1080 − 60esq − 60dir)
 
+ESTRUTURA .safe — STORY USA justify-content:space-between:
+  .safe {
+    position: absolute;
+    top: 60px; bottom: 60px; left: 60px; right: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;  ← OBRIGATÓRIO EM STORY (distribui elementos no eixo vertical)
+    overflow: hidden;
+  }
+  ❌ NÃO use .spacer em stories — o space-between distribui automaticamente.
+  ❌ NÃO use margin-top:auto — o space-between já faz isso.
+  ✅ Elementos ficam distribuídos do topo ao fundo: logo no topo, slogan embaixo, conteúdo no meio.
+  ✅ Para o Quote Card: .quote-wrap deve ter flex:1 para preencher o meio.
+
 PALETA DARK (igual ao Post Escuro):
   Fundo do post:    gradiente escuro — linear-gradient(135deg,[secundária] 0%,[primária] 50%,#050010 100%)
   body background:  MESMA cor/gradiente do #post
@@ -516,6 +530,18 @@ DIMENSÃO EXATA:
   #post { width:1080px; height:1920px; }
   Altura útil .safe: 1800px (1920 − 60top − 60bottom)
   Largura útil texto: 960px (1080 − 60esq − 60dir)
+
+ESTRUTURA .safe — STORY USA justify-content:space-between:
+  .safe {
+    position: absolute;
+    top: 60px; bottom: 60px; left: 60px; right: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;  ← OBRIGATÓRIO EM STORY
+    overflow: hidden;
+  }
+  ❌ NÃO use .spacer em stories — o space-between distribui automaticamente.
+  ✅ Elementos ficam distribuídos do topo ao fundo: logo no topo, slogan embaixo, conteúdo no meio.
 
 PALETA LIGHT (igual ao Post Claro):
   Fundo do post:    #ffffff
