@@ -182,27 +182,25 @@ const BG_STYLES_LIGHT = [
   'GRADIENT_FADE: linear-gradient(180deg,[primária 8%] 0%,#ffffff 40%) — degrade suave top→bottom',
 ]
 
-// ─── CONFIGURAÇÕES POR VARIAÇÃO ────────────────────────────────────────────────
-// bgDark / bgLight: índice ESPECÍFICO por arquétipo — nunca ciclico.
-// Garante que o fundo seja compatível com o layout do arquétipo.
-const VARIATION_SLOTS = [
-  { archetypeIdx: 0, decorationIdx: 0, ctaIdx: 0, bgDark: 0, bgLight: 0 }, // B Editorial + DEEP_GRADIENT  / CLEAN_WHITE
-  { archetypeIdx: 1, decorationIdx: 1, ctaIdx: 1, bgDark: 1, bgLight: 3 }, // A Hero      + MESH_GLOW      / GRADIENT_FADE
-  { archetypeIdx: 2, decorationIdx: 2, ctaIdx: 2, bgDark: 3, bgLight: 1 }, // D Steps     + RICH_DARK      / SOFT_TINT
-  { archetypeIdx: 3, decorationIdx: 4, ctaIdx: 3, bgDark: 1, bgLight: 3 }, // F Quote     + MESH_GLOW      / GRADIENT_FADE
-  { archetypeIdx: 4, decorationIdx: 3, ctaIdx: 4, bgDark: 0, bgLight: 0 }, // C Stat      + DEEP_GRADIENT  / CLEAN_WHITE
-  { archetypeIdx: 5, decorationIdx: 6, ctaIdx: 0, bgDark: 2, bgLight: 1 }, // E Split     + SPLIT_DARK     / SOFT_TINT
-]
+// ─── MENU DE OPÇÕES PARA A IA ──────────────────────────────────────────────────
+// A IA escolhe livremente os melhores arquétipos para o conteúdo.
+// Não há pré-atribuição — isso garante variações genuinamente diferentes.
 
-function pickStyles(variationIndex: number, _totalVariations: number, theme: string) {
-  const slot = VARIATION_SLOTS[variationIndex % VARIATION_SLOTS.length]
-  const bgArr = theme === 'dark' ? BG_STYLES_DARK : BG_STYLES_LIGHT
-  return {
-    archetype: ARCHETYPES[slot.archetypeIdx],
-    decoration: DECORATIONS[slot.decorationIdx],
-    cta: CTA_STYLES[slot.ctaIdx],
-    bg: bgArr[theme === 'dark' ? slot.bgDark : slot.bgLight],
-  }
+function buildArchetypeMenu(): string {
+  return ARCHETYPES.map(a => `▸ ${a.id} — ${a.name}\n${a.instruction}`).join('\n\n')
+}
+
+function buildBgMenu(theme: string): string {
+  const list = theme === 'dark' ? BG_STYLES_DARK : BG_STYLES_LIGHT
+  return list.map((b, i) => `  ${i + 1}) ${b}`).join('\n')
+}
+
+function buildCtaMenu(): string {
+  return CTA_STYLES.map((c, i) => `  ${i + 1}) ${c}`).join('\n')
+}
+
+function buildDecorationMenu(): string {
+  return DECORATIONS.map((d, i) => `  ${i + 1}) ${d}`).join('\n')
 }
 
 export function buildPrompt(
@@ -241,16 +239,11 @@ Separe cada legenda com os marcadores:
 <!-- CAPTION_END -->`
     : ''
 
-  // Gera especificação visual única e OBRIGATÓRIA por variação
-  const variationSpecs = Array.from({ length: form.variations }, (_, i) => {
-    const styles = pickStyles(i, form.variations, form.theme)
-    return `━━ VARIAÇÃO ${i + 1} ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  🏗  ARQUÉTIPO OBRIGATÓRIO → ${styles.archetype.id} — ${styles.archetype.name}
-${styles.archetype.instruction}
-  🎨  FUNDO BASE → ${styles.bg}
-  ✨  DECORAÇÃO OBRIGATÓRIA → ${styles.decoration}
-  🔘  CTA OBRIGATÓRIO → ${styles.cta}`
-  }).join('\n\n')
+  // Menu de opções criativas — a IA escolhe a melhor combinação para o conteúdo
+  const archetypeMenu = buildArchetypeMenu()
+  const bgMenu = buildBgMenu(form.theme)
+  const ctaMenu = buildCtaMenu()
+  const decorationMenu = buildDecorationMenu()
 
   const resolvedBase = baseRules || DEFAULT_AI_RULES
   const resolvedAddendum = modeAddendum || getModeAddendum(form.format, form.theme)
@@ -282,26 +275,46 @@ Técnica de persuasão: ${persuasionLabel[form.persuasionTechnique] ?? 'benefici
 Usar imagem/arte visual: ${form.useImage ? `Sim — estilo desejado: ${form.imageStyle || 'premium, abstrato geométrico'}` : 'Não — usar apenas tipografia e gradientes'}
 
 ---
-## ESPECIFICAÇÃO VISUAL POR VARIAÇÃO — SEGUIR À RISCA
+## SUA MISSÃO CRIATIVA
 
-Cada variação tem arquétipo, decoração e CTA pré-definidos. NUNCA trocar ou misturar entre variações.
+Crie ${form.variations} variações VISUALMENTE DISTINTAS. Para cada variação, você escolhe livremente
+o arquétipo, fundo, CTA e decoração que melhor servem o conteúdo — desde que nenhuma repita outra.
 
-${variationSpecs}
+🎲 SEMENTE CRIATIVA: ${visualSeed}
+   Use para diversificar: ângulo do copy, posição de elementos, emoji, tom do slogan.
 
-🎲 SEMENTE VISUAL: ${visualSeed}
-  Use este número para variar detalhes criativos: posição do elemento decorativo, número exato de linhas
-  na headline, tom do copy, emoji escolhido nos ícones, texto do slogan. Nunca repita os mesmos detalhes
-  de uma geração anterior — esta semente garante unicidade.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ARQUÉTIPOS DISPONÍVEIS — escolha os que melhor servem o conteúdo:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${archetypeMenu}
 
-⚠️ REGRAS ABSOLUTAS:
-❌ PROIBIDO usar o mesmo arquétipo em duas variações.
-❌ PROIBIDO ignorar a estrutura do arquétipo e criar layout livre.
-❌ PROIBIDO misturar alinhamentos: se o arquétipo é CENTRALIZADO, tudo centralizado; se À ESQUERDA, tudo à esquerda.
-❌ PROIBIDO inventar números, percentuais ou estatísticas (ex: "93% do tempo", "12 horas", "1.875x").
-   → Se o assunto não tiver dado numérico real, use afirmações qualitativas.
-❌ PROIBIDO adicionar urgência falsa ("Últimas horas", "Apenas hoje") se o assunto não mencionar isso.
-   → Tom urgente só se o parâmetro "Tom emocional" for "Urgente".
-✅ Copy diferente + arquétipo diferente + decoração diferente = variações realmente distintas.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FUNDOS DISPONÍVEIS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${bgMenu}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CTAs DISPONÍVEIS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${ctaMenu}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DECORAÇÕES DISPONÍVEIS:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${decorationMenu}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+REGRAS DE CRIATIVIDADE:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ Cada variação usa um arquétipo DIFERENTE
+✅ Cada variação usa um fundo DIFERENTE
+✅ Varie alinhamentos: misture centralizadas e à esquerda
+✅ Varie densidade: uma densa (B), uma minimalista (A ou F), uma estruturada (D)
+✅ O eyebrow pill é OPCIONAL — use só quando acrescentar valor, não por padrão
+❌ PROIBIDO: dois arquétipos iguais na mesma geração
+❌ PROIBIDO: arquétipo F (Quote) sem depoimento real fornecido — invente copy próprio em vez
+❌ PROIBIDO: inventar números, estatísticas ou urgência falsa
+❌ PROIBIDO: arquétipo C (Stat) sem número real no assunto
 
 ---
 ## INSTRUÇÃO FINAL
