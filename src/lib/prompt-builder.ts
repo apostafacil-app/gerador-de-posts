@@ -49,7 +49,7 @@ const ARCHETYPES = [
     instruction: `ARQUÉTIPO B — EDITORIAL
 Intenção: post denso e estruturado com benefícios claros. Aparência editorial profissional.
 ━ ALINHAMENTO: estritamente À ESQUERDA — logo, eyebrow, headline, subtexto, benefits, CTA todos flush-left
-━ FUNDO OBRIGATÓRIO: DEEP_GRADIENT (gradiente escuro e texturizado da marca) — NUNCA MESH_GLOW
+━ FUNDO OBRIGATÓRIO: DEEP_GRADIENT — gradiente ROXO SATURADO e vibrante da marca — NUNCA preto puro, NUNCA MESH_GLOW
 ━ CTA: botão full-width SOLID_GRADIENT — NUNCA pill centralizado
 Sequência no .safe (top→bottom):
   logo-row (flush left) → eyebrow pill (align-self:flex-start) → h1 (88px, 900, 3 linhas, à esquerda)
@@ -63,7 +63,7 @@ Resultado esperado: post denso, informativo, com hierarquia clara de cima a baix
     instruction: `ARQUÉTIPO A — HERO STATEMENT
 Intenção: uma headline gigante no centro. Tudo o mais é secundário. Máximo impacto, mínimo de ruído.
 ━ ALINHAMENTO: TUDO CENTRALIZADO — text-align:center em todo o .safe, logo centralizada, headline centralizada
-━ FUNDO OBRIGATÓRIO: MESH_GLOW (fundo quase preto #060010 com glow radial vibrante atrás da headline) — NUNCA DEEP_GRADIENT
+━ FUNDO OBRIGATÓRIO: MESH_GLOW — background:#000000 PRETO PURO com glow luminoso centralizado — NUNCA DEEP_GRADIENT, NUNCA roxo
 ━ CTA: PILL_BUTTON centralizado (border-radius:100px, max-width:700px, margin:0 auto) — NUNCA botão full-width
 Sequência no .safe:
   logo centralizada (height:100px, display:block, margin:0 auto)
