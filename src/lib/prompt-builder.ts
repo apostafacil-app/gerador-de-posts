@@ -142,11 +142,23 @@ Estrutura HTML:
   {
     id: 'E', name: 'SPLIT_LAYOUT',
     instruction: `ARQUÉTIPO E — SPLIT LAYOUT
-Intenção: contraste visual direto entre problema e solução, lado a lado.
-Implementação: 2 divs absolutos side-by-side (45% escuro + 55% cor destaque vibrante) + clip-path diagonal.
-Logo centralizada no topo (z-index:10). Headline grande cruzando os dois lados (position:absolute, centralizada, 68-80px).
-Labels "ANTES/SEM" à esquerda + "DEPOIS/COM" à direita, em tipografia contrastante. CTA full-width na base.
-⛔ PROIBIDO: lista de benefícios, fundo decorativo adicional`,
+Intenção: contraste visual forte entre "antes" e "depois", dividindo o canvas em dois campos visuais.
+
+LIBERDADE CRIATIVA NA DIVISÃO — escolha UMA das abordagens abaixo (ou crie sua própria):
+  • DIAGONAL: clip-path no div superior criando corte inclinado (clássico)
+  • CURVA: border-radius 0 0 60% 60% / 0 0 120px 120px no div colorido criando arco suave
+  • BLOB: clip-path com SVG path bezier — forma orgânica irregular separando os dois lados
+  • VERTICAL: dois divs lado a lado (50%/50%) com borda central de 4px cor destaque + gradiente bleeding entre eles
+  • DIAGONAL INVERSA: div colorido no canto inferior direito, conteúdo claro no superior esquerdo
+  • ARCO CENTRAL: círculo gigante 1400×1400px posicionado saindo do centro, metade roxa metade clara
+
+Elementos obrigatórios:
+  → Logo centralizada no topo (z-index:10, position:relative)
+  → Labels MANUAL/SEM em um lado + APOSTEMAIS/COM no outro (20px, uppercase, weight:700)
+  → Headline grande (68-80px) cruzando visualmente os dois campos
+  → Métricas comparativas (ex: 30min × 2min) — uma de cada lado, números grandes 80-100px
+  → CTA full-width na base
+⛔ PROIBIDO: lista de benefícios verticais, eyebrow pill padrão`,
   },
 ]
 

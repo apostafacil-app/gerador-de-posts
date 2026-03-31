@@ -342,11 +342,14 @@ Não há vínculo fixo fundo↔arquétipo — qualquer arquétipo pode usar qual
                    opacity:0.35;pointer-events:none;z-index:0)
     → PRETO PURO com glow brilhante centralizado — contraste máximo.
 
-  SPLIT_DARK:    div superior (position:absolute;top:0;left:0;width:100%;height:55%;
-                   background:linear-gradient(135deg,[secundária],[primária]);
-                   clip-path:polygon(0 0,100% 0,100% 80%,0 100%)) +
-                 fundo do #post: #f4f0ff
-    → Metade escuro/colorido em cima, metade claro embaixo. Visual único e moderno.
+  SPLIT_DARK:    Dois campos visuais contrastantes — um escuro/colorido (marca) e um claro (#f4f0ff ou #ffffff).
+                 A FORMA da divisão é LIVRE — use criatividade:
+                   • Diagonal: clip-path:polygon(0 0,100% 0,100% 75%,0 100%) no div colorido
+                   • Curva: border-radius:0 0 55% 55%/0 0 120px 120px no div colorido (height:52%)
+                   • Blob: clip-path:path('M0,0 L1080,0 L1080,600 Q700,800 0,650 Z') — bezier orgânico
+                   • Vertical: width:48% esquerda escuro + width:52% direita claro + divider 3px destaque
+                   • Arco: círculo 1200px saindo do centro-baixo do div colorido
+                 Escolha a forma que melhor serve a composição. Cada geração deve ser diferente.
     ⚠️ SPLIT_DARK é compatível APENAS com Arquétipo E (Split Layout). Nunca usar com B, A ou D.
 
   RICH_DARK:     background:#05000f +
