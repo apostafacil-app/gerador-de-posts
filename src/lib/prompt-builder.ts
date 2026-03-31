@@ -61,24 +61,26 @@ Resultado esperado: post denso, informativo, com hierarquia clara de cima a baix
   {
     id: 'A', name: 'HERO_STATEMENT',
     instruction: `ARQUÉTIPO A — HERO STATEMENT
-Intenção: uma headline ENORME no centro. O texto preenche o canvas. Máximo impacto visual.
+Intenção: headline de impacto centralizada. Minimalismo com força visual.
 ━ ALINHAMENTO: TUDO CENTRALIZADO — text-align:center em todo o .safe
-━ FUNDO OBRIGATÓRIO DARK: MESH_GLOW — background:#000000 PRETO PURO com glow brilhante — NUNCA DEEP_GRADIENT
-━ FUNDO OBRIGATÓRIO LIGHT: background:#ffffff + círculo decorativo 900×900px (cor primária, opacity:0.08, position:absolute, top:-200px, right:-200px) + círculo menor 500×500px (destaque, opacity:0.06, bottom:-150px, left:-150px)
-━ CTA: PILL_BUTTON centralizado (border-radius:100px, max-width:700px, margin:0 auto)
+━ FUNDO DARK: MESH_GLOW — background:#000000 PRETO PURO com glow — NUNCA DEEP_GRADIENT
+━ FUNDO LIGHT: background:#ffffff + div(position:absolute;top:-180px;right:-180px;width:800px;height:800px;border-radius:50%;background:[primária];opacity:0.07;pointer-events:none) + div(position:absolute;bottom:-120px;left:-120px;width:450px;height:450px;border-radius:50%;background:[destaque];opacity:0.05;pointer-events:none)
+━ CTA: PILL_BUTTON centralizado (border-radius:100px; max-width:700px; margin:0 auto)
 
 Sequência no .safe:
-  logo centralizada (height:90px, display:block, margin:0 auto)
-  → headline oversized (OBRIGATÓRIO 4 LINHAS: font-size:150px, font-weight:900, line-height:0.92,
-      letter-spacing:-4px, text-align:center — escolher palavras curtas que forcem 4 linhas)
-  → subtexto (2 linhas, 30px, text-align:center, opacity:0.75)
-  → spacer (mínimo 60px, máximo 120px)
+  logo centralizada (height:90px; display:block; margin:0 auto)
+  → div(height:40px flex-shrink:0)
+  → h1 oversized (font-size:120px; font-weight:900; line-height:0.95; letter-spacing:-3px;
+      text-align:center; MÁXIMO 3 LINHAS — 2-3 palavras por linha)
+  → p.sub (30px; 500; text-align:center; opacity:0.72; margin-top:28px; max 2 linhas)
+  → div.spacer (flex:1)
   → CTA pill centralizado
   → slogan centralizado
 
-Elemento obrigatório: palavra fantasma position:absolute top:50% left:50% transform:translate(-50%,-50%) (320px, opacity:0.05, cor destaque, font-weight:900, user-select:none, pointer-events:none, z-index:0)
-⛔ PROIBIDO: lista de benefícios, eyebrow pill, headline abaixo de 130px, menos de 4 linhas na headline
-✅ A headline deve ocupar 55-65% da altura do canvas — se não preencher, aumente font-size`,
+Elemento obrigatório: span.ghost (position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  font-size:300px; font-weight:900; color:[destaque]; opacity:0.04; white-space:nowrap;
+  user-select:none; pointer-events:none; z-index:0; line-height:1)
+⛔ PROIBIDO: lista de benefícios, eyebrow pill, headline acima de 130px ou abaixo de 100px`,
   },
   {
     id: 'D', name: 'LISTA_STEPS',

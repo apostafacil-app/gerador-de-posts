@@ -47,6 +47,8 @@ O container .safe DEVE ter insets de 60px nos 4 lados:
 ❌ NUNCA use margin-top no primeiro filho para criar margem superior
 ❌ NUNCA use padding-bottom no último filho para criar margem inferior
 ✅ O .safe com insets 60px já garante as margens — o primeiro filho tem margin-top:0
+⛔ PROIBIDO adicionar border-top, border-bottom ou qualquer faixa/stripe no elemento #post.
+   Decorações ficam DENTRO do .safe como elementos position:absolute.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 4. SPACER ANTES DO CTA — REGRA CRÍTICA
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
