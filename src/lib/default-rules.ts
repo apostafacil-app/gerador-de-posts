@@ -422,31 +422,86 @@ PALETA DARK (igual ao Post Escuro):
   Destaque:         versão CLARA/VIBRANTE da cor de destaque
   CTA:              gradiente vibrante distinto do fundo
 
-OPÇÕES DE FUNDO DARK:
-  DEEP_GRADIENT, MESH_GLOW, SPLIT_DARK, RICH_DARK (mesmos do Post Escuro)
+FUNDOS DARK PARA STORY — MAIS DRAMÁTICOS QUE O POST:
+  DEEP_GRADIENT: linear-gradient(135deg,[secundária] 0%,[primária] 50%,#050010 100%)
+  MESH_GLOW (story):
+    fundo #060010
+    + div position:absolute top:-100px right:-150px width:900px height:900px border-radius:50%
+        background:radial-gradient(circle,[destaque 30% opacity] 0%,transparent 55%) pointer-events:none
+    + div position:absolute bottom:-100px left:-150px width:700px height:700px border-radius:50%
+        background:radial-gradient(circle,[primária 22% opacity] 0%,transparent 55%) pointer-events:none
+    ← ORBes GRANDES e VISÍVEIS — não sutis como no post
+  RICH_DARK: fundo #0a0018
+    + SVG diagonal 45deg opacity:0.04 + orbe roxo grande atrás do CTA (600×600px opacity:0.20)
+  SPLIT_DARK: top 45% gradiente escuro da marca, bottom 55% #f8f8ff — clip-path:polygon(0 0,100% 0,100% 85%,0 100%)
 
 HIERARQUIA TIPOGRÁFICA — STORY 1080×1920 (escala 1.3× comparado ao Post):
   Eyebrow/Pill:       26px | 700 | uppercase | letter-spacing:1.5px
   Headline padrão:   114px | 900 | line-height:1.0 | letter-spacing:-3px
   Headline oversized:156px | 900 | line-height:0.92 | letter-spacing:-5px
   Stat/Número:       260px | 900 | line-height:0.85 | letter-spacing:-10px
-  Subtexto:           38px | 500 | line-height:1.45 | máx 2 linhas
+  Subtexto:           38px | 500 | line-height:1.45
   Step número:        62px | 900 | cor destaque
   Step título:        34px | 800
-  Step descrição:     26px | 500
+  Step descrição:     26px | 500 | line-height:1.4
   Quote frase:        54px | 700 | line-height:1.3
-  CTA botão:          46px | 800 | letter-spacing:0.5px
+  Quote aspas dec.:  280px | 900 | opacity:0.18 | position:absolute top:-50px left:-20px
+  CTA botão:          46px | 800 | letter-spacing:0.5px | padding:50px 60px
   Slogan:             28px | 600 | uppercase | letter-spacing:2.5px
 
+ADAPTAÇÕES POR ARQUÉTIPO — COMO PREENCHER OS 1800px DE STORY:
+
+ARQUÉTIPO A — Hero Statement em Story (MESH_GLOW bgDark):
+  ⚠️ O Hero Story NÃO pode ser apenas "headline + sub + CTA" — isso cria 600px de vazio.
+  Estrutura OBRIGATÓRIA para story:
+    .logo-row (height:160px, logo height:120px) →
+    .word-ghost (ELEMENTO CRIATIVO: palavra única em 300-340px, position:absolute,
+      opacity:0.05, cor destaque, top:200px, left:-20px, font-weight:900, pointer-events:none) →
+    h1 oversized (156px, 2-3 linhas, z-index:1) →
+    .sub (38px, 2-3 linhas — NÃO apenas 1 linha) →
+    .mini-benefits (flex-row, 2 bullets com ícone 50px + texto 30px, gap:32px, margin-top:40px) →
+    .spacer (flex:1 min-height:80px) →
+    .cta-btn (46px, padding:50px, full-width) →
+    .cta-slogan (28px)
+  Os 2 mini-benefits preenchem ~200px extras evitando vazio.
+
+ARQUÉTIPO B — Editorial em Story (DEEP_GRADIENT bgDark):
+  Use SEMPRE 3 benefícios verticais (não 2 horizontais) — o espaço vertical comporta.
+  Logo height:180px. Gaps entre benefícios: 40px. Ícone benefício: 80×80px.
+  Subtexto: 2 linhas (38px). Headline: máx 3 linhas (114px).
+  Benefício título: 34px. Benefício desc: 26px.
+
+ARQUÉTIPO D — Lista Steps em Story (RICH_DARK bgDark):
+  Use 4 steps (não 3) — o espaço comporta perfeitamente.
+  Step número: 62px. Step título: 34px. Step desc: 26px.
+  Gap entre steps: 44px. Separador entre steps: border-bottom:1.5px solid rgba([destaque],0.18).
+  Logo height:160px. Headline: 2 linhas máximo (114px).
+  Eyebrow pill obrigatório (26px).
+
+ARQUÉTIPO F — Quote Card em Story (MESH_GLOW bgDark):
+  ⚠️ O Quote Story NÃO pode ser apenas "logo + frase + nome + CTA" — isso cria 700px de vazio.
+  Estrutura OBRIGATÓRIA para story:
+    .logo-row (height:140px, logo height:100px) →
+    .quote-wrap (flex:1, position:relative, display:flex, flex-direction:column, justify-content:center) contendo:
+      .quote-marks (280px, opacity:0.18, position:absolute, top:-50px left:-20px) →
+      .quote-text (54px, máx 4 linhas, z-index:1, line-height:1.3) →
+      .attribution-block (margin-top:40px):
+        linha decorativa (width:100px, height:5px, background:destaque, border-radius:3px) →
+        nome (32px, font-weight:800, cor destaque) →
+        cargo (26px, font-weight:500, rgba(255,255,255,0.65)) →
+      .context-card (margin-top:48px): card com background rgba(255,255,255,0.07),
+        border:1px solid rgba(255,255,255,0.14), border-radius:24px, padding:36px 40px:
+        2 stats ou frases de contexto em flex-row (ex: "9 meses de uso" | "Apostador Premium")
+        cada stat: número/dado em 38px bold destaque + label em 22px
+    .spacer (flex:0 min-height:48px) →
+    .cta-btn (46px, full-width) →
+    .cta-slogan (28px)
+
 ORÇAMENTO VERTICAL STORY (1800px úteis):
-  Use o espaço adicional para:
-  → Mais respiro entre elementos (gaps maiores: 40-60px ao invés de 28-32px)
-  → Steps: até 4 passos no Arquétipo D
-  → Quote: frase maior, atribuição mais espaçada
-  Arquétipo B: Logo 200 | Eyebrow 90 | Headline 420 | Sub 140 | Divisor 50 | Benefícios 400 | Spacer 60 | CTA 150 | Slogan 55 ≈ 1565px ✓
-  Arquétipo A: Logo 200 | Headline 540 | Sub 90 | Spacer flex | CTA 150 | Slogan 55 ≈ 1800px ✓
-  Arquétipo D: Logo 200 | Eyebrow 90 | Headline 420 | Steps 4×130=520 | Spacer 60 | CTA 150 | Slogan 55 ≈ 1495px ✓
-  Arquétipo F: Logo 160 | Quote flex | Atribuição 90 | Spacer 60 | CTA 150 | Slogan 55 ≈ 1800px ✓`
+  Arquétipo B: Logo 180 | Eyebrow 80 | Headline 360 | Sub 115 | Divisor 45 | Benefícios 3×130=390 | Spacer 48 | CTA 146 | Slogan 56 ≈ 1420px ✓ (+380 respiro)
+  Arquétipo A: Logo 160 | Headline 400 | Sub 150 | MiniBenefits 110 | Spacer flex | CTA 146 | Slogan 56 ≈ 1800px ✓
+  Arquétipo D: Logo 160 | Eyebrow 80 | Headline 230 | Steps 4×144=576 | Spacer 60 | CTA 146 | Slogan 56 ≈ 1308px ✓ (+492 respiro)
+  Arquétipo F: Logo 140 | QuoteWrap flex~900 | ContextCard 160 | Spacer 48 | CTA 146 | Slogan 56 ≈ 1800px ✓`
 
 // ─── ADDENDUM: STORY CLARO ────────────────────────────────────────────────────
 export const STORY_LIGHT_ADDENDUM = `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
