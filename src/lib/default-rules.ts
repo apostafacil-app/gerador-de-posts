@@ -457,59 +457,66 @@ ZONA 3 — .s-footer (auto, ~240-280px):
 CONTEÚDO DO .s-body POR ARQUÉTIPO
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-ARQUÉTIPO B — EDITORIAL (.s-body com justify-content:space-between):
-  h1.headline (88px, 900, 3 linhas)
-  p.sub (28px, 500, 2 linhas, rgba(255,255,255,0.72))
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ESCALA TIPOGRÁFICA — HARMONIA STORY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+O canvas de 1080px renderiza em ~375dp no celular (ratio 2.88×).
+Texto legível no Instagram requer MÍNIMO 28px no canvas (= ~10dp na tela).
+
+ESCALA PROPORCIONAL OBRIGATÓRIA:
+  Headline principal: 80px | 900 | line-height:1.05 | letter-spacing:-2px
+  Headline Hero (A):  96px | 900 | line-height:0.95 | letter-spacing:-3px  ← único com size maior
+  Subtexto:           36px | 500 | line-height:1.45
+  Componente título:  32px | 800
+  Componente desc:    28px | 500 | line-height:1.45
+  Step número:        58px | 900 | cor destaque
+  Quote frase:        36px | 700 | line-height:1.4  (máx 3 linhas — frase CURTA)
+  Quote attribution:  26px | 800
+  Quote cargo:        22px | 500
+  CTA botão:          34px | 800 | padding:42px 60px
+  Eyebrow/Pill:       20px | 700 | uppercase | letter-spacing:1px
+  Slogan rodapé:      20px | 600 | uppercase | letter-spacing:2px
+  Stat valor (card):  36px | 900
+  Stat label (card):  20px | 500
+
+ARQUÉTIPO B — EDITORIAL (.s-body justify-content:space-between; gap:28px):
+  h1 (80px, 900, 3 linhas máx, letter-spacing:-2px)
+  p.sub (36px, 500, 2 linhas)
   div.divider (height:2px; background:linear-gradient(90deg,[primária],[destaque],transparent))
   div.benefits (flex:1; display:flex; flex-direction:column; justify-content:space-evenly):
-    3 × div.benefit (display:flex; align-items:center; gap:24px):
-      div.benefit-icon (68×68px; border-radius:18px; font-size:32px; flex-shrink:0)
-      div: p.benefit-title(26px,800) + p.benefit-desc(20px,500,opacity:0.72)
-  → benefits com space-evenly distribui os 3 itens no espaço disponível
+    3 × div.benefit (display:flex; align-items:center; gap:28px):
+      div.icon (72×72px; border-radius:18px; font-size:34px; flex-shrink:0)
+      div: p.benefit-title(32px,800) + p.benefit-desc(28px,500,opacity:0.72,margin-top:6px)
 
-ARQUÉTIPO A — HERO (.s-body com justify-content:center; gap:40px):
+ARQUÉTIPO A — HERO (.s-body justify-content:center; gap:44px):
   div.headline-wrap (position:relative):
     span.ghost (font-size:260px; font-weight:900; color:[destaque]; opacity:0.05;
       position:absolute; top:-60px; left:-30px; line-height:1; pointer-events:none; user-select:none)
-    h1 (font-size:110px; font-weight:900; line-height:0.95; letter-spacing:-3px; position:relative; z-index:1)
-  p.sub (28px, 500, line-height:1.5, 2-3 linhas, rgba(255,255,255,0.72))
-  div.pills-row (display:flex; gap:20px; flex-wrap:wrap):
-    2 × span.pill (background:rgba(255,255,255,0.10); border-radius:100px;
-      padding:14px 28px; font-size:22px; font-weight:600)
+    h1 (96px, 900, line-height:0.95, letter-spacing:-3px, MÁXIMO 3 linhas, z-index:1, position:relative)
+  p.sub (36px, 500, line-height:1.45, 2-3 linhas)
+  div.pills (display:flex; gap:20px; flex-wrap:wrap):
+    2 × span.pill (bg:rgba(255,255,255,0.10); border-radius:100px; padding:14px 32px;
+      font-size:24px; font-weight:600)
 
-ARQUÉTIPO D — STEPS (.s-body com justify-content:flex-start; gap:24px):
-  h1.headline (88px, 900, 2 linhas)
+ARQUÉTIPO D — STEPS (.s-body justify-content:flex-start; gap:28px):
+  h1 (80px, 900, 2 linhas máx)
   div.steps (flex:1; display:flex; flex-direction:column; justify-content:space-evenly):
-    4 × div.step (display:flex; align-items:flex-start; gap:20px; padding:4px 0):
-      span.num (font-size:48px; font-weight:900; color:[destaque]; line-height:1; min-width:52px; flex-shrink:0)
-      div: p.step-title(26px,800) + p.step-desc(20px,500,opacity:0.72,margin-top:6px)
-  → steps com space-evenly distribui 4 steps uniformemente no espaço
+    4 × div.step (display:flex; align-items:flex-start; gap:24px):
+      span.num (58px, 900, cor destaque, line-height:1, min-width:60px, flex-shrink:0)
+      div: p.step-title(32px,800) + p.step-desc(28px,500,opacity:0.72,line-height:1.35,margin-top:8px)
 
-ARQUÉTIPO F — QUOTE (.s-body com justify-content:flex-start; gap:0):
-  div.quote-block (flex:1; position:relative; display:flex; flex-direction:column; justify-content:center; padding:20px 0):
-    span.q-marks (font-size:200px; font-weight:900; color:[destaque]; opacity:0.15;
-      position:absolute; top:0; left:-10px; line-height:1;
-      pointer-events:none; user-select:none; z-index:0) — conteúdo HTML: &#8220;
-    p.q-text (font-size:40px; font-weight:700; line-height:1.35; position:relative; z-index:1)
-    div (width:80px; height:4px; background:[destaque]; border-radius:2px; margin-top:28px)
-    p.q-author (font-size:26px; font-weight:800; color:[destaque]; margin-top:18px)
-    p.q-role   (font-size:20px; font-weight:500; opacity:0.65; margin-top:6px)
-  → .s-footer do Quote recebe também o context-card ANTES do cta-btn:
-    div.context-card (background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14);
-      border-radius:20px; padding:28px 36px; display:flex; justify-content:space-around; gap:20px;
-      margin-bottom:16px):
-        2 × div.stat: p(font-size:32px;font-weight:900;color:[destaque]) + p(font-size:18px;opacity:0.65)
-
-TIPOGRAFIA STORY:
-  Headline:    88px | 900 | line-height:1.0 | letter-spacing:-2px
-  Oversized:  110px | 900 | line-height:0.95 | letter-spacing:-3px  (Hero)
-  Sub:         28px | 500 | line-height:1.5
-  Step num:    48px | 900 | cor destaque
-  Step título: 26px | 800
-  Step desc:   20px | 500
-  Quote text:  40px | 700 | line-height:1.35
-  CTA btn:     36px | 800 | padding:44px 60px
-  Slogan:      22px | 600 | uppercase | letter-spacing:2px`
+ARQUÉTIPO F — QUOTE (.s-body justify-content:flex-start):
+  div.quote-block (flex:1; position:relative; display:flex; flex-direction:column; justify-content:center):
+    span.q-marks (200px, 900, cor destaque, opacity:0.15, position:absolute, top:0, left:-10px,
+      line-height:1, pointer-events:none, user-select:none, z-index:0) — &#8220;
+    p.q-text (36px, 700, line-height:1.4, z-index:1, position:relative, MÁXIMO 3 LINHAS — frase CURTA e impactante)
+    div (80px×4px, bg:destaque, border-radius:2px, margin-top:28px)
+    p.q-author (26px, 800, cor destaque, margin-top:20px)
+    p.q-role   (22px, 500, opacity:0.65, margin-top:8px)
+  → .s-footer do Quote: context-card + cta-btn + slogan
+    div.context-card (bg:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14);
+      border-radius:20px; padding:28px 36px; display:flex; justify-content:space-around; gap:20px):
+      2 × div.stat: p(36px,900,cor destaque) + p(20px,500,opacity:0.65)`
 
 // ─── ADDENDUM: STORY CLARO ────────────────────────────────────────────────────
 export const STORY_LIGHT_ADDENDUM = `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -542,39 +549,70 @@ CSS OBRIGATÓRIO:
   .s-body   { flex:1; display:flex; flex-direction:column; gap:32px; overflow:hidden; }
   .s-footer { flex-shrink:0; display:flex; flex-direction:column; gap:16px; padding-top:36px; }
 
-CONTEÚDO DO .s-body POR ARQUÉTIPO (mesma estrutura do Story Escuro, cores substituídas):
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ESCALA TIPOGRÁFICA — HARMONIA STORY CLARO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+O canvas de 1080px renderiza em ~375dp no celular (ratio 2.88×).
+Texto legível no Instagram requer MÍNIMO 28px no canvas (= ~10dp na tela).
 
-ARQUÉTIPO B — EDITORIAL (.s-body justify-content:space-between):
-  h1 (88px,900,3 linhas,#0f0f1a) → p.sub (28px,#4a4a6a) → divider (primária→destaque→transparent)
-  div.benefits (flex:1;flex-direction:column;justify-content:space-evenly):
-    3 × benefit: ícone(68×68px,primária 10% bg) + título(26px,800,#0f0f1a) + desc(20px,500,#4a4a6a)
+ESCALA PROPORCIONAL OBRIGATÓRIA:
+  Headline principal: 80px | 900 | line-height:1.05 | letter-spacing:-2px | #0f0f1a
+  Headline Hero (A):  96px | 900 | line-height:0.95 | letter-spacing:-3px | #0f0f1a  ← único com size maior
+  Subtexto:           36px | 500 | line-height:1.45 | #4a4a6a
+  Componente título:  32px | 800 | #0f0f1a
+  Componente desc:    28px | 500 | line-height:1.45 | #4a4a6a
+  Step número:        58px | 900 | cor primária
+  Quote frase:        36px | 700 | line-height:1.4  (máx 3 linhas — frase CURTA) | #0f0f1a
+  Quote attribution:  26px | 800 | cor primária
+  Quote cargo:        22px | 500 | #4a4a6a
+  CTA botão:          34px | 800 | padding:42px 60px | cor #ffffff
+  Eyebrow/Pill:       20px | 700 | uppercase | letter-spacing:1px
+  Slogan rodapé:      20px | 600 | uppercase | letter-spacing:2px | #4a4a6a
+  Stat valor (card):  36px | 900 | cor primária
+  Stat label (card):  20px | 500 | #4a4a6a
 
-ARQUÉTIPO A — HERO (.s-body justify-content:center; gap:40px):
-  headline-wrap(position:relative):
-    span.ghost(260px,#0f0f1a,opacity:0.04,absolute,top:-60px,left:-30px) +
-    h1(110px,900,#0f0f1a,z-index:1)
-  p.sub (28px,500,#4a4a6a,2-3 linhas)
-  pills-row: 2×pill(bg:primária 8%,border:primária 20%,cor:primária,22px,600)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CONTEÚDO DO .s-body POR ARQUÉTIPO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-ARQUÉTIPO D — STEPS (.s-body justify-content:flex-start; gap:24px):
-  h1 (88px,900,#0f0f1a,2 linhas)
-  div.steps (flex:1;flex-direction:column;justify-content:space-evenly):
-    4×step: num(48px,900,cor primária) + título(26px,800,#0f0f1a) + desc(20px,500,#4a4a6a)
+ARQUÉTIPO B — EDITORIAL (.s-body justify-content:space-between; gap:28px):
+  h1 (80px, 900, 3 linhas máx, letter-spacing:-2px, #0f0f1a)
+  p.sub (36px, 500, 2 linhas, #4a4a6a)
+  div.divider (height:2px; background:linear-gradient(90deg,[primária],[destaque],transparent))
+  div.benefits (flex:1; display:flex; flex-direction:column; justify-content:space-evenly):
+    3 × div.benefit (display:flex; align-items:center; gap:28px):
+      div.icon (72×72px; border-radius:18px; background:primária 10%; font-size:34px; flex-shrink:0)
+      div: p.benefit-title(32px,800,#0f0f1a) + p.benefit-desc(28px,500,#4a4a6a,opacity:0.72,margin-top:6px)
+
+ARQUÉTIPO A — HERO (.s-body justify-content:center; gap:44px):
+  div.headline-wrap (position:relative):
+    span.ghost (font-size:260px; font-weight:900; color:#0f0f1a; opacity:0.04;
+      position:absolute; top:-60px; left:-30px; line-height:1; pointer-events:none; user-select:none)
+    h1 (96px, 900, line-height:0.95, letter-spacing:-3px, MÁXIMO 3 linhas, z-index:1, position:relative, #0f0f1a)
+  p.sub (36px, 500, line-height:1.45, 2-3 linhas, #4a4a6a)
+  div.pills (display:flex; gap:20px; flex-wrap:wrap):
+    2 × span.pill (bg:primária 8%; border:1px solid primária 20%; border-radius:100px; padding:14px 32px;
+      font-size:24px; font-weight:600; color:primária)
+
+ARQUÉTIPO D — STEPS (.s-body justify-content:flex-start; gap:28px):
+  h1 (80px, 900, 2 linhas máx, #0f0f1a)
+  div.steps (flex:1; display:flex; flex-direction:column; justify-content:space-evenly):
+    4 × div.step (display:flex; align-items:flex-start; gap:24px):
+      span.num (58px, 900, cor primária, line-height:1, min-width:60px, flex-shrink:0)
+      div: p.step-title(32px,800,#0f0f1a) + p.step-desc(28px,500,#4a4a6a,line-height:1.35,margin-top:8px)
 
 ARQUÉTIPO F — QUOTE (.s-body justify-content:flex-start):
-  div.quote-block(flex:1;position:relative;display:flex;flex-direction:column;justify-content:center):
-    span.q-marks(200px,900,cor primária,opacity:0.10,absolute,top:0,left:-10px) — &#8220;
-    p.q-text(40px,700,#0f0f1a,line-height:1.35,z-index:1)
-    div(80px×4px,bg:primária,margin-top:28px)
-    p.q-author(26px,800,cor primária,margin-top:18px) + p.q-role(20px,500,#4a4a6a,margin-top:6px)
-  → .s-footer do Quote: context-card(bg:primária 6%,border:primária 15%,border-radius:20px,
-      padding:28px 36px,flex,justify-content:space-around) com 2 stats(32px cor primária + 18px #4a4a6a)
-      + cta-btn + cta-slogan
-
-TIPOGRAFIA STORY CLARO:
-  Headline: 88px | 900 | #0f0f1a | Oversized: 110px (Hero)
-  Sub: 28px | 500 | #4a4a6a | CTA: 36px | padding:44px 60px | cor #ffffff
-  Slogan: 22px | 600 | uppercase | #4a4a6a`
+  div.quote-block (flex:1; position:relative; display:flex; flex-direction:column; justify-content:center):
+    span.q-marks (200px, 900, cor primária, opacity:0.10, position:absolute, top:0, left:-10px,
+      line-height:1, pointer-events:none, user-select:none, z-index:0) — &#8220;
+    p.q-text (36px, 700, line-height:1.4, #0f0f1a, z-index:1, position:relative, MÁXIMO 3 LINHAS — frase CURTA e impactante)
+    div (80px×4px, bg:primária, border-radius:2px, margin-top:28px)
+    p.q-author (26px, 800, cor primária, margin-top:20px)
+    p.q-role   (22px, 500, #4a4a6a, margin-top:8px)
+  → .s-footer do Quote: context-card + cta-btn + slogan
+    div.context-card (bg:primária 6%; border:1px solid primária 15%;
+      border-radius:20px; padding:28px 36px; display:flex; justify-content:space-around; gap:20px):
+      2 × div.stat: p(36px,900,cor primária) + p(20px,500,#4a4a6a,opacity:0.65)`
 
 // ─── Compatibilidade retroativa ───────────────────────────────────────────────
 // DEFAULT_AI_RULES é usado como fallback quando Firebase não está configurado.
