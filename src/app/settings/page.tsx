@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { AIConfigSection } from '@/components/settings/AIConfigSection'
 import { CredentialsSection } from '@/components/settings/CredentialsSection'
+import { ImageConfigSection } from '@/components/settings/ImageConfigSection'
 import type { Company, CompaniesData } from '@/types'
 import {
   BASE_RULES,
@@ -472,6 +473,9 @@ export default function SettingsPage() {
                 <SystemRulesEditor />
                 <div className="border-t border-gray-100 pt-6">
                   <AIConfigSection />
+                </div>
+                <div className="border-t border-gray-100 pt-6">
+                  <ImageConfigSection />
                 </div>
                 <div className="border-t border-gray-100 pt-6">
                   <CredentialsSection />

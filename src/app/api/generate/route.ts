@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { buildPrompt, getLogoForTheme, injectLogo } from '@/lib/prompt-builder'
 import { generateWithAI } from '@/lib/ai'
 import { generateImage, type ImageContext } from '@/lib/image-generate'
+import { readImageApiKey } from '@/lib/image-config'
 import { extractVariations, extractCaptions } from '@/lib/html-parser'
 import { validateGenerateRequest } from '@/lib/validation'
 import { readAIConfig } from '@/lib/ai-config'
@@ -122,8 +123,8 @@ export async function POST(req: NextRequest) {
   if (formData.useImage) {
     const imageApiKey =
       provider === 'openai'
-        ? apiKey
-        : (process.env.OPENAI_IMAGE_API_KEY ?? null)
+        ? apiKey                       // reutiliza chave do provider de texto
+        : await readImageApiKey()      // lê do Firestore ou env var
     if (imageApiKey) {
       const ctx: ImageContext = {
         subject:       formData.subject,
