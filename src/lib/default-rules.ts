@@ -342,15 +342,14 @@ Não há vínculo fixo fundo↔arquétipo — qualquer arquétipo pode usar qual
                    opacity:0.35;pointer-events:none;z-index:0)
     → PRETO PURO com glow brilhante centralizado — contraste máximo.
 
-  SPLIT_DARK:    Dois campos visuais contrastantes — um escuro/colorido (marca) e um claro (#f4f0ff ou #ffffff).
-                 A FORMA da divisão é LIVRE — use criatividade:
-                   • Diagonal: clip-path:polygon(0 0,100% 0,100% 75%,0 100%) no div colorido
-                   • Curva: border-radius:0 0 55% 55%/0 0 120px 120px no div colorido (height:52%)
-                   • Blob: clip-path:path('M0,0 L1080,0 L1080,600 Q700,800 0,650 Z') — bezier orgânico
-                   • Vertical: width:48% esquerda escuro + width:52% direita claro + divider 3px destaque
-                   • Arco: círculo 1200px saindo do centro-baixo do div colorido
-                 Escolha a forma que melhor serve a composição. Cada geração deve ser diferente.
-    ⚠️ SPLIT_DARK é compatível APENAS com Arquétipo E (Split Layout). Nunca usar com B, A ou D.
+  AURORA_DARK:   background:#090012 +
+                 div(position:absolute;top:-200px;left:-100px;width:900px;height:600px;
+                   background:radial-gradient(ellipse,[primária] 0%,transparent 65%);
+                   filter:blur(80px);opacity:0.45;pointer-events:none;z-index:0) +
+                 div(position:absolute;top:-80px;right:-150px;width:700px;height:500px;
+                   background:radial-gradient(ellipse,[destaque] 0%,transparent 65%);
+                   filter:blur(60px);opacity:0.30;pointer-events:none;z-index:0)
+    → PRETO PROFUNDO com aurora bicolor emanando do topo — dreamy e sofisticado.
 
   RICH_DARK:     background:#05000f +
                  SVG inline: <svg style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0.15"><defs><pattern id="pd" width="48" height="48" patternUnits="userSpaceOnUse"><circle cx="24" cy="24" r="1.5" fill="[destaque]"/></pattern></defs><rect width="100%" height="100%" fill="url(#pd)"/></svg> +

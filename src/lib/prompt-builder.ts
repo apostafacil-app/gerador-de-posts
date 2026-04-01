@@ -140,33 +140,31 @@ Estrutura HTML:
 ⛔ Só usar se o assunto contiver número real`,
   },
   {
-    id: 'E', name: 'SPLIT_LAYOUT',
+    id: 'E', name: 'COMPARACAO_CARDS',
     instruction: `ARQUÉTIPO E — COMPARAÇÃO VISUAL (antes × depois)
-Intenção: contrastar "sem o app" vs "com o app" de forma visual e impactante.
-
-ESTRUTURA HTML — usa as 3 ZONAS (.p-header / .p-body / .p-footer) sobre o fundo bicolor:
-
-FUNDO BICOLOR (dentro do #post, antes do .safe, z-index:0):
-  Escolha UMA forma criativa para dividir o canvas em 2 campos de cor:
-  • Diagonal top: div(position:absolute;top:0;left:0;width:100%;height:52%;background:linear-gradient(135deg,[secundária],[primária]);clip-path:polygon(0 0,100% 0,100% 80%,0 100%))
-  • Curva suave: div(position:absolute;top:0;left:0;width:100%;height:50%;background:linear-gradient(135deg,[secundária],[primária]);border-radius:0 0 50% 50%/0 0 100px 100px)
-  • Blob orgânico: div(position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,[secundária],[primária]);clip-path:path('M0,0 L1080,0 L1080,580 Q800,780 400,700 Q100,640 0,750 Z'))
-  • Vertical com divisor: div(position:absolute;top:0;left:0;width:49%;height:100%;background:linear-gradient(180deg,[secundária],[primária])) + div(2px;height:100%;background:[destaque];right:51%;)
-  Fundo do #post: #f4f0ff ou #ffffff (claro, contrasta com o campo escuro)
-
-CONTEÚDO (nas 3 zonas normais, z-index:1 acima do fundo):
-  .p-header → logo centralizada
-  .p-body (justify-content:center; gap:36px) →
-    div.labels (display:flex; justify-content:space-between):
-      span "SEM APOSTEMAIS" (22px,700,uppercase,opacity:0.6,cor adaptada ao campo)
-      span "COM APOSTEMAIS" (22px,700,uppercase,cor destaque)
-    h1 (72px,900,text-align:center,line-height:1.0) — headline de contraste
-    div.compare (display:flex; justify-content:center; gap:80px):
-      div.before: span(90px,900,opacity:0.55) + p(24px,500,text-align:center)
-      div.after:  span(90px,900,cor destaque,font-weight:900) + p(24px,500,text-align:center)
+Intenção: contrastar "sem o produto" vs "com o produto" usando dois cards lado a lado.
+━ USA OBRIGATORIAMENTE a estrutura de 3 ZONAS (.p-header / .p-body / .p-footer)
+━ O fundo vem do SLOT — não criar camada de fundo adicional
+━ ALINHAMENTO: CENTRALIZADO
+Estrutura HTML:
+  .p-header → logo centralizada (height:90px; margin:0 auto)
+  .p-body (justify-content:center; gap:32px; align-items:center) →
+    h1 (72px, 900, text-align:center, line-height:1.0) — headline de contraste
+    div.compare (display:flex; gap:20px; width:100%):
+      div.before (flex:1; background:rgba(0,0,0,0.28) no dark / rgba(0,0,0,0.06) no light;
+                  border-radius:24px; padding:48px 28px; text-align:center;
+                  border:1.5px solid rgba(255,255,255,0.10)):
+        span.label (18px,700,uppercase,letter-spacing:1px,opacity:0.45) → "SEM [MARCA]"
+        span.value (96px,900,opacity:0.38,line-height:1,display:block,margin:16px 0)
+        p.desc (22px,500,opacity:0.48,line-height:1.3)
+      div.after (flex:1; background:linear-gradient(135deg,[primária],[destaque]);
+                 border-radius:24px; padding:48px 28px; text-align:center;
+                 box-shadow:0 20px 60px rgba(0,0,0,0.30)):
+        span.label (18px,700,uppercase,letter-spacing:1px,color:rgba(255,255,255,0.75)) → "COM [MARCA]"
+        span.value (96px,900,color:#ffffff,line-height:1,display:block,margin:16px 0)
+        p.desc (22px,500,color:rgba(255,255,255,0.85),line-height:1.3)
   .p-footer → CTA full-width + slogan
-
-⛔ PROIBIDO: position:absolute no conteúdo, texto cruzando o fundo, lista de benefícios`,
+⛔ PROIBIDO: fundo bicolor extra, position:absolute no conteúdo, lista de benefícios`,
   },
 ]
 
@@ -195,7 +193,7 @@ const CTA_STYLES = [
 const BG_STYLES_DARK = [
   'DEEP_GRADIENT',   // roxo vibrante saturado
   'MESH_GLOW',       // preto puro + glow radial centralizado
-  'SPLIT_DARK',      // metade escuro/colorido + metade claro
+  'AURORA_DARK',     // preto profundo + aurora bicolor emanando do topo
   'RICH_DARK',       // quase preto + textura pontilhada + glow inferior
 ]
 
@@ -214,7 +212,7 @@ const BG_STYLES_LIGHT = [
 interface SlotSpec { arch: string; bgDark: number; bgLight: number; cta: number; deco: number }
 
 // FUNDOS DARK:  0=DEEP_GRADIENT(roxo vibrante)  1=MESH_GLOW(preto+glow)
-//               2=SPLIT_DARK_LIGHT(escuro+branco)  3=RICH_DARK(escuro+dots)
+//               2=AURORA_DARK(preto+aurora topo)  3=RICH_DARK(escuro+dots)
 // FUNDOS LIGHT: 0=CLEAN_WHITE  1=SOFT_TINT  2=CARD_SPLIT  3=GRADIENT_FADE
 // Cada set varia deliberadamente os fundos — B nem sempre roxo, A nem sempre preto.
 
@@ -228,9 +226,9 @@ const SETS_2: SlotSpec[][] = [
     { arch:'D', bgDark:0, bgLight:2, cta:2, deco:2 },
     { arch:'A', bgDark:1, bgLight:3, cta:1, deco:7 },
   ],
-  [ // Set 2: Editorial dots-escuro + Split
-    { arch:'B', bgDark:3, bgLight:1, cta:0, deco:6 },
-    { arch:'E', bgDark:2, bgLight:2, cta:4, deco:3 },
+  [ // Set 2: Editorial aurora + Comparação roxo
+    { arch:'B', bgDark:2, bgLight:1, cta:0, deco:6 },
+    { arch:'E', bgDark:0, bgLight:3, cta:4, deco:1 },
   ],
   [ // Set 3: Hero ROXO (diferente!) + Steps dots
     { arch:'A', bgDark:0, bgLight:1, cta:1, deco:1 },
@@ -240,49 +238,49 @@ const SETS_2: SlotSpec[][] = [
     { arch:'B', bgDark:3, bgLight:2, cta:3, deco:0 },
     { arch:'A', bgDark:1, bgLight:3, cta:1, deco:7 },
   ],
-  [ // Set 5: Split + Editorial dots
-    { arch:'E', bgDark:2, bgLight:2, cta:4, deco:3 },
+  [ // Set 5: Comparação aurora + Editorial dots
+    { arch:'E', bgDark:2, bgLight:0, cta:4, deco:0 },
     { arch:'B', bgDark:3, bgLight:1, cta:0, deco:6 },
   ],
 ]
 
 // Sets para 4 variações — cada set tem fundos completamente diferentes
 const SETS_4: SlotSpec[][] = [
-  [ // Set 0: B(roxo) A(preto) D(dots) E(split)
+  [ // Set 0: B(roxo) A(preto) D(dots) E(aurora)
     { arch:'B', bgDark:0, bgLight:0, cta:0, deco:0 },
     { arch:'A', bgDark:1, bgLight:3, cta:1, deco:1 },
     { arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 },
-    { arch:'E', bgDark:2, bgLight:2, cta:4, deco:3 },
+    { arch:'E', bgDark:2, bgLight:2, cta:4, deco:1 },
   ],
-  [ // Set 1: A(preto) D(roxo) E(split) B(dots) — fundos trocados!
+  [ // Set 1: A(preto) D(roxo) E(dots) B(aurora) — fundos trocados!
     { arch:'A', bgDark:1, bgLight:3, cta:1, deco:1 },
     { arch:'D', bgDark:0, bgLight:2, cta:2, deco:2 },
-    { arch:'E', bgDark:2, bgLight:2, cta:4, deco:3 },
-    { arch:'B', bgDark:3, bgLight:1, cta:3, deco:6 },
+    { arch:'E', bgDark:3, bgLight:0, cta:4, deco:0 },
+    { arch:'B', bgDark:2, bgLight:1, cta:3, deco:6 },
   ],
-  [ // Set 2: D(dots) B(roxo) A(roxo!) E(split) — SPLIT_DARK só para E
+  [ // Set 2: D(dots) B(roxo) A(roxo!) E(preto-glow)
     { arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 },
     { arch:'B', bgDark:0, bgLight:2, cta:0, deco:0 },
     { arch:'A', bgDark:1, bgLight:1, cta:1, deco:7 },
-    { arch:'E', bgDark:2, bgLight:2, cta:4, deco:3 },
+    { arch:'E', bgDark:1, bgLight:3, cta:4, deco:4 },
   ],
-  [ // Set 3: E(split) A(preto) B(dots) D(roxo)
-    { arch:'E', bgDark:2, bgLight:2, cta:4, deco:3 },
+  [ // Set 3: E(roxo) A(preto) B(dots) D(aurora)
+    { arch:'E', bgDark:0, bgLight:1, cta:4, deco:3 },
     { arch:'A', bgDark:1, bgLight:3, cta:1, deco:1 },
-    { arch:'B', bgDark:3, bgLight:1, cta:3, deco:6 },
-    { arch:'D', bgDark:0, bgLight:0, cta:2, deco:2 },
+    { arch:'B', bgDark:3, bgLight:2, cta:3, deco:6 },
+    { arch:'D', bgDark:2, bgLight:0, cta:2, deco:2 },
   ],
-  [ // Set 4: B(roxo) E(split) A(dots-glow) D(preto-ish)
+  [ // Set 4: B(roxo) E(aurora) A(dots-glow) D(preto)
     { arch:'B', bgDark:0, bgLight:0, cta:0, deco:0 },
-    { arch:'E', bgDark:2, bgLight:2, cta:4, deco:3 },
-    { arch:'A', bgDark:3, bgLight:1, cta:1, deco:7 },
+    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:0 },
+    { arch:'A', bgDark:3, bgLight:2, cta:1, deco:7 },
     { arch:'D', bgDark:1, bgLight:3, cta:2, deco:2 },
   ],
-  [ // Set 5: A(roxo!) D(preto-glow) B(dots) E(split)
+  [ // Set 5: A(roxo!) D(preto-glow) B(dots) E(dots-escuro)
     { arch:'A', bgDark:0, bgLight:1, cta:1, deco:1 },
     { arch:'D', bgDark:1, bgLight:3, cta:2, deco:2 },
     { arch:'B', bgDark:3, bgLight:0, cta:0, deco:6 },
-    { arch:'E', bgDark:2, bgLight:2, cta:4, deco:3 },
+    { arch:'E', bgDark:3, bgLight:2, cta:4, deco:3 },
   ],
 ]
 
@@ -291,7 +289,7 @@ const SETS_1: SlotSpec[][] = [
   [{ arch:'B', bgDark:0, bgLight:0, cta:0, deco:0 }],
   [{ arch:'A', bgDark:1, bgLight:3, cta:1, deco:1 }],
   [{ arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 }],
-  [{ arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 }],
+  [{ arch:'E', bgDark:2, bgLight:1, cta:4, deco:1 }],
 ]
 
 const SETS_3: SlotSpec[][] = [
@@ -303,17 +301,17 @@ const SETS_3: SlotSpec[][] = [
   [
     { arch:'A', bgDark:1, bgLight:3, cta:1, deco:1 },
     { arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 },
-    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 },
+    { arch:'E', bgDark:0, bgLight:2, cta:4, deco:3 },
   ],
   [
     { arch:'D', bgDark:3, bgLight:1, cta:2, deco:2 },
     { arch:'B', bgDark:0, bgLight:0, cta:0, deco:0 },
-    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 },
+    { arch:'E', bgDark:2, bgLight:3, cta:4, deco:1 },
   ],
   [
-    { arch:'E', bgDark:2, bgLight:1, cta:4, deco:3 },
-    { arch:'A', bgDark:1, bgLight:3, cta:1, deco:1 },
-    { arch:'B', bgDark:0, bgLight:2, cta:3, deco:6 },
+    { arch:'E', bgDark:1, bgLight:1, cta:4, deco:0 },
+    { arch:'A', bgDark:0, bgLight:3, cta:1, deco:1 },
+    { arch:'B', bgDark:3, bgLight:2, cta:3, deco:6 },
   ],
 ]
 
