@@ -3,7 +3,7 @@ export const maxDuration = 60
 import { NextRequest, NextResponse } from 'next/server'
 import { buildPrompt, getLogoForTheme, injectLogo } from '@/lib/prompt-builder'
 import { generateWithAI } from '@/lib/ai'
-import { generateImage } from '@/lib/image-generate'
+import { generateImage, type ImageContext } from '@/lib/image-generate'
 import { extractVariations, extractCaptions } from '@/lib/html-parser'
 import { validateGenerateRequest } from '@/lib/validation'
 import { readAIConfig } from '@/lib/ai-config'
@@ -125,7 +125,16 @@ export async function POST(req: NextRequest) {
         ? apiKey
         : (process.env.OPENAI_IMAGE_API_KEY ?? null)
     if (imageApiKey) {
-      const generated = await generateImage(formData.subject, formData.imageStyle ?? '', formData.format, imageApiKey)
+      const ctx: ImageContext = {
+        subject:       formData.subject,
+        styleHint:     formData.imageStyle ?? '',
+        companyName:   company.name,
+        segment:       company.segment ?? '',
+        emotionalTone: formData.emotionalTone,
+        writingStyle:  formData.writingStyle,
+        format:        formData.format,
+      }
+      const generated = await generateImage(ctx, imageApiKey)
       realImageUrl = generated ?? undefined
     }
   }
