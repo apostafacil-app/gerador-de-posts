@@ -516,7 +516,7 @@ CSS OBRIGATÓRIO:
               justify-content:flex-end; gap:16px; padding-top:40px; }
 
 ZONA 1 — .s-header (200px fixo):
-  → Logo: height:110px; width:auto
+  → Logo: <img height="160" style="width:auto"> — OBRIGATÓRIO este tamanho
   → Eyebrow pill (se o arquétipo usa)
 
 ZONA 2 — .s-body (flex:1, justify-content:center):
@@ -646,6 +646,18 @@ CSS OBRIGATÓRIO:
               justify-content:center; gap:48px; overflow:hidden; }
   .s-footer { flex-shrink:0; height:260px; display:flex; flex-direction:column;
               justify-content:flex-end; gap:16px; padding-top:40px; }
+
+ZONA 1 — .s-header (200px fixo):
+  → Logo: <img height="160" style="width:auto"> — OBRIGATÓRIO este tamanho
+  → Eyebrow pill (se o arquétipo usa)
+
+ZONA 2 — .s-body (flex:1, justify-content:center):
+  → Conteúdo AGRUPADO — não usa space-evenly, não usa flex:1 interno
+  → O conteúdo fica compacto e centralizado verticalmente
+  ❌ NUNCA colocar o CTA aqui
+
+ZONA 3 — .s-footer (260px fixo, justify-content:flex-end):
+  → Sempre: .cta-btn + .cta-slogan ancorados no fundo
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ESCALA TIPOGRÁFICA — HARMONIA STORY CLARO
