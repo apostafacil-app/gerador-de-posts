@@ -3,6 +3,7 @@ export const maxDuration = 60
 import { NextRequest, NextResponse } from 'next/server'
 import { buildPrompt, getLogoForTheme, injectLogo } from '@/lib/prompt-builder'
 import { generateWithAI } from '@/lib/ai'
+import { searchPhoto } from '@/lib/image-search'
 import { extractVariations, extractCaptions } from '@/lib/html-parser'
 import { validateGenerateRequest } from '@/lib/validation'
 import { readAIConfig } from '@/lib/ai-config'
@@ -114,9 +115,18 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  // Busca foto real no Pexels quando useImage está ativo
+  let realImageUrl: string | undefined
+  if (formData.useImage) {
+    const query = [formData.subject, formData.imageStyle].filter(Boolean).join(' ')
+    const orientation = formData.format === 'story' ? 'portrait' : 'square'
+    const photo = await searchPhoto(query, orientation)
+    realImageUrl = photo?.url
+  }
+
   try {
     const { baseRules, modeAddendum } = await readPromptForMode(formData.format, formData.theme)
-    const prompt = buildPrompt(company, formData, websiteContext, baseRules, modeAddendum)
+    const prompt = buildPrompt(company, formData, websiteContext, baseRules, modeAddendum, realImageUrl)
     const rawResponse = await generateWithAI(provider, apiKey, prompt)
     const rawVariations = extractVariations(rawResponse)
 

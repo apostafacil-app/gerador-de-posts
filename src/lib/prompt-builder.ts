@@ -338,7 +338,8 @@ export function buildPrompt(
   form: GeneratorFormData,
   websiteContext?: string,
   baseRules?: string,
-  modeAddendum?: string
+  modeAddendum?: string,
+  realImageUrl?: string
 ): string {
   // Semente visual aleatória — força a IA a tomar decisões criativas diferentes a cada geração
   const visualSeed = Math.floor(Math.random() * 9000) + 1000
@@ -402,7 +403,17 @@ Assunto do post: ${form.subject}
 Estilo de escrita: ${writingStyleLabel[form.writingStyle] ?? 'direto'}
 Tom emocional: ${emotionalToneLabel[form.emotionalTone] ?? 'empolgante'}
 Técnica de persuasão: ${persuasionLabel[form.persuasionTechnique] ?? 'beneficio_direto'}
-Usar imagem/arte visual: ${form.useImage ? `Sim — estilo desejado: ${form.imageStyle || 'premium, abstrato geométrico'}` : 'Não — usar apenas tipografia e gradientes'}
+Usar imagem/arte visual: ${
+  !form.useImage
+    ? 'Não — usar apenas tipografia e gradientes'
+    : realImageUrl
+      ? `Sim — FOTO REAL disponível. URL: "${realImageUrl}"
+   • Inserir com <img src="${realImageUrl}" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit">
+   • Posição recomendada: topo do post (substituindo a zona de fundo) ou bloco dedicado dentro do .p-body
+   • PROIBIDO criar arte CSS no lugar da imagem — use a URL acima
+   • Crédito: foto do Pexels (não precisa exibir no post)`
+      : `Sim — sem foto disponível, criar arte visual CSS: ${form.imageStyle || 'gradiente geométrico premium'}`
+}
 
 ---
 ## ESPECIFICAÇÃO VISUAL — SEGUIR OBRIGATORIAMENTE
