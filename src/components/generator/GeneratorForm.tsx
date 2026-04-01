@@ -290,8 +290,8 @@ export function GeneratorForm({ onSubmit, isLoading, companyId, companyColors }:
             <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${form.useImage ? 'translate-x-5' : ''}`} />
           </button>
           <div>
-            <span className="text-sm font-semibold text-gray-700">Incluir foto real</span>
-            <p className="text-xs text-gray-400 mt-0.5">Buscada automaticamente pelo assunto do post</p>
+            <span className="text-sm font-semibold text-gray-700">Gerar imagem com IA</span>
+            <p className="text-xs text-gray-400 mt-0.5">DALL-E 3 cria uma imagem exclusiva para o post</p>
           </div>
         </div>
 
@@ -300,7 +300,7 @@ export function GeneratorForm({ onSubmit, isLoading, companyId, companyColors }:
             type="text"
             value={form.imageStyle}
             onChange={e => set('imageStyle', e.target.value)}
-            placeholder="Detalhar a foto (ex: pessoas felizes, escritório, tecnologia...)"
+            placeholder="Descreva a imagem (ex: pessoa comemorando, app no celular, troféu...)"
             className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-purple-400 transition-colors"
           />
         )}

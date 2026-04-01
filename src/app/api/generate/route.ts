@@ -3,7 +3,7 @@ export const maxDuration = 60
 import { NextRequest, NextResponse } from 'next/server'
 import { buildPrompt, getLogoForTheme, injectLogo } from '@/lib/prompt-builder'
 import { generateWithAI } from '@/lib/ai'
-import { searchPhoto } from '@/lib/image-search'
+import { generateImage } from '@/lib/image-generate'
 import { extractVariations, extractCaptions } from '@/lib/html-parser'
 import { validateGenerateRequest } from '@/lib/validation'
 import { readAIConfig } from '@/lib/ai-config'
@@ -115,13 +115,11 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // Busca foto real no Pexels quando useImage está ativo
+  // Gera imagem via DALL-E 3 quando useImage está ativo
   let realImageUrl: string | undefined
   if (formData.useImage) {
-    const query = [formData.subject, formData.imageStyle].filter(Boolean).join(' ')
-    const orientation = formData.format === 'story' ? 'portrait' : 'square'
-    const photo = await searchPhoto(query, orientation)
-    realImageUrl = photo?.url
+    const generated = await generateImage(formData.subject, formData.imageStyle ?? '', formData.format)
+    realImageUrl = generated ?? undefined
   }
 
   try {
