@@ -424,7 +424,9 @@ ${form.format === 'story' ? `\n🔴 FORMATO STORY — ZONA OBRIGATÓRIA:\n  Usar
 **CTA (botão de ação):**
 ${form.showCta === false
   ? '⛔ CTA DESATIVADO pelo usuário: NÃO incluir botão CTA em NENHUMA variação. Usar apenas slogan no rodapé. Ignorar qualquer instrução de arquétipo que diga CTA obrigatório.'
-  : `- Tom "urgente" ou "exclusivo" → CTA botão obrigatório
+  : form.ctaText?.trim()
+    ? `✅ TEXTO DO CTA DEFINIDO PELO USUÁRIO: usar EXATAMENTE "${form.ctaText.trim()}" em TODAS as variações. NÃO alterar, NÃO traduzir, NÃO resumir este texto.`
+    : `- Tom "urgente" ou "exclusivo" → CTA botão obrigatório
 - Tom "empolgante" ou "confiável" → CTA ou só slogan (escolha o que for mais elegante)
 - Post educativo/informativo → apenas slogan rodapé, sem botão
 - Nunca force um CTA que deixe o post esmagado ou corte elementos`

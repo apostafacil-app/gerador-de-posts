@@ -48,6 +48,7 @@ export interface GeneratorFormData {
   imageStyle: string
   generateCaption: boolean   // generate caption + hashtags
   showCta: boolean           // include CTA button in the post
+  ctaText: string            // custom CTA text; empty = auto (IA decides)
 }
 
 export interface GenerateRequest {

@@ -22,6 +22,7 @@ const defaultForm: GeneratorFormData = {
   imageStyle: '',
   generateCaption: false,
   showCta: true,
+  ctaText: '',
 }
 
 export function GeneratorForm({ onSubmit, isLoading, companyId, companyColors }: Props) {
@@ -315,23 +316,35 @@ export function GeneratorForm({ onSubmit, isLoading, companyId, companyColors }:
           <span className="text-sm font-semibold text-gray-700">Gerar legenda + hashtags</span>
         </div>
 
-        {/* CTA toggle */}
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            role="switch"
-            aria-checked={form.showCta}
-            onClick={() => set('showCta', !form.showCta)}
-            className={`relative w-11 h-6 rounded-full transition-colors ${form.showCta ? 'bg-purple-600' : 'bg-gray-300'}`}
-          >
-            <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${form.showCta ? 'translate-x-5' : ''}`} />
-          </button>
-          <div>
-            <span className="text-sm font-semibold text-gray-700">Incluir botão CTA</span>
-            {!form.showCta && (
-              <p className="text-xs text-gray-400 mt-0.5">Apenas slogan no rodapé</p>
-            )}
+        {/* CTA toggle + custom text */}
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              role="switch"
+              aria-checked={form.showCta}
+              onClick={() => set('showCta', !form.showCta)}
+              className={`relative w-11 h-6 rounded-full transition-colors ${form.showCta ? 'bg-purple-600' : 'bg-gray-300'}`}
+            >
+              <span className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${form.showCta ? 'translate-x-5' : ''}`} />
+            </button>
+            <div>
+              <span className="text-sm font-semibold text-gray-700">Incluir botão CTA</span>
+              {!form.showCta && (
+                <p className="text-xs text-gray-400 mt-0.5">Apenas slogan no rodapé</p>
+              )}
+            </div>
           </div>
+          {form.showCta && (
+            <input
+              type="text"
+              value={form.ctaText}
+              onChange={e => set('ctaText', e.target.value)}
+              placeholder="Texto do botão (deixe vazio para automático)"
+              maxLength={60}
+              className="w-full px-3 py-2 rounded-lg border border-gray-200 bg-white text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-300"
+            />
+          )}
         </div>
       </div>
 
