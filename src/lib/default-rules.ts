@@ -220,8 +220,7 @@ Decoração recomendada: B (Arco) ou H (Arco inferior).
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 [LOGO-ROW]
   display:flex; align-items:center; gap:16px;
-  Se logo fornecida: <img src="[src exato dos DADOS DA EMPRESA]" height="160" style="width:auto">
-  Arquétipos F e D podem usar height:100px para economizar espaço vertical.
+  Se logo fornecida: <img src="[src exato dos DADOS DA EMPRESA]" height="120" style="width:auto">
   Se logo NÃO fornecida: nome da empresa em tipografia bicolor (primeira palavra cor escura / restante cor destaque)
 [EYEBROW / PILL LABEL] — Arquétipos B e D
   display:inline-flex; align-items:center; gap:10px;
@@ -430,10 +429,10 @@ Não há vínculo fixo fundo↔arquétipo — qualquer arquétipo pode usar qual
     → Tint suave na parte superior e inferior — encapsula o conteúdo com cor.
 
   CARD_SPLIT:    background:#ffffff +
-                 div(position:absolute;top:0;left:0;width:100%;height:380px;
-                   background:linear-gradient(135deg,[secundária],[primária])) +
-                 (conteúdo flutua sobre fundo branco abaixo da faixa colorida)
-    → Faixa colorida forte no topo + corpo branco limpo. Alto contraste.
+                 div(position:absolute;top:0;left:0;width:100%;height:200px;
+                   background:linear-gradient(135deg,[primária],[destaque]);opacity:0.90) +
+                 (logo fica sobre a faixa — usar texto/logo em #ffffff na .p-header; corpo branco abaixo)
+    → Faixa colorida apenas na zona header + corpo branco limpo. Alto contraste.
 
   GRADIENT_FADE: background:linear-gradient(160deg,[primária 22%] 0%,#ffffff 55%) +
                  div(position:absolute;top:-50px;right:-50px;width:500px;height:500px;

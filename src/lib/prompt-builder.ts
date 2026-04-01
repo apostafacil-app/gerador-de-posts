@@ -74,7 +74,7 @@ Intenção: headline de impacto centralizada verticalmente. Minimalismo com for�
 ━ ALINHAMENTO: TUDO CENTRALIZADO — text-align:center; align-items:center em .p-body
 ━ CTA: PILL_BUTTON centralizado (border-radius:100px; max-width:700px; margin:0 auto)
 Estrutura HTML:
-  .p-header → img logo centralizada (height:90px; margin:0 auto)
+  .p-header → img logo centralizada (height:120px; margin:0 auto)
   .p-body (justify-content:center; align-items:center) →
     h1 (font-size:120px; font-weight:900; line-height:0.95; letter-spacing:-3px;
         text-align:center; MÁXIMO 3 LINHAS — EM BLOCO ÚNICO — não dividir em 2 elementos)
@@ -111,7 +111,7 @@ Intenção: frase de impacto ou depoimento. Espaço negativo = elegância.
 ━ USA OBRIGATORIAMENTE a estrutura de 3 ZONAS do post (.p-header / .p-body / .p-footer)
 ━ ALINHAMENTO: CENTRALIZADO
 Estrutura HTML:
-  .p-header → logo centralizada (height:90px; margin:0 auto)
+  .p-header → img logo centralizada (height:120px; margin:0 auto)
   .p-body (justify-content:center; position:relative) →
     span.q-marks (240px, 900, cor destaque, opacity:0.12, position:absolute, top:0, left:-10px, z-index:0)
     p.q-text (46-52px, 700, line-height:1.3, text-align:center, z-index:1, MÁXIMO 3 LINHAS)
@@ -147,22 +147,22 @@ Intenção: contrastar "sem o produto" vs "com o produto" usando dois cards lado
 ━ O fundo vem do SLOT — não criar camada de fundo adicional
 ━ ALINHAMENTO: CENTRALIZADO
 Estrutura HTML:
-  .p-header → logo centralizada (height:90px; margin:0 auto)
+  .p-header → img logo centralizada (height:120px; margin:0 auto)
   .p-body (justify-content:center; gap:32px; align-items:center) →
     h1 (72px, 900, text-align:center, line-height:1.0) — headline de contraste
     div.compare (display:flex; gap:20px; width:100%):
-      div.before (flex:1; background:rgba(0,0,0,0.28) no dark / rgba(0,0,0,0.06) no light;
-                  border-radius:24px; padding:48px 28px; text-align:center;
-                  border:1.5px solid rgba(255,255,255,0.10)):
-        span.label (18px,700,uppercase,letter-spacing:1px,opacity:0.45) → "SEM [MARCA]"
-        span.value (96px,900,opacity:0.38,line-height:1,display:block,margin:16px 0)
-        p.desc (22px,500,opacity:0.48,line-height:1.3)
+      div.before (flex:1; border-radius:24px; padding:48px 28px; text-align:center;
+                  TEMA ESCURO → background:rgba(255,255,255,0.07); border:1.5px solid rgba(255,255,255,0.12)
+                  TEMA CLARO  → background:rgba(0,0,0,0.05); border:1.5px solid rgba(0,0,0,0.08)):
+        span.label (18px,700,uppercase,letter-spacing:1px,opacity:0.42) → "SEM [MARCA]"
+        span.value (96px,900,opacity:0.35,line-height:1,display:block,margin:16px 0)
+        p.desc (22px,500,opacity:0.45,line-height:1.3)
       div.after (flex:1; background:linear-gradient(135deg,[primária],[destaque]);
                  border-radius:24px; padding:48px 28px; text-align:center;
-                 box-shadow:0 20px 60px rgba(0,0,0,0.30)):
+                 box-shadow:0 20px 60px rgba(0,0,0,0.25)):
         span.label (18px,700,uppercase,letter-spacing:1px,color:rgba(255,255,255,0.75)) → "COM [MARCA]"
         span.value (96px,900,color:#ffffff,line-height:1,display:block,margin:16px 0)
-        p.desc (22px,500,color:rgba(255,255,255,0.85),line-height:1.3)
+        p.desc (22px,500,color:rgba(255,255,255,0.88),line-height:1.3)
   .p-footer → CTA full-width + slogan
 ⛔ PROIBIDO: fundo bicolor extra, position:absolute no conteúdo, lista de benefícios`,
   },
