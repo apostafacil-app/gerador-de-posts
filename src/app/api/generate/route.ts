@@ -115,11 +115,19 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // Gera imagem via DALL-E 3 quando useImage está ativo
+  // Gera imagem via DALL-E 3 quando useImage está ativo.
+  // Se o provider de texto já é OpenAI, reutiliza a mesma chave.
+  // Caso contrário, usa OPENAI_IMAGE_API_KEY (chave separada opcional).
   let realImageUrl: string | undefined
   if (formData.useImage) {
-    const generated = await generateImage(formData.subject, formData.imageStyle ?? '', formData.format)
-    realImageUrl = generated ?? undefined
+    const imageApiKey =
+      provider === 'openai'
+        ? apiKey
+        : (process.env.OPENAI_IMAGE_API_KEY ?? null)
+    if (imageApiKey) {
+      const generated = await generateImage(formData.subject, formData.imageStyle ?? '', formData.format, imageApiKey)
+      realImageUrl = generated ?? undefined
+    }
   }
 
   try {

@@ -17,9 +17,9 @@ export type ImageFormat = 'post' | 'story'
 export async function generateImage(
   subject: string,
   style: string,
-  format: ImageFormat
+  format: ImageFormat,
+  apiKey: string
 ): Promise<string | null> {
-  const apiKey = process.env.OPENAI_IMAGE_API_KEY
   if (!apiKey) return null
 
   // DALL-E 3 aceita: 1024x1024, 1792x1024, 1024x1792
