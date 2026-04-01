@@ -416,6 +416,7 @@ ${variationSpecs}
 ❌ PROIBIDO inventar números, estatísticas ou urgência falsa.
 ✅ O eyebrow pill é OPCIONAL — use só se agregar contexto, não por padrão.
 ✅ Cada variação deve ter copy e ângulo de mensagem DIFERENTES entre si.
+${form.format === 'story' ? `\n🔴 FORMATO STORY — ZONA OBRIGATÓRIA:\n  Usar APENAS .s-header / .s-body / .s-footer (nunca .p-header/.p-body/.p-footer)\n  O CONTEÚDO do arquétipo vai em .s-body conforme descrito no addendum acima.\n  Estrutura CSS do story já está definida no addendum — NÃO recriar.` : ''}
 
 ---
 ## INSTRUÇÃO FINAL

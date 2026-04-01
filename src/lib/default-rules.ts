@@ -491,6 +491,13 @@ FUNDOS DARK PARA STORY:
         background:radial-gradient(circle,[destaque] 0%,transparent 55%);opacity:0.30;pointer-events:none) +
     div(position:absolute;bottom:-100px;left:-150px;width:700px;height:700px;border-radius:50%;
         background:radial-gradient(circle,[primária] 0%,transparent 55%);opacity:0.22;pointer-events:none)
+  AURORA_DARK: fundo #090012 +
+    div(position:absolute;top:-200px;left:-100px;width:900px;height:600px;border-radius:50%;
+        background:radial-gradient(ellipse,[primária] 0%,transparent 65%);
+        filter:blur(80px);opacity:0.45;pointer-events:none) +
+    div(position:absolute;top:-80px;right:-150px;width:700px;height:500px;border-radius:50%;
+        background:radial-gradient(ellipse,[destaque] 0%,transparent 65%);
+        filter:blur(60px);opacity:0.30;pointer-events:none)
   RICH_DARK: fundo #0a0018 + orbe roxo 600px atrás do CTA opacity:0.20
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -589,7 +596,22 @@ ARQUÉTIPO F — QUOTE (.s-body justify-content:center):
   → .s-footer do Quote: context-card + cta-btn + slogan
     div.context-card (bg:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14);
       border-radius:20px; padding:28px 36px; display:flex; justify-content:space-around; gap:20px):
-      2 × div.stat: p(36px,900,cor destaque) + p(20px,500,opacity:0.65)`
+      2 × div.stat: p(36px,900,cor destaque) + p(20px,500,opacity:0.65)
+
+ARQUÉTIPO E — COMPARAÇÃO (.s-body justify-content:center; gap:40px):
+  h1 (80px, 900, text-align:center, 2 linhas máx)
+  div.compare (display:flex; gap:20px; width:100%):
+    div.before (flex:1; background:rgba(255,255,255,0.07); border:1.5px solid rgba(255,255,255,0.12);
+                border-radius:24px; padding:44px 24px; text-align:center):
+      span.label (20px,700,uppercase,letter-spacing:1px,opacity:0.42)
+      span.value (80px,900,opacity:0.35,line-height:1,display:block,margin:14px 0)
+      p.desc (28px,500,opacity:0.48,line-height:1.3)
+    div.after (flex:1; background:linear-gradient(135deg,[primária],[destaque]);
+               border-radius:24px; padding:44px 24px; text-align:center;
+               box-shadow:0 16px 50px rgba(0,0,0,0.30)):
+      span.label (20px,700,uppercase,letter-spacing:1px,color:rgba(255,255,255,0.75))
+      span.value (80px,900,color:#ffffff,line-height:1,display:block,margin:14px 0)
+      p.desc (28px,500,color:rgba(255,255,255,0.88),line-height:1.3)`
 
 // ─── ADDENDUM: STORY CLARO ────────────────────────────────────────────────────
 export const STORY_LIGHT_ADDENDUM = `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -691,7 +713,22 @@ ARQUÉTIPO F — QUOTE (.s-body justify-content:center):
   → .s-footer do Quote: context-card + cta-btn + slogan
     div.context-card (bg:primária 6%; border:1px solid primária 15%;
       border-radius:20px; padding:28px 36px; display:flex; justify-content:space-around; gap:20px):
-      2 × div.stat: p(36px,900,cor primária) + p(20px,500,#4a4a6a,opacity:0.65)`
+      2 × div.stat: p(36px,900,cor primária) + p(20px,500,#4a4a6a,opacity:0.65)
+
+ARQUÉTIPO E — COMPARAÇÃO (.s-body justify-content:center; gap:40px):
+  h1 (80px, 900, text-align:center, #0f0f1a, 2 linhas máx)
+  div.compare (display:flex; gap:20px; width:100%):
+    div.before (flex:1; background:rgba(0,0,0,0.05); border:1.5px solid rgba(0,0,0,0.08);
+                border-radius:24px; padding:44px 24px; text-align:center):
+      span.label (20px,700,uppercase,letter-spacing:1px,#0f0f1a,opacity:0.42)
+      span.value (80px,900,#0f0f1a,opacity:0.35,line-height:1,display:block,margin:14px 0)
+      p.desc (28px,500,#4a4a6a,line-height:1.3)
+    div.after (flex:1; background:linear-gradient(135deg,[primária],[destaque]);
+               border-radius:24px; padding:44px 24px; text-align:center;
+               box-shadow:0 16px 50px rgba(0,0,0,0.20)):
+      span.label (20px,700,uppercase,letter-spacing:1px,color:rgba(255,255,255,0.80))
+      span.value (80px,900,color:#ffffff,line-height:1,display:block,margin:14px 0)
+      p.desc (28px,500,color:rgba(255,255,255,0.90),line-height:1.3)`
 
 // ─── Compatibilidade retroativa ───────────────────────────────────────────────
 // DEFAULT_AI_RULES é usado como fallback quando Firebase não está configurado.
